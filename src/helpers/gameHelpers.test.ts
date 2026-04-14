@@ -1,0 +1,80 @@
+// src/helpers/gameHelpers.test.ts
+import { describe, it, expect } from "vitest";
+import {
+  pickWords,
+  getFilterPlayer,
+  getNextAnswering,
+  calculateScore,
+  isGameOver,
+} from "./gameHelpers";
+
+describe("pickWords", () => {
+  it("returns the requested number of words", () => {
+    const words = pickWords("en", 13);
+    expect(words).toHaveLength(13);
+  });
+
+  it("returns unique words", () => {
+    const words = pickWords("en", 13);
+    expect(new Set(words).size).toBe(13);
+  });
+
+  it("picks from Portuguese list when lang is pt_br", () => {
+    const words = pickWords("pt_br", 13);
+    expect(words).toHaveLength(13);
+  });
+});
+
+describe("getFilterPlayer", () => {
+  it("returns next player after answering (4 players)", () => {
+    expect(getFilterPlayer(1, 4)).toBe(2);
+    expect(getFilterPlayer(2, 4)).toBe(3);
+    expect(getFilterPlayer(3, 4)).toBe(4);
+  });
+
+  it("wraps around to player 1", () => {
+    expect(getFilterPlayer(4, 4)).toBe(1);
+  });
+});
+
+describe("getNextAnswering", () => {
+  it("rotates through players based on round", () => {
+    expect(getNextAnswering(0, 4)).toBe(1);
+    expect(getNextAnswering(1, 4)).toBe(2);
+    expect(getNextAnswering(2, 4)).toBe(3);
+    expect(getNextAnswering(3, 4)).toBe(4);
+  });
+
+  it("wraps around after all players have answered", () => {
+    expect(getNextAnswering(4, 4)).toBe(1);
+  });
+});
+
+describe("calculateScore", () => {
+  it("adds 1 point for correct guess", () => {
+    expect(calculateScore("right", 2, 1)).toEqual({ points: 3, lostPoints: 1 });
+  });
+
+  it("adds 2 lost points for wrong guess", () => {
+    expect(calculateScore("wrong", 2, 1)).toEqual({ points: 2, lostPoints: 3 });
+  });
+
+  it("adds 1 lost point for pass", () => {
+    expect(calculateScore("pass", 2, 1)).toEqual({ points: 2, lostPoints: 2 });
+  });
+});
+
+describe("isGameOver", () => {
+  it("returns true when points + lostPoints >= 13", () => {
+    expect(isGameOver(7, 6, 5)).toBe(true);
+    expect(isGameOver(10, 3, 5)).toBe(true);
+  });
+
+  it("returns true when round exceeds 12", () => {
+    expect(isGameOver(3, 2, 13)).toBe(true);
+  });
+
+  it("returns false when game is still in progress", () => {
+    expect(isGameOver(3, 2, 5)).toBe(false);
+  });
+});
