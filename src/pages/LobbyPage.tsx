@@ -34,7 +34,7 @@ export default function LobbyPage() {
     },
   );
 
-  const gameState = useGameState(roomId, derived.readyCount);
+  const gameState = useGameState(roomId, derived.playerCount);
 
   const hostJoined = roomState?.players[0]?.status === "ready";
 
@@ -48,7 +48,7 @@ export default function LobbyPage() {
         roomId={roomId!}
         gameState={gameState}
         playerNames={derived.playerNames}
-        playerCount={derived.readyCount}
+        playerCount={derived.playerCount}
       />
     );
   }
@@ -62,7 +62,7 @@ export default function LobbyPage() {
     if (!roomState) return;
     const lang = (gameState.lang || "en") as "en" | "pt_br";
     const words = pickWords(lang, 13);
-    const playerCount = derived.readyCount;
+    const playerCount = derived.playerCount;
     const firstAnswering = Math.floor(Math.random() * playerCount) + 1;
 
     // Write game data first, then flip room status — so players never

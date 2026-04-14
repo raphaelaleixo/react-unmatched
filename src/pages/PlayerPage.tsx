@@ -31,9 +31,9 @@ export default function PlayerPage() {
     },
   );
 
-  const gameState = useGameState(roomId, derived.readyCount);
+  const gameState = useGameState(roomId, derived.playerCount);
   const { playerNames } = derived;
-  const playerCount = derived.readyCount;
+  const playerCount = derived.playerCount;
 
   useEffect(() => {
     if (gameState.lang) {
