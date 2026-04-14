@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { JoinGame } from "react-gameroom";
-import { roomExists, findFirstEmptySlot } from "../hooks/useFirebaseRoom";
+import { roomExists } from "../hooks/useFirebaseRoom";
+import AppHeader from "../components/AppHeader";
 
 export default function JoinGamePage() {
   const navigate = useNavigate();
@@ -18,17 +19,12 @@ export default function JoinGamePage() {
       return;
     }
 
-    const slotId = await findFirstEmptySlot(roomCode);
-    if (slotId === null) {
-      setError(t("join.roomFull"));
-      return;
-    }
-
-    navigate(`/room/${roomCode}/player/${slotId}`);
+    navigate(`/room/${roomCode}/player`);
   }
 
   return (
     <div className="page">
+      <AppHeader />
       <h2>{t("home.joinGame")}</h2>
 
       <JoinGame

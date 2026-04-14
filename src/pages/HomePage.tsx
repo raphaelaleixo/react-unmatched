@@ -3,16 +3,14 @@ import { useTranslation } from "react-i18next";
 import { ref, set } from "firebase/database";
 import { db } from "../firebase";
 import { createInitialRoom } from "react-gameroom";
+import AppHeader from "../components/AppHeader";
+import UnmatchedLogo from "../components/UnmatchedLogo";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
   const currentLang = i18n.language;
-
-  function toggleLang(lang: string) {
-    i18n.changeLanguage(lang);
-  }
 
   async function handleNewGame() {
     const room = createInitialRoom({
@@ -26,34 +24,35 @@ export default function HomePage() {
   }
 
   return (
-    <div className="page">
-      <h1>{t("home.title")}</h1>
+    <div className="home">
+      <AppHeader />
 
-      <div className="lang-toggle">
-        <button
-          className={currentLang === "en" ? "active" : ""}
-          onClick={() => toggleLang("en")}
-        >
-          EN
-        </button>
-        <button
-          className={currentLang === "pt_br" ? "active" : ""}
-          onClick={() => toggleLang("pt_br")}
-        >
-          PT
-        </button>
-      </div>
+      <main className="home__main">
+        <section className="home__hero">
+          <div className="home__badge">
+            <span className="home__badge-dot" />
+            <span className="home__badge-text">{t("home.badge")}</span>
+          </div>
 
-      <button className="btn" onClick={handleNewGame}>
-        {t("home.newGame")}
-      </button>
+          <h1 className="home__title">
+            <UnmatchedLogo className="unmatched-logo--hero" />
+          </h1>
 
-      <button
-        className="btn btn--outline"
-        onClick={() => navigate("/join")}
-      >
-        {t("home.joinGame")}
-      </button>
+          <p className="home__subtitle">{t("home.subtitle")}</p>
+
+          <div className="home__actions">
+            <button className="btn" onClick={handleNewGame}>
+              {t("home.newGame")}
+            </button>
+            <button
+              className="btn btn--outline"
+              onClick={() => navigate("/join")}
+            >
+              {t("home.joinGame")}
+            </button>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }

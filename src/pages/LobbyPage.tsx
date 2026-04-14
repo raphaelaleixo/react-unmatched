@@ -1,29 +1,24 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ref, set } from "firebase/database";
 import {
   PlayerSlotsGrid,
   RoomQRCode,
-  RoomInfoModal,
   useRoomState,
-  joinPlayer,
   startGame,
-  buildPlayerUrl,
+  buildJoinUrl,
 } from "react-gameroom";
 import { db } from "../firebase";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
 import { pickWords } from "../helpers/gameHelpers";
 import BigScreenGame from "../components/BigScreenGame";
+import AppHeader from "../components/AppHeader";
 
 export default function LobbyPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const { roomState, loading, updateRoom } = useFirebaseRoom(roomId);
   const { t } = useTranslation();
-
-  const [nickname, setNickname] = useState("");
-  const [showInfo, setShowInfo] = useState(false);
 
   const derived = useRoomState(
     roomState ?? {
@@ -35,8 +30,6 @@ export default function LobbyPage() {
   );
 
   const gameState = useGameState(roomId, derived.playerCount);
-
-  const hostJoined = roomState?.players[0]?.status === "ready";
 
   if (loading || !roomState) {
     return <div className="page"><p>{t("lobby.waitingForPlayers")}</p></div>;
@@ -51,11 +44,6 @@ export default function LobbyPage() {
         playerCount={derived.playerCount}
       />
     );
-  }
-
-  async function handleHostJoin() {
-    if (!nickname.trim() || !roomState) return;
-    await updateRoom(joinPlayer(roomState, 1, nickname.trim()));
   }
 
   async function handleStartGame() {
@@ -81,68 +69,46 @@ export default function LobbyPage() {
   }
 
   return (
-    <div className="page">
-      <div className="room-badge">{roomState.roomId}</div>
+    <div className="lobby">
+      <AppHeader />
 
-      <div className="qr-wrapper">
-        <RoomQRCode roomId={roomState.roomId} size={160} />
-      </div>
+      <div className="lobby__grid">
+        <div className="lobby__room-code">
+          <h1 className="lobby__room-code-text">{roomState.roomId}</h1>
+        </div>
 
-      <p>
-        {t("lobby.playersReady", {
-          count: derived.readyCount,
-          max: roomState.config.maxPlayers,
-        })}
-      </p>
-
-      <PlayerSlotsGrid
-        players={roomState.players}
-        buildSlotHref={(id) => buildPlayerUrl(roomState.roomId, id)}
-        className="slots-grid"
-        slotClassName="slot"
-      />
-
-      {!hostJoined && (
-        <>
-          <input
-            className="input"
-            placeholder={t("lobby.enterNickname")}
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleHostJoin()}
+        <div className="lobby__players">
+          <p className="lobby__player-count">
+            {t("lobby.playersReady", {
+              count: derived.readyCount,
+              max: roomState.config.maxPlayers,
+            })}
+          </p>
+          <PlayerSlotsGrid
+            players={roomState.players}
+            className="slots-grid"
+            slotClassName="slot"
+            labels={{ empty: "Waiting..." }}
           />
+        </div>
+
+        <div className="lobby__qr">
+          <div className="qr-wrapper">
+            <RoomQRCode roomId={roomState.roomId} url={buildJoinUrl(roomState.roomId)} size={200} />
+          </div>
+        </div>
+
+        <div className="lobby__actions">
           <button
             className="btn"
-            onClick={handleHostJoin}
-            disabled={!nickname.trim()}
+            onClick={handleStartGame}
+            disabled={!derived.canStart}
           >
-            {t("lobby.join")}
+            {t("lobby.startGame")}
           </button>
-        </>
-      )}
+        </div>
+      </div>
 
-      {hostJoined && (
-        <button
-          className="btn btn--yellow"
-          onClick={handleStartGame}
-          disabled={!derived.canStart}
-        >
-          {t("lobby.startGame")}
-        </button>
-      )}
-
-      <button className="btn btn--outline" onClick={() => setShowInfo(true)}>
-        i
-      </button>
-
-      <RoomInfoModal
-        roomState={roomState}
-        open={showInfo}
-        onClose={() => setShowInfo(false)}
-        className="room-info-modal"
-        closeButtonClassName="room-info-close"
-        linkClassName="room-info-link"
-      />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 {
   "home": {
     "title": "Unmatched",
+    "badge": "Ready to Play",
+    "subtitle": "Zero duplicates. Total cooperation. The web-based word game where great minds mustn't think alike.",
     "newGame": "Create New Game",
     "joinGame": "Join Game"
   },

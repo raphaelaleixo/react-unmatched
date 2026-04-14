@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PlayerScreen, joinPlayer, useRoomState } from "react-gameroom";
+import { PlayerScreen, useRoomState } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
 import { getFilterPlayer, isGameOver } from "../helpers/gameHelpers";
@@ -17,10 +17,8 @@ export default function PlayerPage() {
     playerId: string;
   }>();
   const playerId = Number(playerIdStr);
-  const { roomState, loading, updateRoom } = useFirebaseRoom(roomId);
+  const { roomState, loading } = useFirebaseRoom(roomId);
   const { t, i18n } = useTranslation();
-
-  const [nickname, setNickname] = useState("");
 
   const derived = useRoomState(
     roomState ?? {
@@ -43,11 +41,6 @@ export default function PlayerPage() {
 
   if (loading || !roomState) {
     return <div className="page"><p>Loading...</p></div>;
-  }
-
-  async function handleNameSave() {
-    if (!nickname.trim() || !roomState) return;
-    await updateRoom(joinPlayer(roomState, playerId, nickname.trim()));
   }
 
   function renderGamePhase() {
@@ -165,7 +158,7 @@ export default function PlayerPage() {
     }
   }
 
-  const savedName = roomState.players.find((p) => p.id === playerId)?.name;
+  const playerName = roomState.players.find((p) => p.id === playerId)?.name;
 
   return (
     <PlayerScreen
@@ -174,30 +167,14 @@ export default function PlayerPage() {
       className="page"
       renderEmpty={() => (
         <div className="text-center">
-          <p className="room-badge">{roomState.roomId}</p>
-          <p className="text-muted">Player {playerId}</p>
-          <input
-            className="input"
-            placeholder={t("lobby.enterNickname")}
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleNameSave()}
-          />
-          <br />
-          <br />
-          <button
-            className="btn"
-            onClick={handleNameSave}
-            disabled={!nickname.trim()}
-          >
-            {t("lobby.join")}
-          </button>
+          <p className="text-muted">Loading...</p>
+          <div className="progress-bar" />
         </div>
       )}
       renderReady={() => (
         <div className="text-center">
           <p className="room-badge">{roomState.roomId}</p>
-          <p>{savedName || nickname}</p>
+          <p>{playerName}</p>
           <p className="text-muted">{t("lobby.waitingForPlayers")}</p>
           <div className="progress-bar" />
         </div>
