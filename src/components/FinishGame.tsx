@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ref, set } from "firebase/database";
+import { ref, set, remove } from "firebase/database";
 import { db } from "../firebase";
 import { createInitialRoom } from "react-gameroom";
 import type { GameState } from "../hooks/useGameState";
@@ -8,11 +9,16 @@ import ScoreTracker from "./ScoreTracker";
 
 interface FinishGameProps {
   gameState: GameState;
+  roomId: string;
 }
 
-export default function FinishGame({ gameState }: FinishGameProps) {
+export default function FinishGame({ gameState, roomId }: FinishGameProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    remove(ref(db, `rooms/${roomId}/game`));
+  }, [roomId]);
 
   async function handlePlayAgain() {
     const room = createInitialRoom({

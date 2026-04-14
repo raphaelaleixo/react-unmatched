@@ -69,7 +69,7 @@ export default function PlayerPage() {
     );
 
     if (finished) {
-      return <FinishGame gameState={gameState} />;
+      return <FinishGame gameState={gameState} roomId={roomId!} />;
     }
 
     switch (gameState.phase) {
