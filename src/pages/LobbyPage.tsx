@@ -24,7 +24,6 @@ export default function LobbyPage() {
   const { t } = useTranslation();
 
   const [nickname, setNickname] = useState("");
-  const [hostJoined, setHostJoined] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
 
   const derived = useRoomState(
@@ -35,6 +34,8 @@ export default function LobbyPage() {
       config: { minPlayers: 4, maxPlayers: 8, requireFull: false },
     },
   );
+
+  const hostJoined = roomState?.players[0]?.status === "ready";
 
   if (loading || !roomState) {
     return <div className="page"><p>{t("lobby.waitingForPlayers")}</p></div>;
@@ -48,16 +49,17 @@ export default function LobbyPage() {
     if (!nickname.trim() || !roomState) return;
     await set(ref(db, `rooms/${roomId}/playerNames/1`), nickname.trim());
     await updateRoom(joinPlayer(roomState, 1));
-    setHostJoined(true);
   }
 
   async function handleStartGame() {
     if (!roomState) return;
     const lang = (gameState.lang || "en") as "en" | "pt_br";
     const words = pickWords(lang, 13);
-    const playerCount = gameState.playerCount;
+    const playerCount = derived.readyCount;
     const firstAnswering = Math.floor(Math.random() * playerCount) + 1;
 
+    // Write game data first, then flip room status — so players never
+    // see status "started" before the game state exists in Firebase.
     await set(ref(db, `rooms/${roomId}/game`), {
       words,
       round: 0,
@@ -68,7 +70,6 @@ export default function LobbyPage() {
       message: null,
       lang,
     });
-
     await updateRoom(startGame(roomState));
   }
 
