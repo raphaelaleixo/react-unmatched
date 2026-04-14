@@ -17,6 +17,7 @@
     "playersReady": "{{count}} / {{max}} players ready (minimum {{min}})",
     "startGame": "Start Game",
     "scanHint": "Scan with your mobile device",
+    "tapToRejoin": "Tap your name to rejoin",
     "waitingForPlayers": "Waiting for players..."
   },
   "game": {

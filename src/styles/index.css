@@ -335,6 +335,15 @@ h3 {
   transition: border-color 0.2s, background 0.2s;
 }
 
+a.slot {
+  cursor: pointer;
+}
+
+a.slot:hover {
+  border-color: var(--color-cyan);
+  background: rgba(0, 227, 253, 0.1);
+}
+
 .slot[data-status="ready"] {
   border-style: solid;
   border-color: var(--color-purple);
@@ -405,9 +414,9 @@ h3 {
 }
 
 .room-info-modal [data-room-info-qr] [role="img"] {
-  background: var(--color-white);
-  padding: 12px;
-  border-radius: 12px;
+  background: white;
+  padding: 1.33em;
+  border-radius: 32px;
 }
 
 .room-info-modal [data-room-info-links] {
@@ -480,6 +489,29 @@ h3 {
   background: rgba(16, 13, 21, 0.8);
   backdrop-filter: blur(24px);
   box-shadow: 0 20px 40px rgba(75, 0, 116, 0.15);
+}
+
+.app-header__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.app-header__room-code {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.app-header__room-code:hover {
+  color: var(--color-cyan);
 }
 
 /* Unmatched Logo */

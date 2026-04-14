@@ -39,6 +39,7 @@ export default function LobbyPage() {
     return (
       <BigScreenGame
         roomId={roomId!}
+        roomState={roomState}
         gameState={gameState}
         playerNames={derived.playerNames}
         playerCount={derived.playerCount}

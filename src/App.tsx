@@ -4,6 +4,7 @@ import JoinGamePage from "./pages/JoinGamePage";
 import LobbyPage from "./pages/LobbyPage";
 import PlayerJoinPage from "./pages/PlayerJoinPage";
 import PlayerPage from "./pages/PlayerPage";
+import RejoinPage from "./pages/RejoinPage";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Route path="/room/:roomId" element={<LobbyPage />} />
       <Route path="/room/:roomId/player" element={<PlayerJoinPage />} />
       <Route path="/room/:roomId/player/:playerId" element={<PlayerPage />} />
+      <Route path="/room/:roomId/players" element={<RejoinPage />} />
     </Routes>
   );
 }

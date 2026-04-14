@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { RoomState } from "react-gameroom";
 import type { GameState } from "../hooks/useGameState";
 import ScoreTracker from "./ScoreTracker";
+import AppHeader from "./AppHeader";
 
 interface BigScreenGameProps {
   roomId: string;
+  roomState: RoomState;
   gameState: GameState;
   playerNames: Record<number, string>;
   playerCount: number;
 }
 
-export default function BigScreenGame({ roomId, gameState, playerNames, playerCount }: BigScreenGameProps) {
+export default function BigScreenGame({ roomId, roomState, gameState, playerNames, playerCount }: BigScreenGameProps) {
   const { t, i18n } = useTranslation();
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -38,6 +41,7 @@ export default function BigScreenGame({ roomId, gameState, playerNames, playerCo
   if (isFinished) {
     return (
       <div className="page">
+        <AppHeader roomCode={roomId} roomState={roomState} />
         <h1>{t("finish.gameOver")}</h1>
         <ScoreTracker points={gameState.points} lostPoints={gameState.lostPoints} />
         <p className="text-large text-heading">
@@ -67,7 +71,7 @@ export default function BigScreenGame({ roomId, gameState, playerNames, playerCo
 
   return (
     <div className="page">
-      <div className="room-badge">{roomId}</div>
+      <AppHeader roomCode={roomId} roomState={roomState} />
 
       <h2>{t("game.round", { current: gameState.round + 1 })}</h2>
 

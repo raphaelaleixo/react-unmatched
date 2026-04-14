@@ -17,6 +17,7 @@
     "playersReady": "{{count}} / {{max}} jogadores prontos (mínimo {{min}})",
     "startGame": "Iniciar Jogo",
     "scanHint": "Escaneie com seu celular",
+    "tapToRejoin": "Toque no seu nome para reconectar",
     "waitingForPlayers": "Aguardando jogadores..."
   },
   "game": {
