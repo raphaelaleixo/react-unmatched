@@ -14,8 +14,9 @@
   "lobby": {
     "enterNickname": "Digite seu apelido",
     "join": "Entrar",
-    "playersReady": "{{count}} / {{max}} jogadores prontos",
+    "playersReady": "{{count}} / {{max}} jogadores prontos (mínimo {{min}})",
     "startGame": "Iniciar Jogo",
+    "scanHint": "Escaneie com seu celular",
     "waitingForPlayers": "Aguardando jogadores..."
   },
   "game": {

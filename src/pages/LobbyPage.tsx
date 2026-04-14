@@ -75,15 +75,13 @@ export default function LobbyPage() {
       <div className="lobby__grid">
         <div className="lobby__room-code">
           <h1 className="lobby__room-code-text">{roomState.roomId}</h1>
+          <div className="qr-wrapper">
+            <RoomQRCode roomId={roomState.roomId} url={buildJoinUrl(roomState.roomId)} size={160} />
+          </div>
+          <p className="lobby__qr-hint">{t("lobby.scanHint")}</p>
         </div>
 
         <div className="lobby__players">
-          <p className="lobby__player-count">
-            {t("lobby.playersReady", {
-              count: derived.readyCount,
-              max: roomState.config.maxPlayers,
-            })}
-          </p>
           <PlayerSlotsGrid
             players={roomState.players}
             className="slots-grid"
@@ -92,13 +90,14 @@ export default function LobbyPage() {
           />
         </div>
 
-        <div className="lobby__qr">
-          <div className="qr-wrapper">
-            <RoomQRCode roomId={roomState.roomId} url={buildJoinUrl(roomState.roomId)} size={200} />
-          </div>
-        </div>
-
         <div className="lobby__actions">
+          <p className="lobby__player-count">
+            {t("lobby.playersReady", {
+              count: derived.readyCount,
+              max: roomState.config.maxPlayers,
+              min: roomState.config.minPlayers,
+            })}
+          </p>
           <button
             className="btn"
             onClick={handleStartGame}

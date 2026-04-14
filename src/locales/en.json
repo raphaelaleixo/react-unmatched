@@ -14,8 +14,9 @@
   "lobby": {
     "enterNickname": "Enter your nickname",
     "join": "Join",
-    "playersReady": "{{count}} / {{max}} players ready",
+    "playersReady": "{{count}} / {{max}} players ready (minimum {{min}})",
     "startGame": "Start Game",
+    "scanHint": "Scan with your mobile device",
     "waitingForPlayers": "Waiting for players..."
   },
   "game": {
