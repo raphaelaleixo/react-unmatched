@@ -1,0 +1,85 @@
+import { useEffect, useState } from "react";
+import { ref, onValue } from "firebase/database";
+import { db } from "../firebase";
+
+export interface GameState {
+  phase: "clue" | "filter" | "guess" | "validate" | null;
+  round: number;
+  words: string[];
+  answering: number;
+  clues: Record<number, string>;
+  invalidClues: number[];
+  validClues: string[];
+  guess: string | null;
+  points: number;
+  lostPoints: number;
+  message: "right" | "wrong" | "pass" | null;
+  lang: "en" | "pt_br";
+  playerNames: Record<number, string>;
+  playerCount: number;
+}
+
+const INITIAL_STATE: GameState = {
+  phase: null,
+  round: 0,
+  words: [],
+  answering: 0,
+  clues: {},
+  invalidClues: [],
+  validClues: [],
+  guess: null,
+  points: 0,
+  lostPoints: 0,
+  message: null,
+  lang: "en",
+  playerNames: {},
+  playerCount: 0,
+};
+
+export function useGameState(roomId: string | undefined): GameState {
+  const [state, setState] = useState<GameState>(INITIAL_STATE);
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const gameRef = ref(db, `rooms/${roomId}/game`);
+    const namesRef = ref(db, `rooms/${roomId}/playerNames`);
+
+    const unsubGame = onValue(gameRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
+
+      setState((prev) => ({
+        ...prev,
+        phase: data.phase ?? null,
+        round: data.round ?? 0,
+        words: data.words ?? [],
+        answering: data.answering ?? 0,
+        clues: data.clues ?? {},
+        invalidClues: data.invalidClues ?? [],
+        validClues: data.validClues ?? [],
+        guess: data.guess ?? null,
+        points: data.points ?? 0,
+        lostPoints: data.lostPoints ?? 0,
+        message: data.message ?? null,
+        lang: data.lang ?? "en",
+      }));
+    });
+
+    const unsubNames = onValue(namesRef, (snapshot) => {
+      const data = snapshot.val() ?? {};
+      setState((prev) => ({
+        ...prev,
+        playerNames: data,
+        playerCount: Object.keys(data).length,
+      }));
+    });
+
+    return () => {
+      unsubGame();
+      unsubNames();
+    };
+  }, [roomId]);
+
+  return state;
+}
