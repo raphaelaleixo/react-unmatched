@@ -292,3 +292,142 @@ h3 {
 .text-heading {
   font-family: var(--font-heading);
 }
+
+/* Lobby — Player Slots Grid */
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem;
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  color: var(--color-white);
+  text-decoration: none;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.slot:hover {
+  border-color: var(--color-teal);
+  background: rgba(78, 205, 196, 0.1);
+}
+
+.slot[data-status="ready"] {
+  border-style: solid;
+  border-color: var(--color-teal);
+  background: rgba(78, 205, 196, 0.15);
+}
+
+.slot[data-status="ready"] div:first-child {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+}
+
+.slot[data-status="ready"] [role="status"] {
+  color: var(--color-teal);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.slot[data-status="joining"] {
+  border-color: var(--color-yellow);
+  border-style: dotted;
+}
+
+.slot[data-status="empty"] {
+  opacity: 0.6;
+}
+
+.slot button {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  background: var(--color-teal);
+  color: var(--color-white);
+  border: none;
+  border-radius: 50px;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+}
+
+/* Lobby — Room Info Modal */
+.room-info-modal {
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 90vw;
+  text-align: center;
+}
+
+.room-info-modal::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.room-info-modal h3 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.room-info-modal [data-room-info-qr] {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.room-info-modal [data-room-info-qr] [role="img"] {
+  background: var(--color-white);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.room-info-modal [data-room-info-links] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.room-info-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.room-info-close:hover {
+  opacity: 1;
+}
+
+.room-info-link {
+  color: var(--color-teal);
+  text-decoration: none;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.room-info-link:hover {
+  background: rgba(78, 205, 196, 0.1);
+}

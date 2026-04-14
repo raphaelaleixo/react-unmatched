@@ -98,6 +98,8 @@ export default function LobbyPage() {
       <PlayerSlotsGrid
         players={roomState.players}
         buildSlotHref={(id) => buildPlayerUrl(roomState.roomId, id)}
+        className="slots-grid"
+        slotClassName="slot"
       />
 
       {!hostJoined && (
@@ -137,6 +139,9 @@ export default function LobbyPage() {
         roomState={roomState}
         open={showInfo}
         onClose={() => setShowInfo(false)}
+        className="room-info-modal"
+        closeButtonClassName="room-info-close"
+        linkClassName="room-info-link"
       />
     </div>
   );
