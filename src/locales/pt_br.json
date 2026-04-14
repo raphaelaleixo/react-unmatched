@@ -1,0 +1,51 @@
+{
+  "home": {
+    "title": "Unmatched",
+    "newGame": "Criar Novo Jogo",
+    "joinGame": "Entrar em Jogo"
+  },
+  "join": {
+    "roomNotFound": "Sala não encontrada. Verifique o código e tente novamente.",
+    "roomFull": "Sala cheia.",
+    "back": "Voltar"
+  },
+  "lobby": {
+    "enterNickname": "Digite seu apelido",
+    "join": "Entrar",
+    "playersReady": "{{count}} / {{max}} jogadores prontos",
+    "startGame": "Iniciar Jogo",
+    "waitingForPlayers": "Aguardando jogadores..."
+  },
+  "game": {
+    "round": "Rodada {{current}} de 13",
+    "yourTurnToGuess": "É a sua vez de adivinhar!",
+    "waitingForClues": "Aguardando dicas...",
+    "cluesReceived": "{{count}} / {{total}} dicas recebidas",
+    "enterClue": "Digite sua dica",
+    "sendClue": "Enviar Dica",
+    "filteringClues": "Filtrando dicas...",
+    "validateClues": "{{name}} precisa validar as dicas...",
+    "sendValidClues": "Enviar Dicas Válidas",
+    "waitingForGuess": "Aguardando palpite...",
+    "waitingForName": "Aguardando o palpite de {{name}}...",
+    "enterGuess": "Digite seu palpite",
+    "sendGuess": "Enviar Palpite",
+    "pass": "Passar",
+    "discarded": "{{count}} dica(s) descartada(s)",
+    "validating": "Validando...",
+    "validatingName": "{{name}} está validando...",
+    "correct": "Correto",
+    "wrong": "Errado"
+  },
+  "result": {
+    "right": "Muito bem!",
+    "wrong": "Que pena!",
+    "pass": "Passou..."
+  },
+  "finish": {
+    "gameOver": "Fim de Jogo!",
+    "score": "{{points}} de 13",
+    "playAgain": "Jogar Novamente",
+    "joinAnother": "Entrar em Outro Jogo"
+  }
+}

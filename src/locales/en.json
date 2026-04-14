@@ -1,0 +1,51 @@
+{
+  "home": {
+    "title": "Unmatched",
+    "newGame": "Create New Game",
+    "joinGame": "Join Game"
+  },
+  "join": {
+    "roomNotFound": "Room not found. Check the code and try again.",
+    "roomFull": "Room is full.",
+    "back": "Back"
+  },
+  "lobby": {
+    "enterNickname": "Enter your nickname",
+    "join": "Join",
+    "playersReady": "{{count}} / {{max}} players ready",
+    "startGame": "Start Game",
+    "waitingForPlayers": "Waiting for players..."
+  },
+  "game": {
+    "round": "Round {{current}} of 13",
+    "yourTurnToGuess": "It's your turn to guess!",
+    "waitingForClues": "Waiting for clues...",
+    "cluesReceived": "{{count}} / {{total}} clues received",
+    "enterClue": "Enter your clue",
+    "sendClue": "Send Clue",
+    "filteringClues": "Filtering clues...",
+    "validateClues": "{{name}} needs to validate the clues...",
+    "sendValidClues": "Send Valid Clues",
+    "waitingForGuess": "Waiting for guess...",
+    "waitingForName": "Waiting for {{name}}'s guess...",
+    "enterGuess": "Enter your guess",
+    "sendGuess": "Send Guess",
+    "pass": "Pass",
+    "discarded": "{{count}} clue(s) discarded",
+    "validating": "Validating...",
+    "validatingName": "{{name}} is validating...",
+    "correct": "Correct",
+    "wrong": "Wrong"
+  },
+  "result": {
+    "right": "Well done!",
+    "wrong": "Bummer!",
+    "pass": "Passed..."
+  },
+  "finish": {
+    "gameOver": "Game Over!",
+    "score": "{{points}} out of 13",
+    "playAgain": "Play Again",
+    "joinAnother": "Join Another Game"
+  }
+}
