@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ref, set, remove } from "firebase/database";
+import { ref, update } from "firebase/database";
 import { db } from "../firebase";
 import { calculateScore, getNextAnswering } from "../helpers/gameHelpers";
 
@@ -28,19 +28,18 @@ export default function ValidateAnswer({
     const score = calculateScore(result, points, lostPoints);
     const nextRound = round + 1;
 
-    await set(ref(db, `rooms/${roomId}/game/points`), score.points);
-    await set(ref(db, `rooms/${roomId}/game/lostPoints`), score.lostPoints);
-    await set(ref(db, `rooms/${roomId}/game/message`), result);
-    await set(ref(db, `rooms/${roomId}/game/round`), nextRound);
-    await set(
-      ref(db, `rooms/${roomId}/game/answering`),
-      getNextAnswering(nextRound, playerCount),
-    );
-    await set(ref(db, `rooms/${roomId}/game/phase`), "clue");
-    await remove(ref(db, `rooms/${roomId}/game/clues`));
-    await remove(ref(db, `rooms/${roomId}/game/invalidClues`));
-    await remove(ref(db, `rooms/${roomId}/game/validClues`));
-    await remove(ref(db, `rooms/${roomId}/game/guess`));
+    await update(ref(db, `rooms/${roomId}/game`), {
+      points: score.points,
+      lostPoints: score.lostPoints,
+      message: result,
+      round: nextRound,
+      answering: getNextAnswering(nextRound, playerCount),
+      phase: "clue",
+      clues: null,
+      invalidClues: null,
+      validClues: null,
+      guess: null,
+    });
   }
 
   return (

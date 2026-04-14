@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ref, set, remove } from "firebase/database";
+import { ref, update } from "firebase/database";
 import { db } from "../firebase";
 import { calculateScore, getNextAnswering } from "../helpers/gameHelpers";
 
@@ -49,25 +49,26 @@ export default function FilterClues({
       const score = calculateScore("pass", points, lostPoints);
       const nextRound = round + 1;
 
-      await set(ref(db, `rooms/${roomId}/game/invalidClues`), invalidClues);
-      await set(ref(db, `rooms/${roomId}/game/validClues`), validClues);
-      await set(ref(db, `rooms/${roomId}/game/points`), score.points);
-      await set(ref(db, `rooms/${roomId}/game/lostPoints`), score.lostPoints);
-      await set(ref(db, `rooms/${roomId}/game/message`), "pass");
-      await set(ref(db, `rooms/${roomId}/game/round`), nextRound);
-      await set(
-        ref(db, `rooms/${roomId}/game/answering`),
-        getNextAnswering(nextRound, playerCount),
-      );
-      await set(ref(db, `rooms/${roomId}/game/phase`), "clue");
-      await remove(ref(db, `rooms/${roomId}/game/clues`));
-      await remove(ref(db, `rooms/${roomId}/game/guess`));
+      await update(ref(db, `rooms/${roomId}/game`), {
+        invalidClues,
+        validClues,
+        points: score.points,
+        lostPoints: score.lostPoints,
+        message: "pass",
+        round: nextRound,
+        answering: getNextAnswering(nextRound, playerCount),
+        phase: "clue",
+        clues: null,
+        guess: null,
+      });
       return;
     }
 
-    await set(ref(db, `rooms/${roomId}/game/invalidClues`), invalidClues);
-    await set(ref(db, `rooms/${roomId}/game/validClues`), validClues);
-    await set(ref(db, `rooms/${roomId}/game/phase`), "guess");
+    await update(ref(db, `rooms/${roomId}/game`), {
+      invalidClues,
+      validClues,
+      phase: "guess",
+    });
   }
 
   const clueEntries = Object.entries(clues).map(([id, text]) => ({
