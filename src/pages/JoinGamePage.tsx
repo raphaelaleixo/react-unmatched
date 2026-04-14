@@ -33,10 +33,10 @@ export default function JoinGamePage() {
 
       <JoinGame
         onJoin={handleJoin}
-        className="join-game"
+        inputClassName="input"
+        buttonClassName="btn"
+        renderError={error ? () => <p className="text-error">{error}</p> : undefined}
       />
-
-      {error && <p className="text-error">{error}</p>}
 
       <button
         className="btn btn--outline"
