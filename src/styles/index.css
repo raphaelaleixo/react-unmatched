@@ -1,0 +1,294 @@
+@import url("https://fonts.googleapis.com/css2?family=Knewave&display=swap");
+
+:root {
+  --color-teal: #4ecdc4;
+  --color-red: #ff6b6b;
+  --color-yellow: #f8d34f;
+  --color-white: #ffffff;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --font-heading: "Knewave", cursive;
+  --font-body: system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-white);
+  background: url("https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1920&q=80")
+    center / cover no-repeat fixed;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  z-index: -1;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  gap: 1.5rem;
+}
+
+.btn {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8rem 2.5rem;
+  cursor: pointer;
+  background: var(--color-teal);
+  color: var(--color-white);
+  transition: opacity 0.2s;
+}
+
+.btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn--red {
+  background: var(--color-red);
+}
+
+.btn--yellow {
+  background: var(--color-yellow);
+  color: #333;
+}
+
+.btn--outline {
+  background: transparent;
+  border: 2px solid var(--color-teal);
+  color: var(--color-teal);
+}
+
+.input {
+  font-size: 1.1rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  background: var(--color-white);
+  color: #333;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8rem 1.5rem;
+  width: 100%;
+  max-width: 300px;
+  outline: none;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 3px var(--color-teal);
+}
+
+.card {
+  background: var(--color-white);
+  color: #333;
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.chip {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  background: #ffcdd2;
+  color: #c62828;
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  margin: 0.3rem;
+}
+
+.chip--struck {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.score-tracker {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+.score-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: background 0.3s;
+}
+
+.score-dot--correct {
+  background: var(--color-teal);
+}
+
+.score-dot--lost {
+  background: var(--color-red);
+}
+
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.progress-bar::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 40%;
+  background: var(--color-teal);
+  animation: indeterminate 1.5s ease-in-out infinite;
+}
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+.snackbar {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-red);
+  color: var(--color-white);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  border-radius: 50px;
+  padding: 0.8rem 2rem;
+  z-index: 100;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.qr-wrapper {
+  display: inline-block;
+  background: var(--color-white);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.room-badge {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+}
+
+.lang-toggle {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lang-toggle button {
+  background: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+  border-radius: 8px;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.lang-toggle button.active {
+  border-color: var(--color-teal);
+  background: var(--color-teal);
+}
+
+.validate-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.validate-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.validate-btn:hover {
+  transform: scale(1.1);
+}
+
+.validate-btn--correct {
+  background: var(--color-teal);
+  color: var(--color-white);
+}
+
+.validate-btn--wrong {
+  background: var(--color-red);
+  color: var(--color-white);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  opacity: 0.7;
+}
+
+.text-error {
+  color: var(--color-red);
+}
+
+.text-large {
+  font-size: 1.5rem;
+}
+
+.text-heading {
+  font-family: var(--font-heading);
+}
