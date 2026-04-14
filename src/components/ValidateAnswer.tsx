@@ -18,7 +18,6 @@ export default function ValidateAnswer({
   roomId,
   guess,
   word,
-  answering,
   playerCount,
   round,
   points,

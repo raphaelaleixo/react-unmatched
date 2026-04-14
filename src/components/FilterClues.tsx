@@ -19,7 +19,6 @@ export default function FilterClues({
   roomId,
   clues,
   playerNames,
-  answering,
   playerCount,
   round,
   points,

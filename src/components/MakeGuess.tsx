@@ -19,7 +19,6 @@ export default function MakeGuess({
   roomId,
   validClues,
   invalidCount,
-  answering,
   playerCount,
   round,
   points,
