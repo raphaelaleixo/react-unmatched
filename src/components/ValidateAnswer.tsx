@@ -7,7 +7,6 @@ interface ValidateAnswerProps {
   roomId: string;
   guess: string;
   word: string;
-  answering: number;
   playerCount: number;
   round: number;
   points: number;

@@ -8,7 +8,6 @@ interface FilterCluesProps {
   roomId: string;
   clues: Record<number, string>;
   playerNames: Record<number, string>;
-  answering: number;
   playerCount: number;
   round: number;
   points: number;

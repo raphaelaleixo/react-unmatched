@@ -6,9 +6,11 @@ import ScoreTracker from "./ScoreTracker";
 interface BigScreenGameProps {
   roomId: string;
   gameState: GameState;
+  playerNames: Record<number, string>;
+  playerCount: number;
 }
 
-export default function BigScreenGame({ roomId, gameState }: BigScreenGameProps) {
+export default function BigScreenGame({ roomId, gameState, playerNames, playerCount }: BigScreenGameProps) {
   const { t, i18n } = useTranslation();
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -27,7 +29,7 @@ export default function BigScreenGame({ roomId, gameState }: BigScreenGameProps)
   }, [gameState.message, gameState.round]);
 
   const guesserName =
-    gameState.playerNames[gameState.answering] ||
+    playerNames[gameState.answering] ||
     `Player ${gameState.answering}`;
 
   const isFinished =
@@ -49,7 +51,7 @@ export default function BigScreenGame({ roomId, gameState }: BigScreenGameProps)
     switch (gameState.phase) {
       case "clue": {
         const clueCount = Object.keys(gameState.clues).length;
-        const total = gameState.playerCount - 1;
+        const total = playerCount - 1;
         return t("game.cluesReceived", { count: clueCount, total });
       }
       case "filter":

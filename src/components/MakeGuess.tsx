@@ -8,7 +8,6 @@ interface MakeGuessProps {
   roomId: string;
   validClues: string[];
   invalidCount: number;
-  answering: number;
   playerCount: number;
   round: number;
   points: number;

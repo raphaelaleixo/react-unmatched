@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ref, set, onValue } from "firebase/database";
-import { PlayerScreen, joinPlayer } from "react-gameroom";
-import { db } from "../firebase";
+import { PlayerScreen, joinPlayer, useRoomState } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
 import { getFilterPlayer, isGameOver } from "../helpers/gameHelpers";
@@ -20,11 +18,22 @@ export default function PlayerPage() {
   }>();
   const playerId = Number(playerIdStr);
   const { roomState, loading, updateRoom } = useFirebaseRoom(roomId);
-  const gameState = useGameState(roomId);
   const { t, i18n } = useTranslation();
 
   const [nickname, setNickname] = useState("");
-  const [savedName, setSavedName] = useState<string | null>(null);
+
+  const derived = useRoomState(
+    roomState ?? {
+      roomId: "",
+      status: "lobby",
+      players: [],
+      config: { minPlayers: 4, maxPlayers: 8, requireFull: false },
+    },
+  );
+
+  const gameState = useGameState(roomId, derived.readyCount);
+  const { playerNames } = derived;
+  const playerCount = derived.readyCount;
 
   useEffect(() => {
     if (gameState.lang) {
@@ -32,35 +41,18 @@ export default function PlayerPage() {
     }
   }, [gameState.lang, i18n]);
 
-  useEffect(() => {
-    if (!roomId) return;
-    const nameRef = ref(db, `rooms/${roomId}/playerNames/${playerId}`);
-    const unsub = onValue(nameRef, (snap) => {
-      if (snap.val()) setSavedName(snap.val());
-    });
-    return unsub;
-  }, [roomId, playerId]);
-
   if (loading || !roomState) {
     return <div className="page"><p>Loading...</p></div>;
   }
 
   async function handleNameSave() {
     if (!nickname.trim() || !roomState) return;
-    await set(
-      ref(db, `rooms/${roomId}/playerNames/${playerId}`),
-      nickname.trim(),
-    );
-    await updateRoom(joinPlayer(roomState, playerId));
-    setSavedName(nickname.trim());
+    await updateRoom(joinPlayer(roomState, playerId, nickname.trim()));
   }
 
   function renderGamePhase() {
     const isAnswering = gameState.answering === playerId;
-    const filterPlayer = getFilterPlayer(
-      gameState.answering,
-      gameState.playerCount,
-    );
+    const filterPlayer = getFilterPlayer(gameState.answering, playerCount);
     const isFilter = filterPlayer === playerId;
     const finished = isGameOver(
       gameState.points,
@@ -98,9 +90,8 @@ export default function PlayerPage() {
             <FilterClues
               roomId={roomId!}
               clues={gameState.clues}
-              playerNames={gameState.playerNames}
-              answering={gameState.answering}
-              playerCount={gameState.playerCount}
+              playerNames={playerNames}
+              playerCount={playerCount}
               round={gameState.round}
               points={gameState.points}
               lostPoints={gameState.lostPoints}
@@ -111,7 +102,7 @@ export default function PlayerPage() {
           <div className="text-center">
             <p className="text-muted">
               {t("game.validateClues", {
-                name: gameState.playerNames[filterPlayer] || `Player ${filterPlayer}`,
+                name: playerNames[filterPlayer] || `Player ${filterPlayer}`,
               })}
             </p>
             <div className="progress-bar" />
@@ -125,8 +116,7 @@ export default function PlayerPage() {
               roomId={roomId!}
               validClues={gameState.validClues}
               invalidCount={gameState.invalidClues.length}
-              answering={gameState.answering}
-              playerCount={gameState.playerCount}
+              playerCount={playerCount}
               round={gameState.round}
               points={gameState.points}
               lostPoints={gameState.lostPoints}
@@ -137,7 +127,7 @@ export default function PlayerPage() {
           <div className="text-center">
             <p className="text-muted">
               {t("game.waitingForName", {
-                name: gameState.playerNames[gameState.answering] || `Player ${gameState.answering}`,
+                name: playerNames[gameState.answering] || `Player ${gameState.answering}`,
               })}
             </p>
             <div className="progress-bar" />
@@ -151,8 +141,7 @@ export default function PlayerPage() {
               roomId={roomId!}
               guess={gameState.guess!}
               word={gameState.words[gameState.round]}
-              answering={gameState.answering}
-              playerCount={gameState.playerCount}
+              playerCount={playerCount}
               round={gameState.round}
               points={gameState.points}
               lostPoints={gameState.lostPoints}
@@ -163,7 +152,7 @@ export default function PlayerPage() {
           <div className="text-center">
             <p className="text-muted">
               {t("game.validatingName", {
-                name: gameState.playerNames[filterPlayer] || `Player ${filterPlayer}`,
+                name: playerNames[filterPlayer] || `Player ${filterPlayer}`,
               })}
             </p>
             <div className="progress-bar" />
@@ -175,6 +164,8 @@ export default function PlayerPage() {
         return null;
     }
   }
+
+  const savedName = roomState.players.find((p) => p.id === playerId)?.name;
 
   return (
     <PlayerScreen
@@ -206,9 +197,7 @@ export default function PlayerPage() {
       renderReady={() => (
         <div className="text-center">
           <p className="room-badge">{roomState.roomId}</p>
-          <p>
-            {savedName || nickname}
-          </p>
+          <p>{savedName || nickname}</p>
           <p className="text-muted">{t("lobby.waitingForPlayers")}</p>
           <div className="progress-bar" />
         </div>

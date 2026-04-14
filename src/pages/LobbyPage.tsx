@@ -20,7 +20,6 @@ import BigScreenGame from "../components/BigScreenGame";
 export default function LobbyPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const { roomState, loading, updateRoom } = useFirebaseRoom(roomId);
-  const gameState = useGameState(roomId);
   const { t } = useTranslation();
 
   const [nickname, setNickname] = useState("");
@@ -35,6 +34,8 @@ export default function LobbyPage() {
     },
   );
 
+  const gameState = useGameState(roomId, derived.readyCount);
+
   const hostJoined = roomState?.players[0]?.status === "ready";
 
   if (loading || !roomState) {
@@ -42,13 +43,19 @@ export default function LobbyPage() {
   }
 
   if (roomState.status === "started") {
-    return <BigScreenGame roomId={roomId!} gameState={gameState} />;
+    return (
+      <BigScreenGame
+        roomId={roomId!}
+        gameState={gameState}
+        playerNames={derived.playerNames}
+        playerCount={derived.readyCount}
+      />
+    );
   }
 
   async function handleHostJoin() {
     if (!nickname.trim() || !roomState) return;
-    await set(ref(db, `rooms/${roomId}/playerNames/1`), nickname.trim());
-    await updateRoom(joinPlayer(roomState, 1));
+    await updateRoom(joinPlayer(roomState, 1, nickname.trim()));
   }
 
   async function handleStartGame() {
