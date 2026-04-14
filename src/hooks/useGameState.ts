@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, set } from "firebase/database";
 import { db } from "../firebase";
 
 export interface GameState {
@@ -80,6 +80,20 @@ export function useGameState(roomId: string | undefined): GameState {
       unsubNames();
     };
   }, [roomId]);
+
+  // Auto-transition: clue → filter when all clues are in
+  useEffect(() => {
+    if (!roomId) return;
+    if (state.phase !== "clue") return;
+    if (state.playerCount === 0) return;
+
+    const clueCount = Object.keys(state.clues).length;
+    const expectedClues = state.playerCount - 1; // everyone except guesser
+
+    if (clueCount >= expectedClues && expectedClues > 0) {
+      set(ref(db, `rooms/${roomId}/game/phase`), "filter");
+    }
+  }, [roomId, state.phase, state.clues, state.playerCount]);
 
   return state;
 }
