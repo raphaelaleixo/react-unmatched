@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
@@ -12,6 +12,7 @@ interface FilterCluesProps {
   round: number;
   points: number;
   lostPoints: number;
+  word: string;
 }
 
 export default function FilterClues({
@@ -22,9 +23,32 @@ export default function FilterClues({
   round,
   points,
   lostPoints,
+  word,
 }: FilterCluesProps) {
   const { t } = useTranslation();
   const [struck, setStruck] = useState<Set<number>>(new Set());
+  const wordRef = useRef<HTMLSpanElement>(null);
+
+  const fitWord = useCallback(() => {
+    const el = wordRef.current;
+    if (!el) return;
+    const parent = el.parentElement;
+    if (!parent) return;
+    el.style.fontSize = "";
+    const parentWidth = parent.clientWidth;
+    const scrollWidth = el.scrollWidth;
+    if (scrollWidth > 0) {
+      const scale = parentWidth / scrollWidth;
+      const baseFontSize = parseFloat(getComputedStyle(el).fontSize);
+      el.style.fontSize = `${baseFontSize * scale}px`;
+    }
+  }, []);
+
+  useEffect(() => {
+    fitWord();
+    window.addEventListener("resize", fitWord);
+    return () => window.removeEventListener("resize", fitWord);
+  }, [word, fitWord]);
 
   function toggleStrike(playerId: number) {
     setStruck((prev) => {
@@ -45,7 +69,6 @@ export default function FilterClues({
       .map(([, clue]) => clue);
 
     if (validClues.length === 0) {
-      // Auto-pass: no valid clues remain
       const score = calculateScore("pass", points, lostPoints);
       const nextRound = round + 1;
 
@@ -78,30 +101,54 @@ export default function FilterClues({
   }));
 
   return (
-    <div className="text-center">
-      <h2>{t("game.filteringClues")}</h2>
-
-      <div className="card">
-        {clueEntries.map(({ playerId, text, name }) => (
-          <div
-            key={playerId}
-            onClick={() => toggleStrike(playerId)}
-            style={{ cursor: "pointer", padding: "0.5rem" }}
-          >
-            <span className={`chip${struck.has(playerId) ? " chip--struck" : ""}`}>
-              {text}
-            </span>
-            <span className="text-muted" style={{ marginLeft: "0.5rem", fontSize: "0.8rem" }}>
-              {name}
-            </span>
-          </div>
-        ))}
+    <div className="filter-clues">
+      <div className="filter-clues__group">
+        <div className="filter-clues__word">
+          <span className="filter-clues__word-label">{t("game.currentWord")}</span>
+          <span ref={wordRef} className="filter-clues__word-value">{word}</span>
+        </div>
+        <p className="filter-clues__instruction">{t("game.filterInstruction")}</p>
       </div>
 
-      <br />
-      <button className="btn" onClick={handleSubmit}>
-        {t("game.sendValidClues")}
-      </button>
+      <div className="filter-clues__group">
+        <div className="filter-clues__list">
+          {clueEntries.map(({ playerId, text, name }) => {
+            const isStruck = struck.has(playerId);
+            return (
+              <div key={playerId} className="filter-clues__item">
+                <div className="filter-clues__clue-info">
+                  <span className={`filter-clues__clue-text${isStruck ? " filter-clues__clue-text--struck" : ""}`}>
+                    {text}
+                  </span>
+                  <span className="filter-clues__clue-author">{name}</span>
+                </div>
+                <div className="filter-clues__actions">
+                  <button
+                    className={`filter-clues__action-btn filter-clues__action-btn--accept${!isStruck ? " filter-clues__action-btn--active" : ""}`}
+                    onClick={() => isStruck && toggleStrike(playerId)}
+                    aria-label={t("game.correct")}
+                  >
+                    ✓
+                  </button>
+                  <button
+                    className={`filter-clues__action-btn filter-clues__action-btn--reject${isStruck ? " filter-clues__action-btn--active" : ""}`}
+                    onClick={() => !isStruck && toggleStrike(playerId)}
+                    aria-label={t("game.wrong")}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="filter-clues__group">
+        <button className="btn filter-clues__btn" onClick={handleSubmit}>
+          {t("game.sendValidClues")}
+        </button>
+      </div>
     </div>
   );
 }

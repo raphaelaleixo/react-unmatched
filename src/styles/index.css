@@ -332,20 +332,138 @@ h3 {
   max-width: 400px;
 }
 
-.chip {
-  display: inline-block;
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  background: #ffcdd2;
-  color: #c62828;
-  border-radius: 20px;
-  padding: 0.4rem 1rem;
-  margin: 0.3rem;
+/* Filter Clues (Player Phone) */
+.filter-clues {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.chip--struck {
+.filter-clues__group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.filter-clues__word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.filter-clues__word-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.filter-clues__word-value {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 2rem;
+  text-transform: uppercase;
+  color: var(--color-text);
+  white-space: nowrap;
+  display: block;
+}
+
+.filter-clues__instruction {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.filter-clues__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.filter-clues__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+}
+
+.filter-clues__clue-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.filter-clues__clue-text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-clues__clue-text--struck {
   text-decoration: line-through;
-  opacity: 0.5;
+  opacity: 0.4;
+}
+
+.filter-clues__clue-author {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.filter-clues__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.filter-clues__action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.filter-clues__action-btn--accept.filter-clues__action-btn--active {
+  border-color: var(--color-cyan);
+  background: rgba(0, 227, 253, 0.15);
+  color: var(--color-cyan);
+}
+
+.filter-clues__action-btn--reject.filter-clues__action-btn--active {
+  border-color: var(--color-red);
+  background: rgba(255, 107, 107, 0.15);
+  color: var(--color-red);
+}
+
+.filter-clues__btn {
+  width: 100%;
 }
 
 /* Send Clue (Player Phone) */

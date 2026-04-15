@@ -37,6 +37,7 @@
     "playersReady": "{{count}}/{{total}} players ready",
     "clueTip": "Tip: ...",
     "filteringClues": "Filtering clues...",
+    "filterInstruction": "Remove clues that are too similar or violate game rules. Only valid and unique clues should remain for the guesser.",
     "validateClues": "{{name}} needs to validate the clues...",
     "sendValidClues": "Send Valid Clues",
     "waitingForGuess": "Waiting for guess...",

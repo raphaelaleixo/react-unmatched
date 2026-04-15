@@ -91,6 +91,7 @@ export default function PlayerPage() {
               round={gameState.round}
               points={gameState.points}
               lostPoints={gameState.lostPoints}
+              word={gameState.words[gameState.round]}
             />
           );
         }

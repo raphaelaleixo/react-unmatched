@@ -37,6 +37,7 @@
     "playersReady": "{{count}}/{{total}} jogadores prontos",
     "clueTip": "Dica: ...",
     "filteringClues": "Filtrando dicas...",
+    "filterInstruction": "Remova dicas muito parecidas ou que violem as regras do jogo. Apenas dicas válidas e únicas devem permanecer para o adivinhador.",
     "validateClues": "{{name}} precisa validar as dicas...",
     "sendValidClues": "Enviar Dicas Válidas",
     "waitingForGuess": "Aguardando palpite...",
