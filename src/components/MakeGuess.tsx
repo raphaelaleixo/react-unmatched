@@ -54,44 +54,54 @@ export default function MakeGuess({
   }
 
   return (
-    <div className="text-center">
-      <div>
-        {validClues.map((clue, i) => (
-          <span key={i} className="chip">
-            {clue}
-          </span>
-        ))}
+    <div className="make-guess">
+      <div className="make-guess__group">
+        <div className="make-guess__header">
+          <h2 className="make-guess__title">{t("game.guessTitle")}</h2>
+          <p className="make-guess__instruction">{t("game.guessInstruction")}</p>
+        </div>
       </div>
 
-      {invalidCount > 0 && (
-        <p className="text-muted">
-          {t("game.discarded", { count: invalidCount })}
-        </p>
-      )}
+      <div className="make-guess__group">
+        <div className="make-guess__clues">
+          {validClues.map((clue, i) => (
+            <div key={i} className="make-guess__clue-box">
+              <span className="make-guess__clue-number">{t("game.clueNumber", { number: i + 1 })}</span>
+              <span className="make-guess__clue-text">{clue}</span>
+            </div>
+          ))}
+        </div>
+        {invalidCount > 0 && (
+          <p className="make-guess__discarded">
+            {t("game.discarded", { count: invalidCount })}
+          </p>
+        )}
+      </div>
 
-      <input
-        className="input"
-        placeholder={t("game.enterGuess")}
-        value={guess}
-        onChange={(e) => setGuess(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-        maxLength={50}
-      />
-
-      <br />
-      <br />
-
-      <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-        <button className="btn btn--outline" onClick={handlePass}>
-          {t("game.pass")}
-        </button>
-        <button
-          className="btn"
-          onClick={handleSubmit}
-          disabled={!guess.trim()}
-        >
-          {t("game.sendGuess")}
-        </button>
+      <div className="make-guess__group">
+        <div className="make-guess__input-group">
+          <label className="make-guess__label">{t("game.guessLabel")}</label>
+          <input
+            className="input"
+            placeholder={t("game.enterGuess")}
+            value={guess}
+            onChange={(e) => setGuess(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            maxLength={50}
+          />
+        </div>
+        <div className="make-guess__buttons">
+          <button className="btn btn--outline make-guess__btn-pass" onClick={handlePass}>
+            {t("game.pass")}
+          </button>
+          <button
+            className="btn make-guess__btn-submit"
+            onClick={handleSubmit}
+            disabled={!guess.trim()}
+          >
+            {t("game.sendGuess")}
+          </button>
+        </div>
       </div>
     </div>
   );

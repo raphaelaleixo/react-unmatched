@@ -7,7 +7,7 @@
   --color-cyan: #00e3fd;
   --color-purple: #d593ff;
   --color-purple-dark: #4b0074;
-  --color-yellow: #f0dc2b;
+  --color-yellow: #FFF7D0;
   --color-red: #ff6b6b;
   --color-text: #ffffff;
   --color-text-muted: #b0a8b5;
@@ -551,6 +551,129 @@ h3 {
   color: var(--color-text-muted);
   opacity: 0.7;
   text-align: center;
+}
+
+.make-guess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.make-guess__group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.make-guess__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.make-guess__title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 2.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+  color: #ff6b9d;
+}
+
+.make-guess__instruction {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.make-guess__clues {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.make-guess__clue-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+}
+
+.make-guess__clue-number {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.make-guess__clue-text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.make-guess__clue-box:nth-child(4n + 1) { transform: rotate(-0.8deg); }
+.make-guess__clue-box:nth-child(4n + 2) { transform: rotate(1deg); }
+.make-guess__clue-box:nth-child(4n + 3) { transform: rotate(-1.2deg); }
+.make-guess__clue-box:nth-child(4n + 4) { transform: rotate(0.5deg); }
+
+.make-guess__clue-box:nth-child(4n + 1) .make-guess__clue-text { color: #ffffff; }
+.make-guess__clue-box:nth-child(4n + 2) .make-guess__clue-text { color: var(--color-cyan); }
+.make-guess__clue-box:nth-child(4n + 3) .make-guess__clue-text { color: var(--color-yellow); }
+.make-guess__clue-box:nth-child(4n + 4) .make-guess__clue-text { color: #ff6b9d; }
+
+.make-guess__discarded {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.make-guess__input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.make-guess__label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cyan);
+  padding-left: 1.5rem;
+}
+
+.make-guess__buttons {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.make-guess__btn-pass {
+  flex: 0 0 auto;
+}
+
+.make-guess__btn-submit {
+  flex: 1;
 }
 
 .score-tracker {
