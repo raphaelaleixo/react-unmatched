@@ -51,7 +51,7 @@
     "wrong": "Errado",
     "phase": {
       "hints": "Deem Dicas!",
-      "filter": "Filtro",
+      "filter": "Boas dicas?",
       "guess": "Palpite",
       "validate": "Validar"
     },
@@ -60,7 +60,9 @@
     },
     "badge": {
       "submitted": "Enviado",
-      "thinking": "Pensando..."
+      "thinking": "Pensando...",
+      "working": "Validando...",
+      "ready": "Pronto"
     },
     "legend": {
       "won": "Acerto",

@@ -51,7 +51,7 @@
     "wrong": "Wrong",
     "phase": {
       "hints": "Give Hints!",
-      "filter": "Filter",
+      "filter": "Good clues?",
       "guess": "Guess",
       "validate": "Validate"
     },
@@ -60,7 +60,9 @@
     },
     "badge": {
       "submitted": "Submitted",
-      "thinking": "Thinking..."
+      "thinking": "Thinking...",
+      "working": "Validating...",
+      "ready": "Ready"
     },
     "legend": {
       "won": "Won",

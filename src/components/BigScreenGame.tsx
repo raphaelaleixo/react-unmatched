@@ -4,6 +4,7 @@ import type { RoomState } from "react-gameroom";
 import type { GameState } from "../hooks/useGameState";
 import ScoreTracker from "./ScoreTracker";
 import AppHeader from "./AppHeader";
+import { getFilterPlayer } from "../helpers/gameHelpers";
 
 interface BigScreenGameProps {
   roomId: string;
@@ -21,14 +22,8 @@ const PHASE_KEYS: Record<string, string> = {
 };
 
 export default function BigScreenGame({ roomId, roomState, gameState, playerNames, playerCount }: BigScreenGameProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [showSnackbar, setShowSnackbar] = useState(false);
-
-  useEffect(() => {
-    if (gameState.lang) {
-      i18n.changeLanguage(gameState.lang);
-    }
-  }, [gameState.lang, i18n]);
 
   useEffect(() => {
     if (gameState.message) {
@@ -95,6 +90,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
         <div className="game-grid__players">
           {activePlayers.map((player) => {
             const isGuesser = player.id === gameState.answering;
+            const isFilterPlayer = player.id === getFilterPlayer(gameState.answering, playerCount);
             const hasSubmitted =
               gameState.phase === "clue" &&
               !isGuesser &&
@@ -111,6 +107,17 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
                   <span className="game-player__badge" style={{ background: "rgba(213, 147, 255, 0.15)", color: "var(--color-purple)" }}>
                     {t("game.role.guesser")}
                   </span>
+                )}
+                {!isGuesser && gameState.phase === "filter" && (
+                  isFilterPlayer ? (
+                    <span className="game-player__badge game-player__badge--thinking" style={{ animationDelay: `${player.id * 0.4}s`, background: "rgba(255, 214, 0, 0.15)", color: "#ffd600" }}>
+                      {t("game.badge.working")}
+                    </span>
+                  ) : (
+                    <span className="game-player__badge">
+                      {t("game.badge.ready")}
+                    </span>
+                  )
                 )}
                 {!isGuesser && gameState.phase === "clue" && (
                   hasSubmitted ? (
