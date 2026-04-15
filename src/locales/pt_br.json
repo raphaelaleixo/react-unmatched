@@ -21,7 +21,10 @@
     "waitingForPlayers": "Aguardando jogadores..."
   },
   "game": {
-    "round": "Rodada {{current}} de 13",
+    "round": {
+      "label": "Rodada Atual",
+      "full": "Rodada {{current}} de 13"
+    },
     "yourTurnToGuess": "É a sua vez de adivinhar!",
     "waitingForClues": "Aguardando dicas...",
     "cluesReceived": "{{count}} / {{total}} dicas recebidas",
@@ -39,7 +42,25 @@
     "validating": "Validando...",
     "validatingName": "{{name}} está validando...",
     "correct": "Correto",
-    "wrong": "Errado"
+    "wrong": "Errado",
+    "phase": {
+      "hints": "Deem Dicas!",
+      "filter": "Filtro",
+      "guess": "Palpite",
+      "validate": "Validar"
+    },
+    "role": {
+      "guesser": "Adivinhador"
+    },
+    "badge": {
+      "submitted": "Enviado",
+      "thinking": "Pensando..."
+    },
+    "legend": {
+      "won": "Acerto",
+      "lost": "Erro",
+      "upcoming": "Próxima"
+    }
   },
   "result": {
     "right": "Muito bem!",

@@ -14,6 +14,7 @@
   --gradient-purple: linear-gradient(157deg, #d593ff 0%, #cc80fd 100%);
   --gradient-title: linear-gradient(179deg, #d593ff 0%, #00e3fd 50%, #d593ff 100%);
   --font-heading: "Lexend", sans-serif;
+  --color-box-bg: #1C1822;
   --font-body: "Lexend", sans-serif;
 }
 
@@ -47,6 +48,212 @@ h3 {
   min-height: 100vh;
   padding: 1rem;
   gap: 1.5rem;
+}
+
+.game-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 96px 24px 96px;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.game-grid__phase {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-transform: uppercase;
+  color: var(--color-purple);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.game-grid__round {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.game-grid__round-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+
+.game-grid__round-value {
+  display: flex;
+  align-items: baseline;
+}
+
+.game-grid__round-current {
+  font-weight: 900;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--color-text);
+}
+
+.game-grid__round-total {
+  font-weight: 700;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--color-text);
+}
+
+.game-grid__score {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+
+.game-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-circle__number {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.game-circle--won {
+  background: var(--color-cyan);
+}
+
+.game-circle--lost {
+  background: var(--color-red);
+}
+
+.game-circle--current {
+  position: relative;
+}
+
+.game-circle--current::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--color-cyan);
+  animation: spin 1s linear infinite, spin-color 3s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-color {
+  0%, 100% {
+    border-top-color: var(--color-cyan);
+  }
+  50% {
+    border-top-color: var(--color-purple);
+  }
+}
+
+.game-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  height: 80px;
+  padding: 0 6px;
+  margin-right: 4px;
+}
+
+.game-legend__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+.game-legend__dot.game-circle--won {
+  background: var(--color-cyan);
+}
+
+.game-legend__dot.game-circle--lost {
+  background: var(--color-red);
+}
+
+.game-grid__players {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: stretch;
+  align-self: start;
+  justify-self: end;
+  width: 300px;
+  background: var(--color-box-bg);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.game-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.game-player--guesser {
+  color: var(--color-purple);
+  font-weight: 700;
+}
+
+.game-player__badge {
+  font-size: 0.7rem;
+  background: rgba(0, 227, 253, 0.15);
+  color: var(--color-cyan);
+  border-radius: 9999px;
+  padding: 2px 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.game-player__badge--thinking {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+  animation: pulse-fade 2s ease-in-out infinite;
+}
+
+@keyframes pulse-fade {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 
 .btn {
@@ -395,6 +602,10 @@ a.slot:hover {
   max-width: 420px;
   width: 90vw;
   text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .room-info-modal::backdrop {
@@ -403,8 +614,12 @@ a.slot:hover {
 
 .room-info-modal h3 {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-transform: uppercase;
+  color: var(--color-cyan);
+  line-height: 1;
+  margin-bottom: 2rem;
 }
 
 .room-info-modal [data-room-info-qr] {
@@ -419,27 +634,44 @@ a.slot:hover {
   border-radius: 32px;
 }
 
+.room-info-modal [data-room-info-qr] svg {
+  width: 240px;
+  height: 240px;
+}
+
 .room-info-modal [data-room-info-links] {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
+.room-info-modal [data-room-info-links] {
+  display: none;
+}
+
 .room-info-close {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
-  background: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: white;
   border: none;
-  color: var(--color-text);
-  font-size: 1.2rem;
+  color: var(--color-bg);
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
   cursor: pointer;
-  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
   transition: opacity 0.2s;
 }
 
 .room-info-close:hover {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 .room-info-link {
@@ -503,7 +735,7 @@ a.slot:hover {
   font-size: 0.875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-cyan);
   background: none;
   border: none;
   cursor: pointer;
@@ -511,7 +743,7 @@ a.slot:hover {
 }
 
 .app-header__room-code:hover {
-  color: var(--color-cyan);
+  opacity: 0.7;
 }
 
 /* Unmatched Logo */

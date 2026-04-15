@@ -21,7 +21,10 @@
     "waitingForPlayers": "Waiting for players..."
   },
   "game": {
-    "round": "Round {{current}} of 13",
+    "round": {
+      "label": "Current Round",
+      "full": "Round {{current}} of 13"
+    },
     "yourTurnToGuess": "It's your turn to guess!",
     "waitingForClues": "Waiting for clues...",
     "cluesReceived": "{{count}} / {{total}} clues received",
@@ -39,7 +42,25 @@
     "validating": "Validating...",
     "validatingName": "{{name}} is validating...",
     "correct": "Correct",
-    "wrong": "Wrong"
+    "wrong": "Wrong",
+    "phase": {
+      "hints": "Give Hints!",
+      "filter": "Filter",
+      "guess": "Guess",
+      "validate": "Validate"
+    },
+    "role": {
+      "guesser": "Guesser"
+    },
+    "badge": {
+      "submitted": "Submitted",
+      "thinking": "Thinking..."
+    },
+    "legend": {
+      "won": "Won",
+      "lost": "Lost",
+      "upcoming": "Upcoming"
+    }
   },
   "result": {
     "right": "Well done!",

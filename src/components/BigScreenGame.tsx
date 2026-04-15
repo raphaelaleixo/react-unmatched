@@ -13,6 +13,13 @@ interface BigScreenGameProps {
   playerCount: number;
 }
 
+const PHASE_KEYS: Record<string, string> = {
+  clue: "game.phase.hints",
+  filter: "game.phase.filter",
+  guess: "game.phase.guess",
+  validate: "game.phase.validate",
+};
+
 export default function BigScreenGame({ roomId, roomState, gameState, playerNames, playerCount }: BigScreenGameProps) {
   const { t, i18n } = useTranslation();
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -31,10 +38,6 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
     }
   }, [gameState.message, gameState.round]);
 
-  const guesserName =
-    playerNames[gameState.answering] ||
-    `Player ${gameState.answering}`;
-
   const isFinished =
     gameState.points + gameState.lostPoints >= 13 || gameState.round > 12;
 
@@ -51,39 +54,80 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
     );
   }
 
-  function phaseMessage(): string {
-    switch (gameState.phase) {
-      case "clue": {
-        const clueCount = Object.keys(gameState.clues).length;
-        const total = playerCount - 1;
-        return t("game.cluesReceived", { count: clueCount, total });
-      }
-      case "filter":
-        return t("game.filteringClues");
-      case "guess":
-        return t("game.waitingForGuess");
-      case "validate":
-        return t("game.validating");
-      default:
-        return "";
-    }
-  }
+  const activePlayers = roomState.players
+    .filter((p) => p.status === "ready")
+    .sort((a, b) => {
+      if (a.id === gameState.answering) return -1;
+      if (b.id === gameState.answering) return 1;
+      return 0;
+    });
+
+  const roundDisplay = String(gameState.round + 1).padStart(2, "0");
 
   return (
-    <div className="page">
+    <div className="game-page">
       <AppHeader roomCode={roomId} roomState={roomState} />
 
-      <h2>{t("game.round", { current: gameState.round + 1 })}</h2>
+      <div className="game-grid">
+        <div className="game-grid__phase">
+          {gameState.phase ? t(PHASE_KEYS[gameState.phase] ?? "") : ""}
+        </div>
 
-      <p className="text-large">
-        {guesserName}
-      </p>
+        <div className="game-grid__round">
+          <span className="game-grid__round-label">{t("game.round.label")}</span>
+          <span className="game-grid__round-value"><span className="game-grid__round-current">{roundDisplay}</span><span className="game-grid__round-total">/13</span></span>
+        </div>
 
-      <ScoreTracker points={gameState.points} lostPoints={gameState.lostPoints} />
+        <div className="game-grid__score">
+          {Array.from({ length: 13 }, (_, i) => {
+            let modifier = "";
+            if (i < gameState.points) modifier = " game-circle--won";
+            else if (i < gameState.points + gameState.lostPoints) modifier = " game-circle--lost";
+            else if (i === gameState.points + gameState.lostPoints) modifier = " game-circle--current";
+            const showNumber = i >= gameState.points + gameState.lostPoints;
+            return <div key={i} className={`game-circle${modifier}`}>{showNumber && <span className="game-circle__number">{i + 1}</span>}</div>;
+          })}
+          <span className="game-legend__item"><span className="game-legend__dot game-circle--won" />{t("game.legend.won")}</span>
+          <span className="game-legend__item"><span className="game-legend__dot game-circle--lost" />{t("game.legend.lost")}</span>
+          <span className="game-legend__item"><span className="game-legend__dot" />{t("game.legend.upcoming")}</span>
+        </div>
 
-      <p className="text-muted">{phaseMessage()}</p>
+        <div className="game-grid__players">
+          {activePlayers.map((player) => {
+            const isGuesser = player.id === gameState.answering;
+            const hasSubmitted =
+              gameState.phase === "clue" &&
+              !isGuesser &&
+              gameState.clues[player.id] !== undefined;
+            const name = playerNames[player.id] || player.name || `Player ${player.id}`;
 
-      <div className="progress-bar" />
+            return (
+              <div
+                key={player.id}
+                className={`game-player${isGuesser ? " game-player--guesser" : ""}`}
+              >
+                <span>{name}</span>
+                {isGuesser && (
+                  <span className="game-player__badge" style={{ background: "rgba(213, 147, 255, 0.15)", color: "var(--color-purple)" }}>
+                    {t("game.role.guesser")}
+                  </span>
+                )}
+                {!isGuesser && gameState.phase === "clue" && (
+                  hasSubmitted ? (
+                    <span className="game-player__badge">
+                      {t("game.badge.submitted")}
+                    </span>
+                  ) : (
+                    <span className="game-player__badge game-player__badge--thinking" style={{ animationDelay: `${player.id * 0.4}s` }}>
+                      {t("game.badge.thinking")}
+                    </span>
+                  )
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {showSnackbar && gameState.message && (
         <div className="snackbar">{t(`result.${gameState.message}`)}</div>
