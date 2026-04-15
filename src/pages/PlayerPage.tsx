@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { PlayerScreen, useRoomState } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
@@ -95,12 +95,17 @@ export default function PlayerPage() {
           );
         }
         return (
-          <div className="text-center">
-            <p className="text-muted">
-              {t("game.validateClues", {
-                name: playerNames[filterPlayer] || `Player ${filterPlayer}`,
-              })}
-            </p>
+          <div className="waiting-screen">
+            <div className="waiting-screen__group">
+              <h2>{t("game.waiting.title")}</h2>
+              <p className="text-muted">
+                <Trans
+                  i18nKey="game.waiting.filterBody"
+                  values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
+                  components={{ bold: <strong className="waiting-screen__name" /> }}
+                />
+              </p>
+            </div>
             <div className="progress-bar" />
           </div>
         );
@@ -120,12 +125,17 @@ export default function PlayerPage() {
           );
         }
         return (
-          <div className="text-center">
-            <p className="text-muted">
-              {t("game.waitingForName", {
-                name: playerNames[gameState.answering] || `Player ${gameState.answering}`,
-              })}
-            </p>
+          <div className="waiting-screen">
+            <div className="waiting-screen__group">
+              <h2>{t("game.waiting.title")}</h2>
+              <p className="text-muted">
+                <Trans
+                  i18nKey="game.waiting.guessBody"
+                  values={{ name: playerNames[gameState.answering] || `Player ${gameState.answering}` }}
+                  components={{ bold: <strong className="waiting-screen__name" /> }}
+                />
+              </p>
+            </div>
             <div className="progress-bar" />
           </div>
         );
@@ -145,12 +155,17 @@ export default function PlayerPage() {
           );
         }
         return (
-          <div className="text-center">
-            <p className="text-muted">
-              {t("game.validatingName", {
-                name: playerNames[filterPlayer] || `Player ${filterPlayer}`,
-              })}
-            </p>
+          <div className="waiting-screen">
+            <div className="waiting-screen__group">
+              <h2>{t("game.waiting.title")}</h2>
+              <p className="text-muted">
+                <Trans
+                  i18nKey="game.waiting.validateBody"
+                  values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
+                  components={{ bold: <strong className="waiting-screen__name" /> }}
+                />
+              </p>
+            </div>
             <div className="progress-bar" />
           </div>
         );

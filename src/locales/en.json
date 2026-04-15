@@ -47,6 +47,12 @@
     "discarded": "{{count}} clue(s) discarded",
     "validating": "Validating...",
     "validatingName": "{{name}} is validating...",
+    "waiting": {
+      "title": "Wait a bit!",
+      "filterBody": "<bold>{{name}}</bold> is working on validating the clues.",
+      "guessBody": "<bold>{{name}}</bold> is working on guessing the word.",
+      "validateBody": "<bold>{{name}}</bold> is working on validating the answer."
+    },
     "correct": "Correct",
     "wrong": "Wrong",
     "phase": {

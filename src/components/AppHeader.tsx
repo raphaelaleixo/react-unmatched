@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ref, set } from "firebase/database";
 import { RoomInfoModal } from "react-gameroom";
 import type { RoomState } from "react-gameroom";
+import { db } from "../firebase";
 import UnmatchedLogo from "./UnmatchedLogo";
 
 interface AppHeaderProps {
@@ -33,13 +35,19 @@ export default function AppHeader({ roomCode, roomState, playerNumber }: AppHead
           <div className="lang-toggle">
             <button
               className={currentLang === "en" ? "active" : ""}
-              onClick={() => i18n.changeLanguage("en")}
+              onClick={() => {
+                i18n.changeLanguage("en");
+                if (roomCode) set(ref(db, `rooms/${roomCode}/game/lang`), "en");
+              }}
             >
               EN
             </button>
             <button
               className={currentLang === "pt_br" ? "active" : ""}
-              onClick={() => i18n.changeLanguage("pt_br")}
+              onClick={() => {
+                i18n.changeLanguage("pt_br");
+                if (roomCode) set(ref(db, `rooms/${roomCode}/game/lang`), "pt_br");
+              }}
             >
               PT
             </button>

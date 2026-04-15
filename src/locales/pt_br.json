@@ -47,6 +47,12 @@
     "discarded": "{{count}} dica(s) descartada(s)",
     "validating": "Validando...",
     "validatingName": "{{name}} está validando...",
+    "waiting": {
+      "title": "Espere um pouco!",
+      "filterBody": "<bold>{{name}}</bold> está validando as dicas.",
+      "guessBody": "<bold>{{name}}</bold> está tentando adivinhar a palavra.",
+      "validateBody": "<bold>{{name}}</bold> está validando a resposta."
+    },
     "correct": "Correto",
     "wrong": "Errado",
     "phase": {
