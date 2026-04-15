@@ -62,9 +62,33 @@ export default function PlayerPage() {
       case "clue":
         if (isAnswering) {
           return (
-            <div className="text-center">
-              <h2>{t("game.yourTurnToGuess")}</h2>
-              <p className="text-muted">{t("game.waitingForClues")}</p>
+            <div className="waiting-screen">
+              <div className="waiting-screen__group">
+                <h2>{t("game.yourTurnToGuess")}</h2>
+                <p className="text-muted">{t("game.waitingForClues")}</p>
+              </div>
+              <div className="progress-bar" />
+            </div>
+          );
+        }
+        if (playerId in gameState.clues) {
+          const allSubmitted = Object.keys(gameState.clues).length >= playerCount - 1;
+          return (
+            <div className="waiting-screen">
+              <div className="waiting-screen__group">
+                <h2>{t("game.waiting.title")}</h2>
+                <p className="text-muted">
+                  {allSubmitted ? (
+                    <Trans
+                      i18nKey="game.waiting.filterBody"
+                      values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
+                      components={{ bold: <strong className="waiting-screen__name" /> }}
+                    />
+                  ) : (
+                    t("game.waiting.pendingClues")
+                  )}
+                </p>
+              </div>
               <div className="progress-bar" />
             </div>
           );
@@ -74,7 +98,7 @@ export default function PlayerPage() {
             roomId={roomId!}
             playerId={playerId}
             word={gameState.words[gameState.round]}
-            submitted={playerId in gameState.clues}
+            submitted={false}
             cluesCount={Object.keys(gameState.clues).length}
             totalHinters={playerCount - 1}
           />

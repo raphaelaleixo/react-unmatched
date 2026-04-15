@@ -23,12 +23,12 @@ const PHASE_KEYS: Record<string, string> = {
 
 export default function BigScreenGame({ roomId, roomState, gameState, playerNames, playerCount }: BigScreenGameProps) {
   const { t } = useTranslation();
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     if (gameState.message) {
-      setShowSnackbar(true);
-      const timer = setTimeout(() => setShowSnackbar(false), 3000);
+      setShowResult(true);
+      const timer = setTimeout(() => setShowResult(false), 4000);
       return () => clearTimeout(timer);
     }
   }, [gameState.message, gameState.round]);
@@ -94,7 +94,8 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
             return dots.slice(0, 13).map((type, i) => {
               const modifier = type !== "neutral" ? ` game-circle--${type}` : "";
               const showNumber = type === "current" || type === "neutral";
-              return <div key={i} className={`game-circle${modifier}`}>{showNumber && <span className="game-circle__number">{i + 1}</span>}</div>;
+              const icon = type === "won" ? "✔" : type === "lost" ? "✕" : type === "pass" ? "!" : null;
+              return <div key={i} className={`game-circle${modifier}`}>{showNumber ? <span className="game-circle__number">{i + 1}</span> : icon && <span className="game-circle__icon">{icon}</span>}</div>;
             });
           })()}
           <span className="game-legend__item"><span className="game-legend__dot game-circle--won" />{t("game.legend.won")}</span>
@@ -167,8 +168,25 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
         </div>
       </div>
 
-      {showSnackbar && gameState.message && (
-        <div className="snackbar">{t(`result.${gameState.message}`)}</div>
+      {showResult && gameState.message && (
+        <div className={`round-result-overlay round-result-overlay--${gameState.message}`}>
+          <div className="round-result-overlay__content">
+            <p className="round-result-overlay__label">
+              {t(`result.${gameState.message}`)}
+            </p>
+            <div className="round-result-overlay__word">
+              <span className="round-result-overlay__word-label">
+                {t("result.theWord")}
+              </span>
+              <span className="round-result-overlay__word-text">
+                {gameState.words[gameState.round - 1]}
+              </span>
+            </div>
+            <div className="round-result-overlay__progress">
+              <div className="round-result-overlay__progress-bar" />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

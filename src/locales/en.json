@@ -54,6 +54,7 @@
     "validatingName": "{{name}} is validating...",
     "waiting": {
       "title": "Wait a bit!",
+      "pendingClues": "Some players still need to submit their hints.",
       "filterBody": "<bold>{{name}}</bold> is working on validating the clues.",
       "guessBody": "<bold>{{name}}</bold> is working on guessing the word.",
       "validateBody": "<bold>{{name}}</bold> is working on validating the answer."
@@ -91,7 +92,8 @@
   "result": {
     "right": "Well done!",
     "wrong": "Bummer!",
-    "pass": "Passed..."
+    "pass": "Passed...",
+    "theWord": "The word was"
   },
   "finish": {
     "gameOver": "Game Over!",

@@ -54,6 +54,7 @@
     "validatingName": "{{name}} está validando...",
     "waiting": {
       "title": "Espere um pouco!",
+      "pendingClues": "Alguns jogadores ainda precisam enviar suas dicas.",
       "filterBody": "<bold>{{name}}</bold> está validando as dicas.",
       "guessBody": "<bold>{{name}}</bold> está tentando adivinhar a palavra.",
       "validateBody": "<bold>{{name}}</bold> está validando a resposta."
@@ -91,7 +92,8 @@
   "result": {
     "right": "Muito bem!",
     "wrong": "Que pena!",
-    "pass": "Passou..."
+    "pass": "Passou...",
+    "theWord": "A palavra era"
   },
   "finish": {
     "gameOver": "Fim de Jogo!",
