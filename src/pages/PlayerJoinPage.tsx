@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { joinPlayer, findFirstEmptySlot } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
+import AppHeader from "../components/AppHeader";
 
 export default function PlayerJoinPage() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -32,22 +33,29 @@ export default function PlayerJoinPage() {
 
   return (
     <div className="page">
-      <p className="room-badge">{roomState.roomId}</p>
-      <input
-        className="input"
-        placeholder={t("lobby.enterNickname")}
-        value={nickname}
-        onChange={(e) => setNickname(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleJoin()}
-      />
-      {error && <p className="text-error">{error}</p>}
-      <button
-        className="btn"
-        onClick={handleJoin}
-        disabled={!nickname.trim()}
-      >
-        {t("lobby.join")}
-      </button>
+      <AppHeader roomCode={roomId} roomState={roomState} />
+      <div className="player-join">
+        <h2 className="player-join__title">{t("lobby.welcome")}</h2>
+        <div className="input-group">
+          <label className="input-label" htmlFor="nickname">{t("lobby.nicknameLabel")}</label>
+          <input
+            id="nickname"
+            className="input"
+            placeholder={t("lobby.enterNickname")}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleJoin()}
+          />
+        </div>
+        {error && <p className="text-error">{error}</p>}
+        <button
+          className="btn"
+          onClick={handleJoin}
+          disabled={!nickname.trim()}
+        >
+          {t("lobby.join")}
+        </button>
+      </div>
     </div>
   );
 }

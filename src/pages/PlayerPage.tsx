@@ -217,12 +217,16 @@ export default function PlayerPage() {
         </div>
       )}
       renderReady={() => (
-        <div className="text-center">
-          <p className="room-badge">{roomState.roomId}</p>
-          <p>{playerName}</p>
-          <p className="text-muted">{t("lobby.waitingForPlayers")}</p>
-          <div className="progress-bar" />
-        </div>
+        <>
+          <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
+          <div className="waiting-screen">
+            <div className="waiting-screen__group">
+              <h2>{playerName}</h2>
+              <p className="text-muted">{t("lobby.waitingForPlayers")}</p>
+            </div>
+            <div className="progress-bar" />
+          </div>
+        </>
       )}
       renderStarted={() => (
         <>

@@ -12,6 +12,8 @@
     "back": "Voltar"
   },
   "lobby": {
+    "welcome": "Bem-vindo!",
+    "nicknameLabel": "Seu apelido",
     "enterNickname": "Digite seu apelido",
     "join": "Entrar",
     "playersReady": "{{count}} / {{max}} jogadores prontos (mínimo {{min}})",

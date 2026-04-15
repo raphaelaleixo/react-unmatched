@@ -337,6 +337,24 @@ h3 {
     0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.input-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cyan);
+  padding-left: 1.5rem;
+}
+
 .input {
   font-size: 1.1rem;
   text-align: left;
@@ -363,6 +381,22 @@ h3 {
   padding: 1.5rem;
   width: 100%;
   max-width: 400px;
+}
+
+/* Player Join (Player Phone) */
+.player-join {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.player-join__title {
+  font-weight: 900;
+  font-size: 2.5rem;
+  line-height: 1;
 }
 
 /* Filter Clues (Player Phone) */

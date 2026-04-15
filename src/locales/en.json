@@ -12,6 +12,8 @@
     "back": "Back"
   },
   "lobby": {
+    "welcome": "Welcome!",
+    "nicknameLabel": "Your nickname",
     "enterNickname": "Enter your nickname",
     "join": "Join",
     "playersReady": "{{count}} / {{max}} players ready (minimum {{min}})",
