@@ -53,10 +53,6 @@ export function findDuplicateClueIds(clues: Record<number, string>): number[] {
     .flat();
 }
 
-export function isGameOver(
-  points: number,
-  lostPoints: number,
-  round: number,
-): boolean {
-  return points + lostPoints >= 13 || round > 12;
+export function isGameOver(round: number): boolean {
+  return round > 12;
 }

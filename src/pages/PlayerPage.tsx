@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { PlayerScreen, useRoomState } from "react-gameroom";
@@ -6,6 +6,7 @@ import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
 import { getFilterPlayer, isGameOver } from "../helpers/gameHelpers";
 import AppHeader from "../components/AppHeader";
+import RoundResultOverlay from "../components/RoundResultOverlay";
 import SendClue from "../components/SendClue";
 import FilterClues from "../components/FilterClues";
 import MakeGuess from "../components/MakeGuess";
@@ -34,6 +35,9 @@ export default function PlayerPage() {
   const { playerNames } = derived;
   const playerCount = derived.playerCount;
 
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const handleOverlayVisibility = useCallback((visible: boolean) => setOverlayVisible(visible), []);
+
   useEffect(() => {
     if (gameState.lang) {
       i18n.changeLanguage(gameState.lang);
@@ -48,11 +52,7 @@ export default function PlayerPage() {
     const isAnswering = gameState.answering === playerId;
     const filterPlayer = getFilterPlayer(gameState.answering, playerCount);
     const isFilter = filterPlayer === playerId;
-    const finished = isGameOver(
-      gameState.points,
-      gameState.lostPoints,
-      gameState.round,
-    );
+    const finished = isGameOver(gameState.round);
 
     if (finished) {
       return <FinishGame gameState={gameState} roomId={roomId!} />;
@@ -227,7 +227,8 @@ export default function PlayerPage() {
       renderStarted={() => (
         <>
           <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
-          {renderGamePhase()}
+          {!overlayVisible && renderGamePhase()}
+          <RoundResultOverlay gameState={gameState} onVisibilityChange={handleOverlayVisibility} />
         </>
       )}
     />

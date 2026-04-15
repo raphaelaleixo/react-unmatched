@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { RoomState } from "react-gameroom";
 import type { GameState } from "../hooks/useGameState";
 import ScoreTracker from "./ScoreTracker";
 import AppHeader from "./AppHeader";
-import { getFilterPlayer } from "../helpers/gameHelpers";
+import RoundResultOverlay from "./RoundResultOverlay";
+import { getFilterPlayer, isGameOver } from "../helpers/gameHelpers";
 
 interface BigScreenGameProps {
   roomId: string;
@@ -23,18 +23,8 @@ const PHASE_KEYS: Record<string, string> = {
 
 export default function BigScreenGame({ roomId, roomState, gameState, playerNames, playerCount }: BigScreenGameProps) {
   const { t } = useTranslation();
-  const [showResult, setShowResult] = useState(false);
 
-  useEffect(() => {
-    if (gameState.message) {
-      setShowResult(true);
-      const timer = setTimeout(() => setShowResult(false), 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [gameState.message, gameState.round]);
-
-  const isFinished =
-    gameState.points + gameState.lostPoints >= 13 || gameState.round > 12;
+  const isFinished = isGameOver(gameState.round);
 
   if (isFinished) {
     return (
@@ -169,28 +159,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
         </div>
       </div>
 
-      {showResult && gameState.message && (
-        <div className={`round-result-overlay round-result-overlay--${gameState.message}`}>
-          <div className="round-result-overlay__content">
-            <p className="round-result-overlay__label">
-              {gameState.message === "duplicate"
-                ? t("result.duplicate", { hint: Object.values(gameState.clueHistory[gameState.round - 1] ?? {})[0] ?? "" })
-                : t(`result.${gameState.message}`)}
-            </p>
-            <div className="round-result-overlay__word">
-              <span className="round-result-overlay__word-label">
-                {t("result.theWord")}
-              </span>
-              <span className="round-result-overlay__word-text">
-                {gameState.words[gameState.round - 1]}
-              </span>
-            </div>
-            <div className="round-result-overlay__progress">
-              <div className="round-result-overlay__progress-bar" />
-            </div>
-          </div>
-        </div>
-      )}
+      <RoundResultOverlay gameState={gameState} />
     </div>
   );
 }

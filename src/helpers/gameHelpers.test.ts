@@ -65,16 +65,12 @@ describe("calculateScore", () => {
 });
 
 describe("isGameOver", () => {
-  it("returns true when points + lostPoints >= 13", () => {
-    expect(isGameOver(7, 6, 5)).toBe(true);
-    expect(isGameOver(10, 3, 5)).toBe(true);
-  });
-
   it("returns true when round exceeds 12", () => {
-    expect(isGameOver(3, 2, 13)).toBe(true);
+    expect(isGameOver(13)).toBe(true);
   });
 
   it("returns false when game is still in progress", () => {
-    expect(isGameOver(3, 2, 5)).toBe(false);
+    expect(isGameOver(5)).toBe(false);
+    expect(isGameOver(12)).toBe(false);
   });
 });
