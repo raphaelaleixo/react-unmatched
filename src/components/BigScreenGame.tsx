@@ -118,7 +118,8 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
                 key={player.id}
                 className={`game-player${isGuesser ? " game-player--guesser" : ""}`}
               >
-                <span>{name}</span>
+                <span className="game-player__number">{player.id}</span>
+                <span style={{ marginRight: "auto" }}>{name}</span>
                 {isGuesser && (
                   <span className={`game-player__badge${gameState.phase === "guess" ? " game-player__badge--thinking" : ""}`} style={{ background: "rgba(213, 147, 255, 0.15)", color: "var(--color-purple)" }}>
                     {t("game.role.guesser")}

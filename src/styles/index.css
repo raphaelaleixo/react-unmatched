@@ -248,11 +248,18 @@ h3 {
 .game-player {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 700;
+}
+
+.game-player__number {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  min-width: 1.2em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .game-player--guesser {
