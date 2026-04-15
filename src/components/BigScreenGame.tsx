@@ -100,7 +100,6 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
           <span className="game-legend__item"><span className="game-legend__dot game-circle--won" />{t("game.legend.won")}</span>
           <span className="game-legend__item"><span className="game-legend__dot game-circle--lost" />{t("game.legend.lost")}</span>
           <span className="game-legend__item"><span className="game-legend__dot game-circle--pass" />{t("game.legend.passed")}</span>
-          <span className="game-legend__item"><span className="game-legend__dot" />{t("game.legend.upcoming")}</span>
         </div>
 
         <div className="game-grid__players">

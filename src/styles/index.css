@@ -46,7 +46,7 @@ h3 {
   align-items: center;
   justify-content: center;
   min-height: 100svh;
-  padding: 1rem;
+  padding: 5rem 1rem 2rem;
   gap: 1.5rem;
 }
 
@@ -149,7 +149,7 @@ h3 {
 }
 
 .game-circle--pass {
-  background: var(--color-purple);
+  background: var(--color-yellow);
 }
 
 .game-circle--current {
@@ -211,7 +211,7 @@ h3 {
 }
 
 .game-legend__dot.game-circle--pass {
-  background: var(--color-purple);
+  background: var(--color-yellow);
 }
 
 .game-grid__players {
@@ -318,7 +318,7 @@ h3 {
   font-weight: bold;
   background: var(--color-box-bg);
   color: var(--color-text);
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.15);
   border-radius: 50px;
   padding: 0.8rem 1.5rem;
   width: 100%;
@@ -641,10 +641,11 @@ h3 {
 .make-guess__clue-box:nth-child(4n + 3) { transform: rotate(-1.2deg); }
 .make-guess__clue-box:nth-child(4n + 4) { transform: rotate(0.5deg); }
 
-.make-guess__clue-box:nth-child(4n + 1) .make-guess__clue-text { color: #ffffff; }
-.make-guess__clue-box:nth-child(4n + 2) .make-guess__clue-text { color: var(--color-cyan); }
-.make-guess__clue-box:nth-child(4n + 3) .make-guess__clue-text { color: var(--color-yellow); }
-.make-guess__clue-box:nth-child(4n + 4) .make-guess__clue-text { color: #ff6b9d; }
+.make-guess__clue-box:nth-child(5n + 1) .make-guess__clue-text { color: #ffffff; }
+.make-guess__clue-box:nth-child(5n + 2) .make-guess__clue-text { color: var(--color-cyan); }
+.make-guess__clue-box:nth-child(5n + 3) .make-guess__clue-text { color: var(--color-yellow); }
+.make-guess__clue-box:nth-child(5n + 4) .make-guess__clue-text { color: #ff6b9d; }
+.make-guess__clue-box:nth-child(5n + 5) .make-guess__clue-text { color: var(--color-purple); }
 
 .make-guess__discarded {
   font-size: 0.85rem;
@@ -678,6 +679,8 @@ h3 {
 
 .make-guess__btn-pass {
   flex: 0 0 auto;
+  border-color: rgba(255, 247, 208, 0.3);
+  color: var(--color-yellow);
 }
 
 .make-guess__btn-submit {
@@ -708,7 +711,7 @@ h3 {
 }
 
 .score-dot--pass {
-  background: var(--color-purple);
+  background: var(--color-yellow);
 }
 
 /* Waiting Screen (Player Phone) */
