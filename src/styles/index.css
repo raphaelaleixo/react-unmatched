@@ -737,7 +737,7 @@ h3 {
 }
 
 .make-guess__btn-pass {
-  flex: 0 0 auto;
+  flex: 1;
   border-color: rgba(255, 247, 208, 0.3);
   color: var(--color-yellow);
 }
