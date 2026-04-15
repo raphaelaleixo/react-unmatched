@@ -4,7 +4,14 @@ import { Trans, useTranslation } from "react-i18next";
 import { PlayerScreen, useRoomState } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
-import { getFilterPlayer, isGameOver } from "../helpers/gameHelpers";
+import {
+  getFilterPlayer,
+  isGameOver,
+  getCluesPerHinter,
+  hasPlayerSubmittedAllClues,
+  countReadyHinters,
+  makeClueKey,
+} from "../helpers/gameHelpers";
 import AppHeader from "../components/AppHeader";
 import RoundResultOverlay from "../components/RoundResultOverlay";
 import SendClue from "../components/SendClue";
@@ -27,7 +34,7 @@ export default function PlayerPage() {
       roomId: "",
       status: "lobby",
       players: [],
-      config: { minPlayers: 4, maxPlayers: 8, requireFull: false },
+      config: { minPlayers: 3, maxPlayers: 8, requireFull: false },
     },
   );
 
@@ -53,9 +60,10 @@ export default function PlayerPage() {
     const filterPlayer = getFilterPlayer(gameState.answering, playerCount);
     const isFilter = filterPlayer === playerId;
     const finished = isGameOver(gameState.round);
+    const cluesPerHinter = getCluesPerHinter(playerCount);
 
     if (finished) {
-      return <FinishGame gameState={gameState} roomId={roomId!} />;
+      return <FinishGame gameState={gameState} />;
     }
 
     switch (gameState.phase) {
@@ -71,38 +79,50 @@ export default function PlayerPage() {
             </div>
           );
         }
-        if (playerId in gameState.clues) {
-          const allSubmitted = Object.keys(gameState.clues).length >= playerCount - 1;
-          return (
-            <div className="waiting-screen">
-              <div className="waiting-screen__group">
-                <h2>{t("game.waiting.title")}</h2>
-                <p className="text-muted">
-                  {allSubmitted ? (
-                    <Trans
-                      i18nKey="game.waiting.filterBody"
-                      values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
-                      components={{ bold: <strong className="waiting-screen__name" /> }}
-                    />
-                  ) : (
-                    t("game.waiting.pendingClues")
-                  )}
-                </p>
+        {
+          const playerFullySubmitted = hasPlayerSubmittedAllClues(
+            gameState.clues, playerId, cluesPerHinter,
+          );
+          if (playerFullySubmitted) {
+            const readyHinters = countReadyHinters(gameState.clues, playerCount);
+            const allSubmitted = readyHinters >= playerCount - 1;
+            return (
+              <div className="waiting-screen">
+                <div className="waiting-screen__group">
+                  <h2>{t("game.waiting.title")}</h2>
+                  <p className="text-muted">
+                    {allSubmitted ? (
+                      <Trans
+                        i18nKey="game.waiting.filterBody"
+                        values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
+                        components={{ bold: <strong className="waiting-screen__name" /> }}
+                      />
+                    ) : (
+                      t("game.waiting.pendingClues")
+                    )}
+                  </p>
+                </div>
+                <div className="progress-bar" />
               </div>
-              <div className="progress-bar" />
-            </div>
+            );
+          }
+          let submittedClueCount = 0;
+          for (let i = 0; i < cluesPerHinter; i++) {
+            if (makeClueKey(playerId, i) in gameState.clues) submittedClueCount++;
+          }
+          const readyHinters = countReadyHinters(gameState.clues, playerCount);
+          return (
+            <SendClue
+              roomId={roomId!}
+              playerId={playerId}
+              word={gameState.words[gameState.round]}
+              submittedClueCount={submittedClueCount}
+              cluesPerHinter={cluesPerHinter}
+              readyHinters={readyHinters}
+              totalHinters={playerCount - 1}
+            />
           );
         }
-        return (
-          <SendClue
-            roomId={roomId!}
-            playerId={playerId}
-            word={gameState.words[gameState.round]}
-            submitted={false}
-            cluesCount={Object.keys(gameState.clues).length}
-            totalHinters={playerCount - 1}
-          />
-        );
 
       case "filter":
         if (isFilter) {
@@ -113,8 +133,6 @@ export default function PlayerPage() {
               playerNames={playerNames}
               playerCount={playerCount}
               round={gameState.round}
-              points={gameState.points}
-              lostPoints={gameState.lostPoints}
               word={gameState.words[gameState.round]}
             />
           );
@@ -144,8 +162,6 @@ export default function PlayerPage() {
               invalidCount={gameState.invalidClues.length}
               playerCount={playerCount}
               round={gameState.round}
-              points={gameState.points}
-              lostPoints={gameState.lostPoints}
             />
           );
         }
@@ -176,8 +192,6 @@ export default function PlayerPage() {
               clues={gameState.clues}
               playerCount={playerCount}
               round={gameState.round}
-              points={gameState.points}
-              lostPoints={gameState.lostPoints}
             />
           );
         }

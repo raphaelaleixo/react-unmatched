@@ -1,10 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ref, set, remove } from "firebase/database";
+import { db } from "../firebase";
+import { createInitialRoom } from "react-gameroom";
 import type { RoomState } from "react-gameroom";
 import type { GameState } from "../hooks/useGameState";
 import ScoreTracker from "./ScoreTracker";
 import AppHeader from "./AppHeader";
 import RoundResultOverlay from "./RoundResultOverlay";
-import { getFilterPlayer, isGameOver } from "../helpers/gameHelpers";
+import { getFilterPlayer, isGameOver, getFinishSubtitleKey, calculateFinalScore, getCluesPerHinter, hasPlayerSubmittedAllClues } from "../helpers/gameHelpers";
 
 interface BigScreenGameProps {
   roomId: string;
@@ -22,7 +26,20 @@ const PHASE_KEYS: Record<string, string> = {
 };
 
 export default function BigScreenGame({ roomId, roomState, gameState, playerNames, playerCount }: BigScreenGameProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
+
+  async function handlePlayAgain() {
+    await remove(ref(db, `rooms/${roomId}/game`));
+    const room = createInitialRoom({
+      minPlayers: 3,
+      maxPlayers: 8,
+      requireFull: false,
+    });
+    await set(ref(db, `rooms/${room.roomId}/state`), room);
+    await set(ref(db, `rooms/${room.roomId}/game/lang`), gameState.lang);
+    navigate(`/room/${room.roomId}`);
+  }
 
   const isFinished = isGameOver(gameState.round);
 
@@ -30,14 +47,22 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
     return (
       <div className="page">
         <AppHeader roomCode={roomId} roomState={roomState} />
-        <h1>{t("finish.gameOver")}</h1>
-        <ScoreTracker points={gameState.points} lostPoints={gameState.lostPoints} results={gameState.results} />
-        <p className="text-large text-heading">
-          {t("finish.score", { points: gameState.points })}
-        </p>
+        <h1 className="lobby__room-code-text">{t("finish.gameOver")}</h1>
+        <p className="text-large text-heading">{t(getFinishSubtitleKey(calculateFinalScore(gameState.results)))}</p>
+        <div className="card" style={{ margin: "0 auto", textAlign: "center" }}>
+          <ScoreTracker results={gameState.results} />
+          <p className="text-heading" style={{ fontWeight: 700, textTransform: "uppercase" }}>
+            {t("finish.score", { score: calculateFinalScore(gameState.results) })}
+          </p>
+        </div>
+        <button className="btn" onClick={handlePlayAgain}>
+          {t("finish.playAgain")}
+        </button>
       </div>
     );
   }
+
+  const cluesPerHinter = getCluesPerHinter(playerCount);
 
   const activePlayers = roomState.players
     .filter((p) => p.status === "ready")
@@ -100,7 +125,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
             const hasSubmitted =
               gameState.phase === "clue" &&
               !isGuesser &&
-              gameState.clues[player.id] !== undefined;
+              hasPlayerSubmittedAllClues(gameState.clues, player.id, cluesPerHinter);
             const name = playerNames[player.id] || player.name || `Player ${player.id}`;
 
             return (

@@ -14,7 +14,7 @@ export default function HomePage() {
 
   async function handleNewGame() {
     const room = createInitialRoom({
-      minPlayers: 4,
+      minPlayers: 3,
       maxPlayers: 8,
       requireFull: false,
     });

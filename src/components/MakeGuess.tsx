@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
-import { calculateScore, getNextAnswering } from "../helpers/gameHelpers";
+import { getNextAnswering } from "../helpers/gameHelpers";
 
 interface MakeGuessProps {
   roomId: string;
@@ -10,8 +10,6 @@ interface MakeGuessProps {
   invalidCount: number;
   playerCount: number;
   round: number;
-  points: number;
-  lostPoints: number;
 }
 
 export default function MakeGuess({
@@ -20,8 +18,6 @@ export default function MakeGuess({
   invalidCount,
   playerCount,
   round,
-  points,
-  lostPoints,
 }: MakeGuessProps) {
   const { t } = useTranslation();
   const [guess, setGuess] = useState("");
@@ -36,12 +32,9 @@ export default function MakeGuess({
   }
 
   async function handlePass() {
-    const score = calculateScore("pass", points, lostPoints);
     const nextRound = round + 1;
 
     await update(ref(db, `rooms/${roomId}/game`), {
-      points: score.points,
-      lostPoints: score.lostPoints,
       message: "pass",
       [`results/${round}`]: "pass",
       round: nextRound,

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { ref, onValue, set, update } from "firebase/database";
 import { db } from "../firebase";
 import {
-  calculateScore,
   getNextAnswering,
+  getExpectedClueCount,
   normalizeClue,
 } from "../helpers/gameHelpers";
 
@@ -12,14 +12,12 @@ export interface GameState {
   round: number;
   words: string[];
   answering: number;
-  clues: Record<number, string>;
-  invalidClues: number[];
+  clues: Record<string, string>;
+  invalidClues: string[];
   validClues: string[];
   guess: string | null;
-  points: number;
-  lostPoints: number;
   message: "right" | "wrong" | "pass" | "duplicate" | null;
-  clueHistory: Record<number, Record<number, string>>;
+  clueHistory: Record<number, Record<string, string>>;
   results: Record<number, "right" | "wrong" | "pass">;
   lang: "en" | "pt_br";
 }
@@ -33,8 +31,6 @@ const INITIAL_STATE: GameState = {
   invalidClues: [],
   validClues: [],
   guess: null,
-  points: 0,
-  lostPoints: 0,
   message: null,
   clueHistory: {},
   results: {},
@@ -65,8 +61,6 @@ export function useGameState(
         invalidClues: data.invalidClues ?? [],
         validClues: data.validClues ?? [],
         guess: data.guess ?? null,
-        points: data.points ?? 0,
-        lostPoints: data.lostPoints ?? 0,
         message: data.message ?? null,
         clueHistory: data.clueHistory ?? {},
         results: data.results ?? {},
@@ -85,7 +79,7 @@ export function useGameState(
     if (playerCount === 0) return;
 
     const clueCount = Object.keys(state.clues).length;
-    const expectedClues = playerCount - 1; // everyone except guesser
+    const expectedClues = getExpectedClueCount(playerCount);
 
     if (clueCount < expectedClues || expectedClues <= 0) return;
 
@@ -95,14 +89,11 @@ export function useGameState(
     const allSame = normalized.every((c) => c === normalized[0]);
 
     if (allSame) {
-      const score = calculateScore("pass", state.points, state.lostPoints);
       const nextRound = state.round + 1;
 
       update(ref(db, `rooms/${roomId}/game`), {
-        invalidClues: Object.keys(state.clues).map(Number),
+        invalidClues: Object.keys(state.clues),
         validClues: [],
-        points: score.points,
-        lostPoints: score.lostPoints,
         message: "duplicate",
         [`clueHistory/${state.round}`]: state.clues,
         [`results/${state.round}`]: "pass",
@@ -115,7 +106,7 @@ export function useGameState(
     } else {
       set(ref(db, `rooms/${roomId}/game/phase`), "filter");
     }
-  }, [roomId, state.phase, state.clues, state.round, state.points, state.lostPoints, playerCount]);
+  }, [roomId, state.phase, state.clues, state.round, playerCount]);
 
   // Auto-transition: validate → right when guess matches word exactly
   useEffect(() => {
@@ -127,12 +118,9 @@ export function useGameState(
     if (!word) return;
     if (normalizeClue(state.guess) !== normalizeClue(word)) return;
 
-    const score = calculateScore("right", state.points, state.lostPoints);
     const nextRound = state.round + 1;
 
     update(ref(db, `rooms/${roomId}/game`), {
-      points: score.points,
-      lostPoints: score.lostPoints,
       message: "right",
       [`clueHistory/${state.round}`]: state.clues,
       [`results/${state.round}`]: "right",
@@ -144,7 +132,7 @@ export function useGameState(
       validClues: null,
       guess: null,
     });
-  }, [roomId, state.phase, state.guess, state.words, state.round, state.points, state.lostPoints, playerCount]);
+  }, [roomId, state.phase, state.guess, state.words, state.round, playerCount]);
 
   return state;
 }

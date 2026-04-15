@@ -32,6 +32,8 @@
     "cluesReceived": "{{count}} / {{total}} dicas recebidas",
     "currentWord": "Palavra atual:",
     "clueInstruction": "Dê uma dica de uma palavra que ajude o adivinhador a encontrar esta palavra.",
+    "clueInstructionTwo": "Dê duas dicas de uma palavra que ajudem o adivinhador a encontrar esta palavra.",
+    "clueProgress": "Dica {{current}} de {{total}}",
     "enterClue": "Digite a dica",
     "cluePlaceholder": "Digite sua dica de uma palavra",
     "submitClue": "Enviar Dica",
@@ -100,7 +102,14 @@
   },
   "finish": {
     "gameOver": "Fim de Jogo!",
-    "score": "{{points}} de 13",
+    "score": "{{score}} pontos",
+    "subtitle0": "Eek… O que aconteceu?",
+    "subtitle4": "Nada mal. Vocês certamente podem melhorar.",
+    "subtitle7": "Na média. É um bom começo. Tentem de novo!",
+    "subtitle9": "Bom. Um primeiro passo rumo à glória?",
+    "subtitle11": "Muito bom! Podem se orgulhar!",
+    "subtitle12": "Impressionante! Vocês são quase campeões!",
+    "subtitle13": "Incrível! Pontuação perfeita!",
     "playAgain": "Jogar Novamente",
     "joinAnother": "Entrar em Outro Jogo"
   }

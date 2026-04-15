@@ -32,6 +32,8 @@
     "cluesReceived": "{{count}} / {{total}} clues received",
     "currentWord": "Current word:",
     "clueInstruction": "Give a one-word clue that helps the guesser find this word.",
+    "clueInstructionTwo": "Give two one-word clues that help the guesser find this word.",
+    "clueProgress": "Clue {{current}} of {{total}}",
     "enterClue": "Enter clue",
     "cluePlaceholder": "Type your one-word clue",
     "submitClue": "Submit Clue",
@@ -100,7 +102,14 @@
   },
   "finish": {
     "gameOver": "Game Over!",
-    "score": "{{points}} out of 13",
+    "score": "{{score}} points",
+    "subtitle0": "Eek… What happened?",
+    "subtitle4": "Not bad. You could certainly do better.",
+    "subtitle7": "Average. It's a good start. Try again!",
+    "subtitle9": "Good. A first step towards glory?",
+    "subtitle11": "Very good! You should be proud!",
+    "subtitle12": "Impressive! You are almost champions!",
+    "subtitle13": "Incredible! A perfect score!",
     "playAgain": "Play Again",
     "joinAnother": "Join Another Game"
   }

@@ -22,37 +22,84 @@ export function getNextAnswering(
   return (round % playerCount) + 1;
 }
 
-export function calculateScore(
-  result: "right" | "wrong" | "pass",
-  points: number,
-  lostPoints: number,
-): { points: number; lostPoints: number } {
-  switch (result) {
-    case "right":
-      return { points: points + 1, lostPoints };
-    case "wrong":
-      return { points, lostPoints: lostPoints + 2 };
-    case "pass":
-      return { points, lostPoints: lostPoints + 1 };
-  }
-}
-
 export function normalizeClue(s: string): string {
   return s.trim().toLowerCase();
 }
 
-export function findDuplicateClueIds(clues: Record<number, string>): number[] {
-  const groups: Record<string, number[]> = {};
-  for (const [id, text] of Object.entries(clues)) {
-    const key = normalizeClue(text);
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(Number(id));
+export function getCluesPerHinter(playerCount: number): number {
+  return playerCount <= 4 ? 2 : 1;
+}
+
+export function makeClueKey(playerId: number, clueIndex: number): string {
+  return `${playerId}_${clueIndex}`;
+}
+
+export function parseClueKey(key: string): { playerId: number; clueIndex: number } {
+  const [pid, idx] = key.split("_");
+  return { playerId: Number(pid), clueIndex: Number(idx) };
+}
+
+export function getExpectedClueCount(playerCount: number): number {
+  return (playerCount - 1) * getCluesPerHinter(playerCount);
+}
+
+export function hasPlayerSubmittedAllClues(
+  clues: Record<string, string>,
+  playerId: number,
+  cluesPerHinter: number,
+): boolean {
+  for (let i = 0; i < cluesPerHinter; i++) {
+    if (!(makeClueKey(playerId, i) in clues)) return false;
+  }
+  return true;
+}
+
+export function countReadyHinters(
+  clues: Record<string, string>,
+  playerCount: number,
+): number {
+  const cluesPerHinter = getCluesPerHinter(playerCount);
+  const playerIds = new Set(
+    Object.keys(clues).map((k) => parseClueKey(k).playerId),
+  );
+  let count = 0;
+  for (const pid of playerIds) {
+    if (hasPlayerSubmittedAllClues(clues, pid, cluesPerHinter)) count++;
+  }
+  return count;
+}
+
+export function findDuplicateClueIds(clues: Record<string, string>): string[] {
+  const groups: Record<string, string[]> = {};
+  for (const [key, text] of Object.entries(clues)) {
+    const norm = normalizeClue(text);
+    if (!groups[norm]) groups[norm] = [];
+    groups[norm].push(key);
   }
   return Object.values(groups)
-    .filter((ids) => ids.length >= 2)
+    .filter((keys) => keys.length >= 2)
     .flat();
 }
 
 export function isGameOver(round: number): boolean {
   return round > 12;
+}
+
+export function calculateFinalScore(results: Record<number, "right" | "wrong" | "pass">): number {
+  let score = 0;
+  for (const result of Object.values(results)) {
+    if (result === "right") score += 1;
+    else if (result === "wrong") score -= 1;
+  }
+  return score;
+}
+
+export function getFinishSubtitleKey(score: number): string {
+  if (score >= 13) return "finish.subtitle13";
+  if (score >= 12) return "finish.subtitle12";
+  if (score >= 11) return "finish.subtitle11";
+  if (score >= 9) return "finish.subtitle9";
+  if (score >= 7) return "finish.subtitle7";
+  if (score >= 4) return "finish.subtitle4";
+  return "finish.subtitle0";
 }

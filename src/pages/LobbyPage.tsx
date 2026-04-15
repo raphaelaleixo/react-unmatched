@@ -25,7 +25,7 @@ export default function LobbyPage() {
       roomId: "",
       status: "lobby",
       players: [],
-      config: { minPlayers: 4, maxPlayers: 8, requireFull: false },
+      config: { minPlayers: 3, maxPlayers: 8, requireFull: false },
     },
   );
 
@@ -61,8 +61,6 @@ export default function LobbyPage() {
       round: 0,
       answering: firstAnswering,
       phase: "clue",
-      points: 0,
-      lostPoints: 0,
       message: null,
       lang,
     });

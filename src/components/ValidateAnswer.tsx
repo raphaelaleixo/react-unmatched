@@ -1,18 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
-import { calculateScore, getNextAnswering } from "../helpers/gameHelpers";
+import { getNextAnswering } from "../helpers/gameHelpers";
 
 interface ValidateAnswerProps {
   roomId: string;
   guess: string;
   word: string;
   guesserName: string;
-  clues: Record<number, string>;
+  clues: Record<string, string>;
   playerCount: number;
   round: number;
-  points: number;
-  lostPoints: number;
 }
 
 export default function ValidateAnswer({
@@ -23,18 +21,13 @@ export default function ValidateAnswer({
   clues,
   playerCount,
   round,
-  points,
-  lostPoints,
 }: ValidateAnswerProps) {
   const { t } = useTranslation();
 
   async function handleResult(result: "right" | "wrong") {
-    const score = calculateScore(result, points, lostPoints);
     const nextRound = round + 1;
 
     await update(ref(db, `rooms/${roomId}/game`), {
-      points: score.points,
-      lostPoints: score.lostPoints,
       message: result,
       [`clueHistory/${round}`]: clues,
       [`results/${round}`]: result,
