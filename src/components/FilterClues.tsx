@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
-import { calculateScore, getNextAnswering } from "../helpers/gameHelpers";
+import { calculateScore, getNextAnswering, findDuplicateClueIds } from "../helpers/gameHelpers";
 
 interface FilterCluesProps {
   roomId: string;
@@ -26,7 +26,9 @@ export default function FilterClues({
   word,
 }: FilterCluesProps) {
   const { t } = useTranslation();
-  const [struck, setStruck] = useState<Set<number>>(new Set());
+  const [struck, setStruck] = useState<Set<number>>(
+    () => new Set(findDuplicateClueIds(clues)),
+  );
   const wordRef = useRef<HTMLSpanElement>(null);
 
   const fitWord = useCallback(() => {

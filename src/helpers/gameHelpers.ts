@@ -37,6 +37,22 @@ export function calculateScore(
   }
 }
 
+export function normalizeClue(s: string): string {
+  return s.trim().toLowerCase();
+}
+
+export function findDuplicateClueIds(clues: Record<number, string>): number[] {
+  const groups: Record<string, number[]> = {};
+  for (const [id, text] of Object.entries(clues)) {
+    const key = normalizeClue(text);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(Number(id));
+  }
+  return Object.values(groups)
+    .filter((ids) => ids.length >= 2)
+    .flat();
+}
+
 export function isGameOver(
   points: number,
   lostPoints: number,

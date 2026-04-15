@@ -849,7 +849,8 @@ h3 {
   color: var(--color-red);
 }
 
-.round-result-overlay--pass .round-result-overlay__label {
+.round-result-overlay--pass .round-result-overlay__label,
+.round-result-overlay--duplicate .round-result-overlay__label {
   color: #ffd600;
 }
 
@@ -899,7 +900,8 @@ h3 {
   background: var(--color-red);
 }
 
-.round-result-overlay--pass .round-result-overlay__progress-bar {
+.round-result-overlay--pass .round-result-overlay__progress-bar,
+.round-result-overlay--duplicate .round-result-overlay__progress-bar {
   background: #ffd600;
 }
 

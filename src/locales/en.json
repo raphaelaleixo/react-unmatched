@@ -93,6 +93,7 @@
     "right": "Well done!",
     "wrong": "Bummer!",
     "pass": "Passed...",
+    "duplicate": "Duplicate clues!",
     "theWord": "The word was"
   },
   "finish": {
