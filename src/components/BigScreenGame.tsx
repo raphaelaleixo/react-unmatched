@@ -150,6 +150,17 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
                     {t("game.badge.ready")}
                   </span>
                 )}
+                {!isGuesser && gameState.phase === "validate" && (
+                  isFilterPlayer ? (
+                    <span className="game-player__badge game-player__badge--thinking" style={{ animationDelay: `${player.id * 0.4}s`, background: "rgba(255, 214, 0, 0.15)", color: "#ffd600" }}>
+                      {t("game.badge.working")}
+                    </span>
+                  ) : (
+                    <span className="game-player__badge">
+                      {t("game.badge.ready")}
+                    </span>
+                  )
+                )}
               </div>
             );
           })}

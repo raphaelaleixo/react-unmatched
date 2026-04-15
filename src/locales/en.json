@@ -64,7 +64,7 @@
       "hints": "Give Hints!",
       "filter": "Good clues?",
       "guess": "Time to Guess",
-      "validate": "Validate"
+      "validate": "Is it right?"
     },
     "role": {
       "guesser": "Guesser"
