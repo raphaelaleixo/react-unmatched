@@ -60,6 +60,12 @@
     },
     "correct": "Correct",
     "wrong": "Wrong",
+    "validate": {
+      "title": "Moment of truth",
+      "wordWas": "The word was:",
+      "guessed": "{{name}} guessed:",
+      "hint": "As the Filterer, you decide if their logic is close enough to count!"
+    },
     "phase": {
       "hints": "Give Hints!",
       "filter": "Good clues?",

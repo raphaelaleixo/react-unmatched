@@ -60,6 +60,12 @@
     },
     "correct": "Correto",
     "wrong": "Errado",
+    "validate": {
+      "title": "Hora da verdade",
+      "wordWas": "A palavra era:",
+      "guessed": "{{name}} chutou:",
+      "hint": "Como Filtrador, você decide se a lógica foi próxima o suficiente!"
+    },
     "phase": {
       "hints": "Deem Dicas!",
       "filter": "Boas dicas?",

@@ -7,6 +7,7 @@ interface ValidateAnswerProps {
   roomId: string;
   guess: string;
   word: string;
+  guesserName: string;
   playerCount: number;
   round: number;
   points: number;
@@ -17,6 +18,7 @@ export default function ValidateAnswer({
   roomId,
   guess,
   word,
+  guesserName,
   playerCount,
   round,
   points,
@@ -44,29 +46,41 @@ export default function ValidateAnswer({
   }
 
   return (
-    <div className="text-center">
-      <h2 className="text-heading">{word}</h2>
-
-      <p className="text-large" style={{ margin: "1rem 0" }}>
-        {guess}
-      </p>
-
-      <div className="validate-buttons">
-        <button
-          className="validate-btn validate-btn--correct"
-          onClick={() => handleResult("right")}
-          aria-label={t("game.correct")}
-        >
-          ✓
-        </button>
-        <button
-          className="validate-btn validate-btn--wrong"
-          onClick={() => handleResult("wrong")}
-          aria-label={t("game.wrong")}
-        >
-          ✗
-        </button>
+    <div className="validate-answer">
+      <h2 className="validate-answer__title">{t("game.validate.title")}</h2>
+      <div className="validate-answer__cards">
+        <div className="validate-answer__card validate-answer__card--word">
+          <span className="validate-answer__card-label">{t("game.validate.wordWas")}</span>
+          <span className="validate-answer__card-text">{word}</span>
+        </div>
+        <div className="validate-answer__card validate-answer__card--guess">
+          <span className="validate-answer__card-label">{t("game.validate.guessed", { name: guesserName })}</span>
+          <span className="validate-answer__card-text">{guess}</span>
+        </div>
       </div>
+
+      <div className="validate-answer__group">
+        <div className="validate-buttons">
+          <button
+            className="validate-btn validate-btn--correct"
+            onClick={() => handleResult("right")}
+            aria-label={t("game.correct")}
+          >
+            <span className="validate-btn__label">{t("game.correct")}</span>
+            <span className="validate-btn__score">+ 1 pt</span>
+          </button>
+          <button
+            className="validate-btn validate-btn--wrong"
+            onClick={() => handleResult("wrong")}
+            aria-label={t("game.wrong")}
+          >
+            <span className="validate-btn__label">{t("game.wrong")}</span>
+            <span className="validate-btn__score">- 2 pts</span>
+          </button>
+        </div>
+      </div>
+
+      <p className="validate-answer__hint">{t("game.validate.hint")}</p>
     </div>
   );
 }
