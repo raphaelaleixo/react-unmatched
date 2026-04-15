@@ -93,7 +93,7 @@
     "right": "Well done!",
     "wrong": "Bummer!",
     "pass": "Passed...",
-    "duplicate": "Duplicate clues!",
+    "duplicate": "All hints were \"{{hint}}\"",
     "theWord": "The word was"
   },
   "finish": {

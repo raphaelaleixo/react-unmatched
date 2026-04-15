@@ -93,7 +93,7 @@
     "right": "Muito bem!",
     "wrong": "Que pena!",
     "pass": "Passou...",
-    "duplicate": "Dicas duplicadas!",
+    "duplicate": "Todas as dicas foram \"{{hint}}\"",
     "theWord": "A palavra era"
   },
   "finish": {

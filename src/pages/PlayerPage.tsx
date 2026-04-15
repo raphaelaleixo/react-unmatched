@@ -173,6 +173,7 @@ export default function PlayerPage() {
               guess={gameState.guess!}
               word={gameState.words[gameState.round]}
               guesserName={playerNames[gameState.answering] || `Player ${gameState.answering}`}
+              clues={gameState.clues}
               playerCount={playerCount}
               round={gameState.round}
               points={gameState.points}

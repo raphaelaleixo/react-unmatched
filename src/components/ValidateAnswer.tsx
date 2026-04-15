@@ -8,6 +8,7 @@ interface ValidateAnswerProps {
   guess: string;
   word: string;
   guesserName: string;
+  clues: Record<number, string>;
   playerCount: number;
   round: number;
   points: number;
@@ -19,6 +20,7 @@ export default function ValidateAnswer({
   guess,
   word,
   guesserName,
+  clues,
   playerCount,
   round,
   points,
@@ -34,6 +36,7 @@ export default function ValidateAnswer({
       points: score.points,
       lostPoints: score.lostPoints,
       message: result,
+      [`clueHistory/${round}`]: clues,
       [`results/${round}`]: result,
       round: nextRound,
       answering: getNextAnswering(nextRound, playerCount),

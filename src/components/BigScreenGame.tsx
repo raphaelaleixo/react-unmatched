@@ -173,7 +173,9 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
         <div className={`round-result-overlay round-result-overlay--${gameState.message}`}>
           <div className="round-result-overlay__content">
             <p className="round-result-overlay__label">
-              {t(`result.${gameState.message}`)}
+              {gameState.message === "duplicate"
+                ? t("result.duplicate", { hint: Object.values(gameState.clueHistory[gameState.round - 1] ?? {})[0] ?? "" })
+                : t(`result.${gameState.message}`)}
             </p>
             <div className="round-result-overlay__word">
               <span className="round-result-overlay__word-label">

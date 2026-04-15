@@ -19,6 +19,7 @@ export interface GameState {
   points: number;
   lostPoints: number;
   message: "right" | "wrong" | "pass" | "duplicate" | null;
+  clueHistory: Record<number, Record<number, string>>;
   results: Record<number, "right" | "wrong" | "pass">;
   lang: "en" | "pt_br";
 }
@@ -35,6 +36,7 @@ const INITIAL_STATE: GameState = {
   points: 0,
   lostPoints: 0,
   message: null,
+  clueHistory: {},
   results: {},
   lang: "en",
 };
@@ -66,6 +68,7 @@ export function useGameState(
         points: data.points ?? 0,
         lostPoints: data.lostPoints ?? 0,
         message: data.message ?? null,
+        clueHistory: data.clueHistory ?? {},
         results: data.results ?? {},
         lang: data.lang ?? "en",
       });
@@ -101,6 +104,7 @@ export function useGameState(
         points: score.points,
         lostPoints: score.lostPoints,
         message: "duplicate",
+        [`clueHistory/${state.round}`]: state.clues,
         [`results/${state.round}`]: "pass",
         round: nextRound,
         answering: getNextAnswering(nextRound, playerCount),
@@ -130,6 +134,7 @@ export function useGameState(
       points: score.points,
       lostPoints: score.lostPoints,
       message: "right",
+      [`clueHistory/${state.round}`]: state.clues,
       [`results/${state.round}`]: "right",
       round: nextRound,
       answering: getNextAnswering(nextRound, playerCount),

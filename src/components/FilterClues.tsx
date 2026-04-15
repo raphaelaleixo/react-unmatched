@@ -80,6 +80,7 @@ export default function FilterClues({
         points: score.points,
         lostPoints: score.lostPoints,
         message: "pass",
+        [`clueHistory/${round}`]: clues,
         [`results/${round}`]: "pass",
         round: nextRound,
         answering: getNextAnswering(nextRound, playerCount),
