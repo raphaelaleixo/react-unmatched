@@ -5,6 +5,7 @@ import { PlayerScreen, useRoomState } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
 import { getFilterPlayer, isGameOver } from "../helpers/gameHelpers";
+import AppHeader from "../components/AppHeader";
 import SendClue from "../components/SendClue";
 import FilterClues from "../components/FilterClues";
 import MakeGuess from "../components/MakeGuess";
@@ -74,6 +75,8 @@ export default function PlayerPage() {
             playerId={playerId}
             word={gameState.words[gameState.round]}
             submitted={playerId in gameState.clues}
+            cluesCount={Object.keys(gameState.clues).length}
+            totalHinters={playerCount - 1}
           />
         );
 
@@ -179,7 +182,12 @@ export default function PlayerPage() {
           <div className="progress-bar" />
         </div>
       )}
-      renderStarted={() => renderGamePhase()}
+      renderStarted={() => (
+        <>
+          <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
+          {renderGamePhase()}
+        </>
+      )}
     />
   );
 }

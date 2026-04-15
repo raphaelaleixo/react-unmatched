@@ -303,16 +303,15 @@ h3 {
 
 .input {
   font-size: 1.1rem;
-  text-align: center;
-  text-transform: uppercase;
+  text-align: left;
   font-weight: bold;
-  background: var(--color-white);
-  color: #333;
+  background: var(--color-box-bg);
+  color: var(--color-text);
   border: none;
   border-radius: 50px;
   padding: 0.8rem 1.5rem;
   width: 100%;
-  max-width: 300px;
+  max-width: 100%;
   outline: none;
 }
 
@@ -344,6 +343,93 @@ h3 {
 .chip--struck {
   text-decoration: line-through;
   opacity: 0.5;
+}
+
+/* Send Clue (Player Phone) */
+.send-clue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.send-clue__group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.send-clue__word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.send-clue__word-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.send-clue__word-value {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 2rem;
+  text-transform: uppercase;
+  color: var(--color-text);
+  white-space: nowrap;
+  display: block;
+}
+
+.send-clue__instruction {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.send-clue__input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.send-clue__label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cyan);
+  padding-left: 1.5rem;
+}
+
+.send-clue__btn {
+  width: 100%;
+}
+
+.send-clue__status {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.send-clue__tip {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  text-align: center;
 }
 
 .score-tracker {
@@ -744,6 +830,20 @@ a.slot:hover {
 
 .app-header__room-code:hover {
   opacity: 0.7;
+}
+
+.app-header__player-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gradient-purple);
+  color: var(--color-purple-dark);
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 0.875rem;
 }
 
 /* Unmatched Logo */

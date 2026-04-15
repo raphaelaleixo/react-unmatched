@@ -7,9 +7,10 @@ import UnmatchedLogo from "./UnmatchedLogo";
 interface AppHeaderProps {
   roomCode?: string;
   roomState?: RoomState;
+  playerNumber?: number;
 }
 
-export default function AppHeader({ roomCode, roomState }: AppHeaderProps) {
+export default function AppHeader({ roomCode, roomState, playerNumber }: AppHeaderProps) {
   const { i18n } = useTranslation();
   const currentLang = i18n.language;
   const [showInfo, setShowInfo] = useState(false);
@@ -26,20 +27,24 @@ export default function AppHeader({ roomCode, roomState }: AppHeaderProps) {
             {roomCode}
           </button>
         )}
-        <div className="lang-toggle">
-          <button
-            className={currentLang === "en" ? "active" : ""}
-            onClick={() => i18n.changeLanguage("en")}
-          >
-            EN
-          </button>
-          <button
-            className={currentLang === "pt_br" ? "active" : ""}
-            onClick={() => i18n.changeLanguage("pt_br")}
-          >
-            PT
-          </button>
-        </div>
+        {playerNumber != null ? (
+          <span className="app-header__player-number">{playerNumber}</span>
+        ) : (
+          <div className="lang-toggle">
+            <button
+              className={currentLang === "en" ? "active" : ""}
+              onClick={() => i18n.changeLanguage("en")}
+            >
+              EN
+            </button>
+            <button
+              className={currentLang === "pt_br" ? "active" : ""}
+              onClick={() => i18n.changeLanguage("pt_br")}
+            >
+              PT
+            </button>
+          </div>
+        )}
       </div>
 
       {roomState && (
