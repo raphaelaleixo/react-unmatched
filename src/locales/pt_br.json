@@ -78,6 +78,7 @@
     "legend": {
       "won": "Acerto",
       "lost": "Erro",
+      "passed": "Passou",
       "upcoming": "Próxima"
     }
   },

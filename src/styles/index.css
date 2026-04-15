@@ -148,6 +148,10 @@ h3 {
   background: var(--color-red);
 }
 
+.game-circle--pass {
+  background: var(--color-purple);
+}
+
 .game-circle--current {
   position: relative;
 }
@@ -204,6 +208,10 @@ h3 {
 
 .game-legend__dot.game-circle--lost {
   background: var(--color-red);
+}
+
+.game-legend__dot.game-circle--pass {
+  background: var(--color-purple);
 }
 
 .game-grid__players {
@@ -697,6 +705,10 @@ h3 {
 
 .score-dot--lost {
   background: var(--color-red);
+}
+
+.score-dot--pass {
+  background: var(--color-purple);
 }
 
 /* Waiting Screen (Player Phone) */

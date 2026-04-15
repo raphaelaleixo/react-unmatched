@@ -78,6 +78,7 @@
     "legend": {
       "won": "Won",
       "lost": "Lost",
+      "passed": "Passed",
       "upcoming": "Upcoming"
     }
   },

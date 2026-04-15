@@ -35,7 +35,7 @@ export default function FinishGame({ gameState, roomId }: FinishGameProps) {
     <div className="text-center">
       <h1>{t("finish.gameOver")}</h1>
 
-      <ScoreTracker points={gameState.points} lostPoints={gameState.lostPoints} />
+      <ScoreTracker points={gameState.points} lostPoints={gameState.lostPoints} results={gameState.results} />
 
       <p className="text-large text-heading">
         {t("finish.score", { points: gameState.points })}

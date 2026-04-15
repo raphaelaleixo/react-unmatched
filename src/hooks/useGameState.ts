@@ -14,6 +14,7 @@ export interface GameState {
   points: number;
   lostPoints: number;
   message: "right" | "wrong" | "pass" | null;
+  results: Record<number, "right" | "wrong" | "pass">;
   lang: "en" | "pt_br";
 }
 
@@ -29,6 +30,7 @@ const INITIAL_STATE: GameState = {
   points: 0,
   lostPoints: 0,
   message: null,
+  results: {},
   lang: "en",
 };
 
@@ -59,6 +61,7 @@ export function useGameState(
         points: data.points ?? 0,
         lostPoints: data.lostPoints ?? 0,
         message: data.message ?? null,
+        results: data.results ?? {},
         lang: data.lang ?? "en",
       });
     });

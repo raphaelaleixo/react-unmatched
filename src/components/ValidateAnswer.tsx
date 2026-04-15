@@ -32,6 +32,7 @@ export default function ValidateAnswer({
       points: score.points,
       lostPoints: score.lostPoints,
       message: result,
+      [`results/${round}`]: result,
       round: nextRound,
       answering: getNextAnswering(nextRound, playerCount),
       phase: "clue",

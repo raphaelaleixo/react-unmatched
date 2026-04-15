@@ -41,7 +41,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
       <div className="page">
         <AppHeader roomCode={roomId} roomState={roomState} />
         <h1>{t("finish.gameOver")}</h1>
-        <ScoreTracker points={gameState.points} lostPoints={gameState.lostPoints} />
+        <ScoreTracker points={gameState.points} lostPoints={gameState.lostPoints} results={gameState.results} />
         <p className="text-large text-heading">
           {t("finish.score", { points: gameState.points })}
         </p>
@@ -74,16 +74,32 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
         </div>
 
         <div className="game-grid__score">
-          {Array.from({ length: 13 }, (_, i) => {
-            let modifier = "";
-            if (i < gameState.points) modifier = " game-circle--won";
-            else if (i < gameState.points + gameState.lostPoints) modifier = " game-circle--lost";
-            else if (i === gameState.points + gameState.lostPoints) modifier = " game-circle--current";
-            const showNumber = i >= gameState.points + gameState.lostPoints;
-            return <div key={i} className={`game-circle${modifier}`}>{showNumber && <span className="game-circle__number">{i + 1}</span>}</div>;
-          })}
+          {(() => {
+            const dots: ("won" | "lost" | "pass" | "current" | "neutral")[] = [];
+            const sortedRounds = Object.keys(gameState.results)
+              .map(Number)
+              .sort((a, b) => a - b);
+
+            for (const r of sortedRounds) {
+              const result = gameState.results[r];
+              if (result === "right") dots.push("won");
+              else if (result === "wrong") { dots.push("lost"); dots.push("lost"); }
+              else if (result === "pass") dots.push("pass");
+            }
+
+            const filledCount = dots.length;
+            if (filledCount < 13) dots.push("current");
+            while (dots.length < 13) dots.push("neutral");
+
+            return dots.slice(0, 13).map((type, i) => {
+              const modifier = type !== "neutral" ? ` game-circle--${type}` : "";
+              const showNumber = type === "current" || type === "neutral";
+              return <div key={i} className={`game-circle${modifier}`}>{showNumber && <span className="game-circle__number">{i + 1}</span>}</div>;
+            });
+          })()}
           <span className="game-legend__item"><span className="game-legend__dot game-circle--won" />{t("game.legend.won")}</span>
           <span className="game-legend__item"><span className="game-legend__dot game-circle--lost" />{t("game.legend.lost")}</span>
+          <span className="game-legend__item"><span className="game-legend__dot game-circle--pass" />{t("game.legend.passed")}</span>
           <span className="game-legend__item"><span className="game-legend__dot" />{t("game.legend.upcoming")}</span>
         </div>
 

@@ -43,6 +43,7 @@ export default function MakeGuess({
       points: score.points,
       lostPoints: score.lostPoints,
       message: "pass",
+      [`results/${round}`]: "pass",
       round: nextRound,
       answering: getNextAnswering(nextRound, playerCount),
       phase: "clue",
