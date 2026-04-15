@@ -1,24 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { ref, onValue, set, get } from "firebase/database";
 import { db } from "../firebase";
-import type { RoomState, PlayerSlot } from "react-gameroom";
-
-function parsePlayersArray(raw: unknown): PlayerSlot[] {
-  if (Array.isArray(raw)) return raw;
-  if (raw && typeof raw === "object") {
-    return Object.values(raw as Record<string, PlayerSlot>);
-  }
-  return [];
-}
-
-function snapshotToRoomState(data: Record<string, unknown>): RoomState {
-  return {
-    roomId: data.roomId as string,
-    status: data.status as RoomState["status"],
-    players: parsePlayersArray(data.players),
-    config: data.config as RoomState["config"],
-  };
-}
+import { deserializeRoom } from "react-gameroom";
+import type { RoomState } from "react-gameroom";
 
 export function useFirebaseRoom(roomId: string | undefined) {
   const [roomState, setRoomState] = useState<RoomState | null>(null);
@@ -37,7 +21,7 @@ export function useFirebaseRoom(roomId: string | undefined) {
       (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          setRoomState(snapshotToRoomState(data));
+          setRoomState(deserializeRoom(data));
           setError(null);
         } else {
           setRoomState(null);
@@ -73,8 +57,9 @@ export async function roomExists(roomId: string): Promise<boolean> {
 export async function findFirstEmptySlot(
   roomId: string,
 ): Promise<number | null> {
-  const snapshot = await get(ref(db, `rooms/${roomId}/state/players`));
-  const players = parsePlayersArray(snapshot.val());
+  const snapshot = await get(ref(db, `rooms/${roomId}/state`));
+  const room = deserializeRoom(snapshot.val());
+  const players = room.players;
   const empty = players.find((p) => p.status === "empty");
   return empty ? empty.id : null;
 }
