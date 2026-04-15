@@ -83,7 +83,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
             for (const r of sortedRounds) {
               const result = gameState.results[r];
               if (result === "right") dots.push("won");
-              else if (result === "wrong") { dots.push("lost"); dots.push("lost"); }
+              else if (result === "wrong") dots.push("lost");
               else if (result === "pass") dots.push("pass");
             }
 
@@ -94,7 +94,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
             return dots.slice(0, 13).map((type, i) => {
               const modifier = type !== "neutral" ? ` game-circle--${type}` : "";
               const showNumber = type === "current" || type === "neutral";
-              const icon = type === "won" ? "✔" : type === "lost" ? "✕" : type === "pass" ? "!" : null;
+              const icon = type === "won" ? "✔" : type === "lost" ? "✖" : type === "pass" ? "!" : null;
               return <div key={i} className={`game-circle${modifier}`}>{showNumber ? <span className="game-circle__number">{i + 1}</span> : icon && <span className="game-circle__icon">{icon}</span>}</div>;
             });
           })()}

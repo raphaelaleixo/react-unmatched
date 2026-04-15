@@ -147,15 +147,15 @@ h3 {
 }
 
 .game-circle--won .game-circle__icon {
-  color: color-mix(in srgb, var(--color-cyan) 40%, black);
+  color: color-mix(in srgb, var(--color-cyan) 60%, black);
 }
 
 .game-circle--lost .game-circle__icon {
-  color: color-mix(in srgb, var(--color-red) 40%, black);
+  color: color-mix(in srgb, var(--color-red) 60%, black);
 }
 
 .game-circle--pass .game-circle__icon {
-  color: color-mix(in srgb, var(--color-yellow) 40%, black);
+  color: color-mix(in srgb, var(--color-yellow) 60%, black);
 }
 
 .game-circle--won {
