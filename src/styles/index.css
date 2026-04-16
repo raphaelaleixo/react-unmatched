@@ -957,6 +957,19 @@ h3 {
   100% { transform: scale(1); opacity: 1; }
 }
 
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-transition {
+  animation: pageEnter 300ms ease-in-out;
+}
+
 .qr-wrapper {
   display: inline-block;
   background: white;
