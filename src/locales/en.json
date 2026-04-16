@@ -4,7 +4,9 @@
     "badge": "Ready to Play",
     "subtitle": "Zero duplicates. Total cooperation. The web-based word game where great minds mustn't think alike.",
     "newGame": "Create New Game",
-    "joinGame": "Join Game"
+    "joinGame": "Join Game",
+    "madeBy": "Made by",
+    "licensedUnder": "Licensed under"
   },
   "join": {
     "roomNotFound": "Room not found. Check the code and try again.",

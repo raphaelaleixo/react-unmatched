@@ -1324,6 +1324,9 @@ a.slot:hover {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(213, 147, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(0, 227, 253, 0.15) 0%, transparent 50%);
 }
 
 .home__main {
@@ -1335,9 +1338,6 @@ a.slot:hover {
   padding: 96px 24px 80px;
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(213, 147, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(0, 227, 253, 0.15) 0%, transparent 50%);
 }
 
 .app-header {
@@ -1540,6 +1540,40 @@ a.slot:hover {
     gap: 1rem;
     max-width: 400px;
   }
+}
+
+/* Home Credits */
+.home__credits {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+}
+
+.home__credits svg {
+  height: 3em;
+  width: auto;
+  color: var(--color-cyan);
+  flex-shrink: 0;
+}
+
+.home__credits-line {
+  font-size: 0.875em;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-cyan);
+}
+
+.home__credits-line a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.home__credits-line a:hover {
+  color: var(--color-text);
 }
 
 /* Lobby Page */

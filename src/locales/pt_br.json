@@ -4,7 +4,9 @@
     "badge": "Pronto pra Jogar",
     "subtitle": "Zero duplicatas. Cooperação total. O jogo de palavras online onde mentes brilhantes não podem pensar igual.",
     "newGame": "Criar Novo Jogo",
-    "joinGame": "Entrar em Jogo"
+    "joinGame": "Entrar em Jogo",
+    "madeBy": "Feito por",
+    "licensedUnder": "Licenciado sob"
   },
   "join": {
     "roomNotFound": "Sala não encontrada. Verifique o código e tente novamente.",
