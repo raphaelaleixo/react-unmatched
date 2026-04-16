@@ -1,0 +1,23 @@
+name: Clear Firebase Database
+
+on:
+  schedule:
+    # Runs every day at 06:00 UTC (03:00 BRT)
+    - cron: "0 6 * * *"
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  clear-db:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all data from Firebase RTDB
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE \
+            "${{ secrets.FIREBASE_DATABASE_URL }}/.json?auth=${{ secrets.FIREBASE_API_KEY }}")
+
+          if [ "$RESPONSE" -eq 200 ]; then
+            echo "Database cleared successfully."
+          else
+            echo "Failed to clear database. HTTP status: $RESPONSE"
+            exit 1
+          fi
