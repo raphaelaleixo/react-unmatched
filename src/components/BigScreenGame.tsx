@@ -1,3 +1,11 @@
+/**
+ * BigScreenGame — the spectator / big-screen view shown on the lobby device
+ * once the game has started.
+ *
+ * Displays: current phase label, round counter, 13-dot score visualization,
+ * player list with status badges, and the round-result overlay.
+ * Also shows the end-game summary with a "Play Again" button.
+ */
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ref, set, remove } from "firebase/database";
@@ -8,6 +16,7 @@ import type { GameState } from "../hooks/useGameState";
 import ScoreTracker from "./ScoreTracker";
 import AppHeader from "./AppHeader";
 import RoundResultOverlay from "./RoundResultOverlay";
+import PlayerBadge from "./PlayerBadge";
 import { getFilterPlayer, isGameOver, getFinishSubtitleKey, calculateFinalScore, getCluesPerHinter, hasPlayerSubmittedAllClues } from "../helpers/gameHelpers";
 
 interface BigScreenGameProps {
@@ -18,6 +27,7 @@ interface BigScreenGameProps {
   playerCount: number;
 }
 
+// Maps game phase to translation key for the phase label
 const PHASE_KEYS: Record<string, string> = {
   clue: "game.phase.hints",
   filter: "game.phase.filter",
@@ -29,6 +39,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  /** Create a brand-new room and navigate to it (keeps the same language). */
   async function handlePlayAgain() {
     await remove(ref(db, `rooms/${roomId}/game`));
     const room = createInitialRoom({
@@ -43,6 +54,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
 
   const isFinished = isGameOver(gameState.round);
 
+  // --- End-game screen ---
   if (isFinished) {
     return (
       <div className="page">
@@ -64,6 +76,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
 
   const cluesPerHinter = getCluesPerHinter(playerCount);
 
+  // Sort players so the guesser always appears first in the list
   const activePlayers = roomState.players
     .filter((p) => p.status === "ready")
     .sort((a, b) => {
@@ -79,17 +92,21 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
       <AppHeader roomCode={roomId} roomState={roomState} />
 
       <div className="game-grid">
+        {/* Current phase label (e.g. "Hints", "Filter", "Guess") */}
         <div className="game-grid__phase">
           {gameState.phase ? t(PHASE_KEYS[gameState.phase] ?? "") : ""}
         </div>
 
+        {/* Round counter: "01/13" through "13/13" */}
         <div className="game-grid__round">
           <span className="game-grid__round-label">{t("game.round.label")}</span>
           <span className="game-grid__round-value"><span className="game-grid__round-current">{roundDisplay}</span><span className="game-grid__round-total">/13</span></span>
         </div>
 
+        {/* 13-dot score visualization — each dot shows the round outcome */}
         <div className="game-grid__score">
           {(() => {
+            // Build an array of 13 dot types from the results so far
             const dots: ("won" | "lost" | "pass" | "current" | "neutral")[] = [];
             const sortedRounds = Object.keys(gameState.results)
               .map(Number)
@@ -102,6 +119,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
               else if (result === "pass") dots.push("pass");
             }
 
+            // Mark the current round, fill remaining with neutral
             const filledCount = dots.length;
             if (filledCount < 13) dots.push("current");
             while (dots.length < 13) dots.push("neutral");
@@ -113,11 +131,13 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
               return <div key={i} className={`game-circle${modifier}`}>{showNumber ? <span className="game-circle__number">{i + 1}</span> : icon && <span className="game-circle__icon">{icon}</span>}</div>;
             });
           })()}
+          {/* Legend labels */}
           <span className="game-legend__item"><span className="game-legend__dot game-circle--won" />{t("game.legend.won")}</span>
           <span className="game-legend__item"><span className="game-legend__dot game-circle--lost" />{t("game.legend.lost")}</span>
           <span className="game-legend__item"><span className="game-legend__dot game-circle--pass" />{t("game.legend.passed")}</span>
         </div>
 
+        {/* Player list with role/status badges */}
         <div className="game-grid__players">
           {activePlayers.map((player) => {
             const isGuesser = player.id === gameState.answering;
@@ -135,49 +155,13 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
               >
                 <span className="game-player__number">{player.id}</span>
                 <span style={{ marginRight: "auto" }}>{name}</span>
-                {isGuesser && (
-                  <span className={`game-player__badge${gameState.phase === "guess" ? " game-player__badge--thinking" : ""}`} style={{ background: "rgba(213, 147, 255, 0.15)", color: "var(--color-purple)" }}>
-                    {t("game.role.guesser")}
-                  </span>
-                )}
-                {!isGuesser && gameState.phase === "filter" && (
-                  isFilterPlayer ? (
-                    <span className="game-player__badge game-player__badge--thinking" style={{ animationDelay: `${player.id * 0.4}s`, background: "rgba(255, 214, 0, 0.15)", color: "#ffd600" }}>
-                      {t("game.badge.working")}
-                    </span>
-                  ) : (
-                    <span className="game-player__badge">
-                      {t("game.badge.ready")}
-                    </span>
-                  )
-                )}
-                {!isGuesser && gameState.phase === "clue" && (
-                  hasSubmitted ? (
-                    <span className="game-player__badge">
-                      {t("game.badge.submitted")}
-                    </span>
-                  ) : (
-                    <span className="game-player__badge game-player__badge--thinking" style={{ animationDelay: `${player.id * 0.4}s` }}>
-                      {t("game.badge.thinking")}
-                    </span>
-                  )
-                )}
-                {!isGuesser && gameState.phase === "guess" && (
-                  <span className="game-player__badge">
-                    {t("game.badge.ready")}
-                  </span>
-                )}
-                {!isGuesser && gameState.phase === "validate" && (
-                  isFilterPlayer ? (
-                    <span className="game-player__badge game-player__badge--thinking" style={{ animationDelay: `${player.id * 0.4}s`, background: "rgba(255, 214, 0, 0.15)", color: "#ffd600" }}>
-                      {t("game.badge.working")}
-                    </span>
-                  ) : (
-                    <span className="game-player__badge">
-                      {t("game.badge.ready")}
-                    </span>
-                  )
-                )}
+                <PlayerBadge
+                  phase={gameState.phase}
+                  isGuesser={isGuesser}
+                  isFilterPlayer={isFilterPlayer}
+                  hasSubmitted={hasSubmitted}
+                  playerId={player.id}
+                />
               </div>
             );
           })}

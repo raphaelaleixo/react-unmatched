@@ -1,8 +1,15 @@
+/**
+ * MakeGuess — the guessing phase UI shown to the guesser.
+ *
+ * Displays the valid clues as colored boxes and lets the guesser type
+ * their answer or pass (skip) the round. Passing costs nothing; a wrong
+ * guess costs −2 points.
+ */
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
-import { getNextAnswering } from "../helpers/gameHelpers";
+import { buildNextRoundUpdate } from "../helpers/gameHelpers";
 
 interface MakeGuessProps {
   roomId: string;
@@ -22,6 +29,7 @@ export default function MakeGuess({
   const { t } = useTranslation();
   const [guess, setGuess] = useState("");
 
+  /** Submit the guess — moves to validate phase for the filter player to judge. */
   async function handleSubmit() {
     const trimmed = guess.trim();
     if (!trimmed) return;
@@ -31,19 +39,12 @@ export default function MakeGuess({
     });
   }
 
+  /** Skip this round — no penalty, advance to next round. */
   async function handlePass() {
-    const nextRound = round + 1;
-
     await update(ref(db, `rooms/${roomId}/game`), {
-      message: "pass",
-      [`results/${round}`]: "pass",
-      round: nextRound,
-      answering: getNextAnswering(nextRound, playerCount),
-      phase: "clue",
-      clues: null,
+      ...buildNextRoundUpdate(round, playerCount, "pass"),
       invalidClues: null,
       validClues: null,
-      guess: null,
     });
   }
 
@@ -57,6 +58,7 @@ export default function MakeGuess({
       </div>
 
       <div className="make-guess__group">
+        {/* Valid clues displayed as numbered boxes */}
         <div className="make-guess__clues">
           {validClues.map((clue, i) => (
             <div key={i} className="make-guess__clue-box">
@@ -65,6 +67,7 @@ export default function MakeGuess({
             </div>
           ))}
         </div>
+        {/* Show how many clues were discarded by the filter player */}
         {invalidCount > 0 && (
           <p className="make-guess__discarded">
             {t("game.discarded", { count: invalidCount })}

@@ -1,8 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+/**
+ * SendClue — the clue-writing phase UI shown to each hinter (non-guesser).
+ *
+ * Players type 1 or 2 clues (depending on player count) to help the guesser
+ * identify the secret word. Clues are written to Firebase individually so
+ * the auto-transition in useGameState can detect when everyone is done.
+ */
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ref, set, update } from "firebase/database";
 import { db } from "../firebase";
 import { makeClueKey } from "../helpers/gameHelpers";
+import { useWordAutoScale } from "../hooks/useWordAutoScale";
 
 interface SendClueProps {
   roomId: string;
@@ -24,39 +32,24 @@ export default function SendClue({
   totalHinters,
 }: SendClueProps) {
   const { t } = useTranslation();
+
+  // One input per clue slot (1 or 2 depending on player count)
   const [clues, setClues] = useState<string[]>(() =>
     Array.from({ length: cluesPerHinter }, () => ""),
   );
   const [submitted, setSubmitted] = useState(submittedClueCount >= cluesPerHinter);
-  const wordRef = useRef<HTMLSpanElement>(null);
 
+  // Auto-scale the word text to fit its container
+  const wordRef = useWordAutoScale(word);
+
+  // Sync submitted state if the parent re-renders with updated clue count
   useEffect(() => {
     setSubmitted(submittedClueCount >= cluesPerHinter);
   }, [submittedClueCount, cluesPerHinter]);
 
-  const fitWord = useCallback(() => {
-    const el = wordRef.current;
-    if (!el) return;
-    const parent = el.parentElement;
-    if (!parent) return;
-    el.style.fontSize = "";
-    const parentWidth = parent.clientWidth;
-    const scrollWidth = el.scrollWidth;
-    if (scrollWidth > 0) {
-      const scale = parentWidth / scrollWidth;
-      const baseFontSize = parseFloat(getComputedStyle(el).fontSize);
-      el.style.fontSize = `${baseFontSize * scale}px`;
-    }
-  }, []);
-
-  useEffect(() => {
-    fitWord();
-    window.addEventListener("resize", fitWord);
-    return () => window.removeEventListener("resize", fitWord);
-  }, [word, fitWord]);
-
   const allFilled = clues.every((c) => c.trim());
 
+  /** Write clues to Firebase — single set() for 1 clue, batched update() for 2. */
   async function handleSubmit() {
     if (!allFilled) return;
 
@@ -84,6 +77,7 @@ export default function SendClue({
   return (
     <div className="send-clue">
       <div className="send-clue__group">
+        {/* Secret word display — font auto-scales to fit */}
         <div className="send-clue__word">
           <span className="send-clue__word-label">{t("game.currentWord")}</span>
           <span ref={wordRef} className="send-clue__word-value">{word}</span>
@@ -94,6 +88,7 @@ export default function SendClue({
       </div>
 
       <div className="send-clue__group">
+        {/* One input per clue slot */}
         {clues.map((clue, i) => (
           <div key={i} className="send-clue__input-group">
             <label className="send-clue__label">

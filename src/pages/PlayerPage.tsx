@@ -1,3 +1,15 @@
+/**
+ * PlayerPage — the main phone-screen view for an individual player.
+ *
+ * This page is the hub for all player interactions during the game.
+ * It renders different UI depending on:
+ *   - The current game phase (clue / filter / guess / validate)
+ *   - The player's role this round (guesser / filter player / hinter)
+ *   - The overall game status (lobby / started / finished)
+ *
+ * Players who aren't the active actor in a phase see a WaitingScreen
+ * with a message about who they're waiting for.
+ */
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
@@ -14,6 +26,7 @@ import {
 } from "../helpers/gameHelpers";
 import AppHeader from "../components/AppHeader";
 import RoundResultOverlay from "../components/RoundResultOverlay";
+import WaitingScreen from "../components/WaitingScreen";
 import SendClue from "../components/SendClue";
 import FilterClues from "../components/FilterClues";
 import MakeGuess from "../components/MakeGuess";
@@ -29,6 +42,7 @@ export default function PlayerPage() {
   const { roomState, loading } = useFirebaseRoom(roomId);
   const { t, i18n } = useTranslation();
 
+  // Derive player list metadata from react-gameroom
   const derived = useRoomState(
     roomState ?? {
       roomId: "",
@@ -42,9 +56,11 @@ export default function PlayerPage() {
   const { playerNames } = derived;
   const playerCount = derived.playerCount;
 
+  // Hide the game UI while the round-result overlay is showing
   const [overlayVisible, setOverlayVisible] = useState(false);
   const handleOverlayVisibility = useCallback((visible: boolean) => setOverlayVisible(visible), []);
 
+  // Sync the app language to whatever the lobby host selected
   useEffect(() => {
     if (gameState.lang) {
       i18n.changeLanguage(gameState.lang);
@@ -55,6 +71,12 @@ export default function PlayerPage() {
     return <div className="page"><p>Loading...</p></div>;
   }
 
+  /**
+   * Render the correct component for the current phase and player role.
+   *
+   * Role priority: guesser > filter player > hinter (everyone else).
+   * Each phase has exactly one "active" role and all others wait.
+   */
   function renderGamePhase() {
     const isAnswering = gameState.answering === playerId;
     const filterPlayer = getFilterPlayer(gameState.answering, playerCount);
@@ -66,17 +88,19 @@ export default function PlayerPage() {
       return <FinishGame gameState={gameState} />;
     }
 
+    // Helper to get a display name for a player ID
+    const nameOf = (id: number) => playerNames[id] || `Player ${id}`;
+
     switch (gameState.phase) {
+      // --- CLUE PHASE ---
+      // Guesser waits; hinters write clues; once all submitted, they wait for filter
       case "clue":
         if (isAnswering) {
           return (
-            <div className="waiting-screen">
-              <div className="waiting-screen__group">
-                <h2>{t("game.yourTurnToGuess")}</h2>
-                <p className="text-muted">{t("game.waitingForClues")}</p>
-              </div>
-              <div className="progress-bar" />
-            </div>
+            <WaitingScreen
+              title={t("game.yourTurnToGuess")}
+              message={t("game.waitingForClues")}
+            />
           );
         }
         {
@@ -87,25 +111,23 @@ export default function PlayerPage() {
             const readyHinters = countReadyHinters(gameState.clues, playerCount);
             const allSubmitted = readyHinters >= playerCount - 1;
             return (
-              <div className="waiting-screen">
-                <div className="waiting-screen__group">
-                  <h2>{t("game.waiting.title")}</h2>
-                  <p className="text-muted">
-                    {allSubmitted ? (
-                      <Trans
-                        i18nKey="game.waiting.filterBody"
-                        values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
-                        components={{ bold: <strong className="waiting-screen__name" /> }}
-                      />
-                    ) : (
-                      t("game.waiting.pendingClues")
-                    )}
-                  </p>
-                </div>
-                <div className="progress-bar" />
-              </div>
+              <WaitingScreen
+                title={t("game.waiting.title")}
+                message={
+                  allSubmitted ? (
+                    <Trans
+                      i18nKey="game.waiting.filterBody"
+                      values={{ name: nameOf(filterPlayer) }}
+                      components={{ bold: <strong className="waiting-screen__name" /> }}
+                    />
+                  ) : (
+                    t("game.waiting.pendingClues")
+                  )
+                }
+              />
             );
           }
+          // Player hasn't submitted all clues yet — show the clue input form
           let submittedClueCount = 0;
           for (let i = 0; i < cluesPerHinter; i++) {
             if (makeClueKey(playerId, i) in gameState.clues) submittedClueCount++;
@@ -124,6 +146,8 @@ export default function PlayerPage() {
           );
         }
 
+      // --- FILTER PHASE ---
+      // Filter player reviews clues; everyone else waits
       case "filter":
         if (isFilter) {
           return (
@@ -138,21 +162,20 @@ export default function PlayerPage() {
           );
         }
         return (
-          <div className="waiting-screen">
-            <div className="waiting-screen__group">
-              <h2>{t("game.waiting.title")}</h2>
-              <p className="text-muted">
-                <Trans
-                  i18nKey="game.waiting.filterBody"
-                  values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
-                  components={{ bold: <strong className="waiting-screen__name" /> }}
-                />
-              </p>
-            </div>
-            <div className="progress-bar" />
-          </div>
+          <WaitingScreen
+            title={t("game.waiting.title")}
+            message={
+              <Trans
+                i18nKey="game.waiting.filterBody"
+                values={{ name: nameOf(filterPlayer) }}
+                components={{ bold: <strong className="waiting-screen__name" /> }}
+              />
+            }
+          />
         );
 
+      // --- GUESS PHASE ---
+      // Guesser types their answer; everyone else waits
       case "guess":
         if (isAnswering) {
           return (
@@ -166,21 +189,20 @@ export default function PlayerPage() {
           );
         }
         return (
-          <div className="waiting-screen">
-            <div className="waiting-screen__group">
-              <h2>{t("game.waiting.title")}</h2>
-              <p className="text-muted">
-                <Trans
-                  i18nKey="game.waiting.guessBody"
-                  values={{ name: playerNames[gameState.answering] || `Player ${gameState.answering}` }}
-                  components={{ bold: <strong className="waiting-screen__name" /> }}
-                />
-              </p>
-            </div>
-            <div className="progress-bar" />
-          </div>
+          <WaitingScreen
+            title={t("game.waiting.title")}
+            message={
+              <Trans
+                i18nKey="game.waiting.guessBody"
+                values={{ name: nameOf(gameState.answering) }}
+                components={{ bold: <strong className="waiting-screen__name" /> }}
+              />
+            }
+          />
         );
 
+      // --- VALIDATE PHASE ---
+      // Filter player judges the guess; everyone else waits
       case "validate": {
         if (isFilter) {
           return (
@@ -188,7 +210,7 @@ export default function PlayerPage() {
               roomId={roomId!}
               guess={gameState.guess!}
               word={gameState.words[gameState.round]}
-              guesserName={playerNames[gameState.answering] || `Player ${gameState.answering}`}
+              guesserName={nameOf(gameState.answering)}
               clues={gameState.clues}
               playerCount={playerCount}
               round={gameState.round}
@@ -196,19 +218,16 @@ export default function PlayerPage() {
           );
         }
         return (
-          <div className="waiting-screen">
-            <div className="waiting-screen__group">
-              <h2>{t("game.waiting.title")}</h2>
-              <p className="text-muted">
-                <Trans
-                  i18nKey="game.waiting.validateBody"
-                  values={{ name: playerNames[filterPlayer] || `Player ${filterPlayer}` }}
-                  components={{ bold: <strong className="waiting-screen__name" /> }}
-                />
-              </p>
-            </div>
-            <div className="progress-bar" />
-          </div>
+          <WaitingScreen
+            title={t("game.waiting.title")}
+            message={
+              <Trans
+                i18nKey="game.waiting.validateBody"
+                values={{ name: nameOf(filterPlayer) }}
+                components={{ bold: <strong className="waiting-screen__name" /> }}
+              />
+            }
+          />
         );
       }
 
@@ -233,18 +252,17 @@ export default function PlayerPage() {
       renderReady={() => (
         <>
           <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
-          <div className="waiting-screen">
-            <div className="waiting-screen__group">
-              <h2>{playerName}</h2>
-              <p className="text-muted">{t("lobby.waitingForPlayers")}</p>
-            </div>
-            <div className="progress-bar" />
-          </div>
+          {/* Player is joined but game hasn't started yet */}
+          <WaitingScreen
+            title={playerName ?? ""}
+            message={t("lobby.waitingForPlayers")}
+          />
         </>
       )}
       renderStarted={() => (
         <>
           <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
+          {/* Hide game UI during overlay animation to avoid visual overlap */}
           {!overlayVisible && renderGamePhase()}
           <RoundResultOverlay gameState={gameState} onVisibilityChange={handleOverlayVisibility} />
         </>

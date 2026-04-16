@@ -4,28 +4,43 @@ import ScoreTracker from "./ScoreTracker";
 
 describe("ScoreTracker", () => {
   it("renders 13 dots", () => {
-    const { container } = render(<ScoreTracker points={0} lostPoints={0} />);
+    const { container } = render(<ScoreTracker results={{}} />);
     const dots = container.querySelectorAll(".score-dot");
     expect(dots).toHaveLength(13);
   });
 
-  it("marks correct dots green", () => {
-    const { container } = render(<ScoreTracker points={3} lostPoints={0} />);
+  it("marks correct dots", () => {
+    const { container } = render(
+      <ScoreTracker results={{ 0: "right", 1: "right", 2: "right" }} />,
+    );
     const correct = container.querySelectorAll(".score-dot--correct");
     expect(correct).toHaveLength(3);
   });
 
-  it("marks lost dots red", () => {
-    const { container } = render(<ScoreTracker points={2} lostPoints={4} />);
+  it("marks lost dots", () => {
+    const { container } = render(
+      <ScoreTracker results={{ 0: "wrong", 1: "wrong" }} />,
+    );
     const lost = container.querySelectorAll(".score-dot--lost");
-    expect(lost).toHaveLength(4);
+    expect(lost).toHaveLength(2);
+  });
+
+  it("marks pass dots", () => {
+    const { container } = render(
+      <ScoreTracker results={{ 0: "pass" }} />,
+    );
+    const pass = container.querySelectorAll(".score-dot--pass");
+    expect(pass).toHaveLength(1);
   });
 
   it("remaining dots are neutral", () => {
-    const { container } = render(<ScoreTracker points={2} lostPoints={3} />);
+    const { container } = render(
+      <ScoreTracker results={{ 0: "right", 1: "wrong", 2: "pass" }} />,
+    );
     const all = container.querySelectorAll(".score-dot");
     const correct = container.querySelectorAll(".score-dot--correct");
     const lost = container.querySelectorAll(".score-dot--lost");
-    expect(all.length - correct.length - lost.length).toBe(8);
+    const pass = container.querySelectorAll(".score-dot--pass");
+    expect(all.length - correct.length - lost.length - pass.length).toBe(10);
   });
 });

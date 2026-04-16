@@ -1,25 +1,39 @@
+/**
+ * useGameState — subscribes to the game state in Firebase and handles
+ * automatic phase transitions.
+ *
+ * The game has 4 phases per round: clue → filter → guess → validate.
+ * Two transitions happen automatically (without player action):
+ *   1. clue → filter: when all hinters have submitted their clues
+ *      (or auto-pass if every clue is identical)
+ *   2. validate → clue: when the guess exactly matches the word
+ *      (skip manual validation, auto-mark as correct)
+ *
+ * All other transitions are triggered by player actions in the UI components.
+ */
 import { useEffect, useState } from "react";
 import { ref, onValue, set, update } from "firebase/database";
 import { db } from "../firebase";
 import {
-  getNextAnswering,
   getExpectedClueCount,
   normalizeClue,
+  buildNextRoundUpdate,
 } from "../helpers/gameHelpers";
 
+/** Shape of the full game state stored in Firebase under /rooms/{id}/game. */
 export interface GameState {
   phase: "clue" | "filter" | "guess" | "validate" | null;
-  round: number;
-  words: string[];
-  answering: number;
-  clues: Record<string, string>;
-  invalidClues: string[];
-  validClues: string[];
-  guess: string | null;
-  message: "right" | "wrong" | "pass" | "duplicate" | null;
-  clueHistory: Record<number, Record<string, string>>;
-  results: Record<number, "right" | "wrong" | "pass">;
-  lang: "en" | "pt_br";
+  round: number;                                        // 0-based round index
+  words: string[];                                      // all 13 words for the game
+  answering: number;                                    // player ID of the current guesser
+  clues: Record<string, string>;                        // "playerId_clueIndex" → clue text
+  invalidClues: string[];                               // clue keys marked invalid by filter
+  validClues: string[];                                 // clue texts approved for the guesser
+  guess: string | null;                                 // the guesser's submitted answer
+  message: "right" | "wrong" | "pass" | "duplicate" | null;  // result shown in overlay
+  clueHistory: Record<number, Record<string, string>>;  // past rounds' clues (for overlay)
+  results: Record<number, "right" | "wrong" | "pass">;  // per-round outcomes
+  lang: "en" | "pt_br";                                 // language for word bank
 }
 
 const INITIAL_STATE: GameState = {
@@ -43,6 +57,7 @@ export function useGameState(
 ): GameState {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
 
+  // --- Firebase listener: sync game state from the database ---
   useEffect(() => {
     if (!roomId) return;
 
@@ -71,8 +86,10 @@ export function useGameState(
     return unsub;
   }, [roomId]);
 
-  // Auto-transition: clue → filter when all clues are in
-  // If ALL clues are identical, skip filter and auto-pass directly
+  // --- Auto-transition: clue → filter ---
+  // When all hinters have submitted their clues, move to the filter phase.
+  // Special case: if ALL clues are identical (case-insensitive), skip filter
+  // entirely and auto-pass the round — no point in filtering duplicates.
   useEffect(() => {
     if (!roomId) return;
     if (state.phase !== "clue") return;
@@ -83,32 +100,28 @@ export function useGameState(
 
     if (clueCount < expectedClues || expectedClues <= 0) return;
 
-    // Check if all clues are identical — if so, skip filter entirely
     const clueTexts = Object.values(state.clues);
     const normalized = clueTexts.map(normalizeClue);
     const allSame = normalized.every((c) => c === normalized[0]);
 
     if (allSame) {
-      const nextRound = state.round + 1;
-
+      // Every clue is the same word — auto-pass and show "duplicate" overlay
       update(ref(db, `rooms/${roomId}/game`), {
+        ...buildNextRoundUpdate(state.round, playerCount, "duplicate", {
+          [`clueHistory/${state.round}`]: state.clues,
+        }),
         invalidClues: Object.keys(state.clues),
         validClues: [],
-        message: "duplicate",
-        [`clueHistory/${state.round}`]: state.clues,
-        [`results/${state.round}`]: "pass",
-        round: nextRound,
-        answering: getNextAnswering(nextRound, playerCount),
-        phase: "clue",
-        clues: null,
-        guess: null,
       });
     } else {
+      // Normal case — move to filter phase for the filter player to review
       set(ref(db, `rooms/${roomId}/game/phase`), "filter");
     }
   }, [roomId, state.phase, state.clues, state.round, playerCount]);
 
-  // Auto-transition: validate → right when guess matches word exactly
+  // --- Auto-transition: validate → right ---
+  // If the guesser's answer matches the word exactly (case-insensitive),
+  // skip the manual validation step and auto-mark as correct.
   useEffect(() => {
     if (!roomId) return;
     if (state.phase !== "validate") return;
@@ -118,19 +131,12 @@ export function useGameState(
     if (!word) return;
     if (normalizeClue(state.guess) !== normalizeClue(word)) return;
 
-    const nextRound = state.round + 1;
-
     update(ref(db, `rooms/${roomId}/game`), {
-      message: "right",
-      [`clueHistory/${state.round}`]: state.clues,
-      [`results/${state.round}`]: "right",
-      round: nextRound,
-      answering: getNextAnswering(nextRound, playerCount),
-      phase: "clue",
-      clues: null,
+      ...buildNextRoundUpdate(state.round, playerCount, "right", {
+        [`clueHistory/${state.round}`]: state.clues,
+      }),
       invalidClues: null,
       validClues: null,
-      guess: null,
     });
   }, [roomId, state.phase, state.guess, state.words, state.round, playerCount]);
 

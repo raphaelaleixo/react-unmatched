@@ -4,7 +4,7 @@ import {
   pickWords,
   getFilterPlayer,
   getNextAnswering,
-  calculateScore,
+  calculateFinalScore,
   isGameOver,
 } from "./gameHelpers";
 
@@ -50,17 +50,21 @@ describe("getNextAnswering", () => {
   });
 });
 
-describe("calculateScore", () => {
-  it("adds 1 point for correct guess", () => {
-    expect(calculateScore("right", 2, 1)).toEqual({ points: 3, lostPoints: 1 });
+describe("calculateFinalScore", () => {
+  it("adds 1 point per correct guess", () => {
+    expect(calculateFinalScore({ 0: "right", 1: "right", 2: "right" })).toBe(3);
   });
 
-  it("adds 2 lost points for wrong guess", () => {
-    expect(calculateScore("wrong", 2, 1)).toEqual({ points: 2, lostPoints: 3 });
+  it("subtracts 1 point per wrong guess", () => {
+    expect(calculateFinalScore({ 0: "right", 1: "wrong", 2: "right" })).toBe(1);
   });
 
-  it("adds 1 lost point for pass", () => {
-    expect(calculateScore("pass", 2, 1)).toEqual({ points: 2, lostPoints: 2 });
+  it("passes cost nothing", () => {
+    expect(calculateFinalScore({ 0: "right", 1: "pass", 2: "right" })).toBe(2);
+  });
+
+  it("returns 0 for an empty game", () => {
+    expect(calculateFinalScore({})).toBe(0);
   });
 });
 

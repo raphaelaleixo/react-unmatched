@@ -1,3 +1,16 @@
+/**
+ * useFirebaseRoom — subscribes to a room's state in Firebase RTDB.
+ *
+ * Returns:
+ *   - roomState:  the deserialized RoomState (or null while loading)
+ *   - loading:    true until the first snapshot arrives
+ *   - error:      error message if the room doesn't exist or Firebase fails
+ *   - updateRoom: writes a full RoomState back to Firebase
+ *
+ * Also exports two standalone helpers:
+ *   - roomExists(roomId) — one-shot check used by the join page
+ *   - findFirstEmptySlot(roomId) — finds the next open player slot
+ */
 import { useEffect, useState, useCallback } from "react";
 import { ref, onValue, set, get } from "firebase/database";
 import { db } from "../firebase";

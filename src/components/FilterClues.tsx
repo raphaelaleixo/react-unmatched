@@ -1,8 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+/**
+ * FilterClues — the duplicate-filtering phase UI shown to the filter player.
+ *
+ * The filter player (seated right after the guesser) reviews all submitted
+ * clues and marks duplicates as invalid. Duplicate clues are auto-detected
+ * and pre-struck on mount. The filter player can toggle each clue's status
+ * before confirming.
+ *
+ * If every clue is struck, the round auto-passes (no clues for the guesser).
+ * Otherwise the valid clues are sent to the guess phase.
+ */
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
-import { getNextAnswering, findDuplicateClueIds, parseClueKey } from "../helpers/gameHelpers";
+import { findDuplicateClueIds, parseClueKey, buildNextRoundUpdate } from "../helpers/gameHelpers";
+import { useWordAutoScale } from "../hooks/useWordAutoScale";
 
 interface FilterCluesProps {
   roomId: string;
@@ -22,32 +34,17 @@ export default function FilterClues({
   word,
 }: FilterCluesProps) {
   const { t } = useTranslation();
+
+  // Track which clue keys are "struck" (marked as invalid/duplicate)
+  // Pre-populate with auto-detected duplicates
   const [struck, setStruck] = useState<Set<string>>(
     () => new Set(findDuplicateClueIds(clues)),
   );
-  const wordRef = useRef<HTMLSpanElement>(null);
 
-  const fitWord = useCallback(() => {
-    const el = wordRef.current;
-    if (!el) return;
-    const parent = el.parentElement;
-    if (!parent) return;
-    el.style.fontSize = "";
-    const parentWidth = parent.clientWidth;
-    const scrollWidth = el.scrollWidth;
-    if (scrollWidth > 0) {
-      const scale = parentWidth / scrollWidth;
-      const baseFontSize = parseFloat(getComputedStyle(el).fontSize);
-      el.style.fontSize = `${baseFontSize * scale}px`;
-    }
-  }, []);
+  // Auto-scale the word text to fit its container
+  const wordRef = useWordAutoScale(word);
 
-  useEffect(() => {
-    fitWord();
-    window.addEventListener("resize", fitWord);
-    return () => window.removeEventListener("resize", fitWord);
-  }, [word, fitWord]);
-
+  /** Toggle a clue between valid and invalid. */
   function toggleStrike(clueKey: string) {
     setStruck((prev) => {
       const next = new Set(prev);
@@ -60,30 +57,26 @@ export default function FilterClues({
     });
   }
 
+  /** Confirm the filter and advance — either to guess phase or auto-pass. */
   async function handleSubmit() {
     const invalidClues = Array.from(struck);
     const validClues = Object.entries(clues)
       .filter(([key]) => !struck.has(key))
       .map(([, clue]) => clue);
 
+    // All clues struck → skip guess phase, count as a pass
     if (validClues.length === 0) {
-      const nextRound = round + 1;
-
       await update(ref(db, `rooms/${roomId}/game`), {
+        ...buildNextRoundUpdate(round, playerCount, "pass", {
+          [`clueHistory/${round}`]: clues,
+        }),
         invalidClues,
         validClues,
-        message: "pass",
-        [`clueHistory/${round}`]: clues,
-        [`results/${round}`]: "pass",
-        round: nextRound,
-        answering: getNextAnswering(nextRound, playerCount),
-        phase: "clue",
-        clues: null,
-        guess: null,
       });
       return;
     }
 
+    // At least one valid clue → move to guess phase
     await update(ref(db, `rooms/${roomId}/game`), {
       invalidClues,
       validClues,
@@ -91,6 +84,7 @@ export default function FilterClues({
     });
   }
 
+  // Build a flat list with player names for rendering
   const clueEntries = Object.entries(clues).map(([key, text]) => {
     const { playerId } = parseClueKey(key);
     return {
@@ -104,6 +98,7 @@ export default function FilterClues({
   return (
     <div className="filter-clues">
       <div className="filter-clues__group">
+        {/* Secret word display — font auto-scales to fit */}
         <div className="filter-clues__word">
           <span className="filter-clues__word-label">{t("game.currentWord")}</span>
           <span ref={wordRef} className="filter-clues__word-value">{word}</span>
@@ -112,6 +107,7 @@ export default function FilterClues({
       </div>
 
       <div className="filter-clues__group">
+        {/* Clue list — each clue has accept/reject toggle buttons */}
         <div className="filter-clues__list">
           {clueEntries.map(({ clueKey, text, name }) => {
             const isStruck = struck.has(clueKey);
