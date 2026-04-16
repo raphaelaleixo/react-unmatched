@@ -1,5 +1,7 @@
 # Unmatched
 
+![Unmatched](public/ogimage.png)
+
 A cooperative word-guessing party game inspired by **Just One**, built with React, TypeScript, and Firebase.
 
 Each round, one player must guess a secret word using one-word clues from the other players — but duplicate clues are removed before the guesser sees them. Play 13 rounds and try to get the highest score!
