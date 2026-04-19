@@ -11,7 +11,7 @@
  * with a message about who they're waiting for.
  */
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { PlayerScreen, useRoomState } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
@@ -41,6 +41,7 @@ export default function PlayerPage() {
   const playerId = Number(playerIdStr);
   const { roomState, loading } = useFirebaseRoom(roomId);
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   // Derive player list metadata from react-gameroom
   const derived = useRoomState(
@@ -67,8 +68,23 @@ export default function PlayerPage() {
     }
   }, [gameState.lang, i18n]);
 
-  if (loading || !roomState) {
+  if (loading) {
     return <div className="page"><p>Loading...</p></div>;
+  }
+
+  if (!roomState) {
+    return (
+      <div className="page">
+        <AppHeader />
+        <div className="player-join">
+          <h2 className="player-join__title text-center">{t("lobby.roomNotFound")}</h2>
+          <p className="text-muted text-center">{t("lobby.roomNotFoundSubtitle")}</p>
+          <button className="btn" onClick={() => navigate("/")}>
+            {t("lobby.backHome")}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   /**

@@ -4,10 +4,64 @@
     "subtitle": "Zero duplicates. Total cooperation. The web-based word game where great minds mustn't think alike.",
     "newGame": "Create New Game",
     "joinGame": "Join Game",
+    "resumeGame": "Resume Game",
+    "howToPlay": "How to Play",
     "madeBy": "Made by",
     "licensedUnder": "Licensed under"
   },
+  "rules": {
+    "title": "How to Play",
+    "tagline": "A cooperative word game for 3–8 players.",
+    "setup": {
+      "title": "Setup",
+      "body": "Open the game on a <bold>big screen</bold> (TV or laptop) and let everyone join from their <bold>phones</bold>. The big screen shows the current phase; your phone is your private hand. You need between 3 and 8 players."
+    },
+    "goal": {
+      "title": "Goal",
+      "body": "Work together to guess <bold>as many secret words as possible</bold> across 13 rounds. The catch: everyone gives clues at the same time, and <bold>matching clues cancel each other out</bold>. Think differently, win together."
+    },
+    "round": {
+      "title": "How a Round Works",
+      "hints": {
+        "title": "Drop a Hint",
+        "body": "One player is the <bold>Guesser</bold> (the role rotates each round). Everyone else sees the secret word and secretly writes a <bold>single-word clue</bold>. With 3–4 players you each write two clues, with 5 or more just one."
+      },
+      "filter": {
+        "title": "Filter the Clues",
+        "body": "The player next to the Guesser becomes the <bold>Filter</bold>. They see every clue, and the app auto-removes any that are identical. The Filter can also strike out clues that break the rules (too similar, not a real word, etc.)."
+      },
+      "guess": {
+        "title": "Guess the Word",
+        "body": "The Guesser sees only the surviving clues and must name the secret word. If it feels hopeless they can <bold>pass</bold> — no points gained, none lost."
+      },
+      "validate": {
+        "title": "Moment of Truth",
+        "body": "The Filter decides whether the Guesser's answer counts. Typos and close variants are usually fine — use your judgment and keep it friendly."
+      }
+    },
+    "scoring": {
+      "title": "Scoring",
+      "right": "Correct guess",
+      "wrong": "Wrong guess",
+      "pass": "Pass",
+      "total": "After 13 rounds, your score is shown on the big screen. A perfect game is 13 — brag accordingly."
+    },
+    "clueRules": {
+      "title": "Clue Rules",
+      "oneWord": "Clues must be a single word — no spaces, no hyphens joining two ideas.",
+      "duplicates": "Identical clues cancel automatically. Aim for something unusual but still useful.",
+      "variants": "Avoid variations of the secret word, translations, or clues that are basically the word in disguise.",
+      "fairPlay": "No hand signals, sound effects, or side conversations. The clue is all you have."
+    },
+    "back": "Back to Home"
+  },
   "join": {
+    "title": "Resume",
+    "subtitle": "Enter the room code your friends shared to jump back in.",
+    "codeLabel": "Room code",
+    "codePlaceholder": "Enter room code",
+    "submit": "Resume",
+    "submitting": "Resuming…",
     "roomNotFound": "Room not found. Check the code and try again.",
     "roomFull": "Room is full.",
     "back": "Back",
@@ -24,7 +78,10 @@
     "scanHint": "Scan with your mobile device",
     "rejoinTitle": "Rejoin the game",
     "tapToRejoin": "Tap your name to rejoin",
-    "waitingForPlayers": "Waiting for players..."
+    "waitingForPlayers": "Waiting for players...",
+    "roomNotFound": "This room doesn't exist",
+    "roomNotFoundSubtitle": "Double-check the code, or head back and start a new game.",
+    "backHome": "Back to Home"
   },
   "game": {
     "round": {
@@ -81,7 +138,7 @@
       "guess": "Time to Guess",
       "validate": "Is it right?"
     },
-    "guesserLine": "<bold>{{name}}</bold> is guessing this round.",
+    "guesserLine": "<bold>{{name}}</bold> is guessing this round. Send one-word clues — duplicates will be removed.",
     "role": {
       "guesser": "Guesser"
     },

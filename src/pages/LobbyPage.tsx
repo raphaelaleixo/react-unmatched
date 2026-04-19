@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ref, set } from "firebase/database";
 import {
@@ -19,6 +19,7 @@ export default function LobbyPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const { roomState, loading, updateRoom } = useFirebaseRoom(roomId);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const derived = useRoomState(
     roomState ?? {
@@ -31,8 +32,30 @@ export default function LobbyPage() {
 
   const gameState = useGameState(roomId, derived.playerCount);
 
-  if (loading || !roomState) {
-    return <div className="page"><p>{t("lobby.waitingForPlayers")}</p></div>;
+  if (loading) {
+    return (
+      <div className="page">
+        <div className="text-center">
+          <p className="text-muted">Loading...</p>
+          <div className="progress-bar" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!roomState) {
+    return (
+      <div className="page">
+        <AppHeader />
+        <div className="player-join">
+          <h2 className="player-join__title text-center">{t("lobby.roomNotFound")}</h2>
+          <p className="text-muted text-center">{t("lobby.roomNotFoundSubtitle")}</p>
+          <button className="btn" onClick={() => navigate("/")}>
+            {t("lobby.backHome")}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (roomState.status === "started") {

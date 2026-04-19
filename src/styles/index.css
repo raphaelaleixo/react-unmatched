@@ -104,13 +104,15 @@ h3 {
 
 .game-grid__phase-subtitle {
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 400;
   font-size: 1.25rem;
   color: var(--color-text-muted);
   padding-left: 0.5rem;
+  white-space: nowrap;
 }
 
 .game-grid__phase-guesser {
+  font-weight: 700;
   color: var(--color-text);
   text-transform: uppercase;
 }
@@ -414,6 +416,70 @@ h3 {
   padding: 1.5rem;
   width: 100%;
   max-width: 400px;
+}
+
+/* Join / Resume Game page */
+.join-page__content {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0.75rem;
+  row-gap: 1rem;
+  grid-auto-flow: dense;
+}
+
+/* Flatten JoinGame's wrapper + form into the parent grid. */
+.join-page__join,
+.join-page__form {
+  display: contents;
+}
+
+.join-page__header {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.join-page__title {
+  font-weight: 900;
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.join-page__subtitle {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.join-page__label {
+  grid-column: 1 / -1;
+}
+
+.join-page__input {
+  grid-column: 1 / -1;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.join-page__error {
+  grid-column: 1 / -1;
+}
+
+.join-page__back {
+  grid-column: 1;
+  padding: 0.9em 1em;
+  font-size: 1rem;
+}
+
+.join-page__submit {
+  grid-column: 2;
+  padding: 0.9em 1em;
+  font-size: 1rem;
 }
 
 /* Player Join (Player Phone) */
@@ -1702,22 +1768,32 @@ a.slot:hover {
 
 .home__actions {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
   width: 100%;
-  max-width: 672px;
+  max-width: 400px;
+  align-items: stretch;
 }
 
-.home__actions .btn {
-  flex: 1;
+.home__actions > .btn {
   padding: 1.33em 1.33em;
   font-size: clamp(1.125rem, 1.875vw, 1.5rem);
 }
 
-@media (max-width: 700px) {
-  .home__actions {
+.home__actions-secondary {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.home__action-secondary {
+  flex: 1;
+  padding: 0.75em 1em;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .home__actions-secondary {
     flex-direction: column;
-    gap: 1rem;
-    max-width: 400px;
   }
 }
 
@@ -1841,4 +1917,233 @@ a.slot:hover {
 .lobby__actions .btn {
   padding: 1.33em 3em;
   font-size: clamp(1.125rem, 1.875vw, 1.5rem);
+}
+
+/* Rules page */
+.rules {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.rules__main {
+  flex: 1;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 96px 24px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.rules__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rules__title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: var(--gradient-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.rules__tagline {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 300;
+  color: var(--color-text-muted);
+}
+
+.rules__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--color-box-bg);
+  border: 1px solid rgba(213, 147, 255, 0.12);
+  border-radius: 24px;
+  padding: 1.5rem 1.75rem;
+}
+
+.rules__section-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--color-cyan);
+}
+
+.rules__body {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.rules__body strong {
+  color: var(--color-purple);
+  font-weight: 700;
+}
+
+.rules__body--muted {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.rules__phases {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.rules__phase {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.rules__phase-number {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-purple);
+  color: var(--color-purple-dark);
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+.rules__phase-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rules__phase-title {
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  color: var(--color-text);
+}
+
+.rules__phase-body {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.rules__phase-body strong {
+  color: var(--color-purple);
+  font-weight: 700;
+}
+
+.rules__scoring {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rules__score-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.rules__score-value {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1.25rem;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+.rules__score-row--right .rules__score-value {
+  color: #7dffb0;
+}
+
+.rules__score-row--wrong .rules__score-value {
+  color: var(--color-red);
+}
+
+.rules__score-row--pass .rules__score-value {
+  color: var(--color-text-muted);
+}
+
+.rules__score-label {
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.rules__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rules__list li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.rules__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-cyan);
+}
+
+.rules__actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .rules__main {
+    padding: 112px 32px 80px;
+    gap: 2rem;
+  }
+
+  .rules__section {
+    padding: 2rem 2.25rem;
+  }
+
+  .rules__section-title {
+    font-size: 1.35rem;
+  }
+
+  .rules__body,
+  .rules__score-label {
+    font-size: 1.05rem;
+  }
+
+  .rules__phase-title {
+    font-size: 1.1rem;
+  }
+
+  .rules__phase-body,
+  .rules__list li {
+    font-size: 1rem;
+  }
 }

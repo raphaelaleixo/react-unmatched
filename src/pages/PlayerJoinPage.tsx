@@ -13,8 +13,23 @@ export default function PlayerJoinPage() {
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  if (loading || !roomState) {
+  if (loading) {
     return <div className="page"><p>Loading...</p></div>;
+  }
+
+  if (!roomState) {
+    return (
+      <div className="page">
+        <AppHeader />
+        <div className="player-join">
+          <h2 className="player-join__title text-center">{t("lobby.roomNotFound")}</h2>
+          <p className="text-muted text-center">{t("lobby.roomNotFoundSubtitle")}</p>
+          <button className="btn" onClick={() => navigate("/")}>
+            {t("lobby.backHome")}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (roomState.status === "started") {

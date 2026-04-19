@@ -4,10 +4,64 @@
     "subtitle": "Zero duplicatas. Cooperação total. O jogo de palavras online onde mentes brilhantes não podem pensar igual.",
     "newGame": "Criar Novo Jogo",
     "joinGame": "Entrar em Jogo",
+    "resumeGame": "Retomar Jogo",
+    "howToPlay": "Como Jogar",
     "madeBy": "Feito por",
     "licensedUnder": "Licenciado sob"
   },
+  "rules": {
+    "title": "Como Jogar",
+    "tagline": "Um jogo cooperativo de palavras para 3 a 8 jogadores.",
+    "setup": {
+      "title": "Preparação",
+      "body": "Abra o jogo em uma <bold>tela grande</bold> (TV ou notebook) e deixe todo mundo entrar pelo <bold>celular</bold>. A tela grande mostra a fase atual; o celular é sua mão privada. É preciso ter entre 3 e 8 jogadores."
+    },
+    "goal": {
+      "title": "Objetivo",
+      "body": "Trabalhem juntos para adivinhar <bold>o maior número possível de palavras secretas</bold> ao longo de 13 rodadas. O detalhe: todos dão dicas ao mesmo tempo, e <bold>dicas iguais se anulam</bold>. Pense diferente, vença junto."
+    },
+    "round": {
+      "title": "Como Funciona uma Rodada",
+      "hints": {
+        "title": "Solta a Dica",
+        "body": "Um jogador é o <bold>Adivinhador</bold> (o papel gira a cada rodada). Todos os outros veem a palavra secreta e escrevem em segredo uma <bold>dica de uma palavra só</bold>. Com 3 ou 4 jogadores, cada um escreve duas dicas; com 5 ou mais, apenas uma."
+      },
+      "filter": {
+        "title": "Filtra as Dicas",
+        "body": "O jogador ao lado do Adivinhador vira o <bold>Filtrador</bold>. Ele vê todas as dicas, e o app remove automaticamente as idênticas. O Filtrador ainda pode riscar dicas que quebrem as regras (muito parecidas, não são palavras reais etc.)."
+      },
+      "guess": {
+        "title": "Hora do Palpite",
+        "body": "O Adivinhador vê apenas as dicas sobreviventes e precisa dizer a palavra secreta. Se estiver impossível, pode <bold>passar</bold> — sem ganhar nem perder pontos."
+      },
+      "validate": {
+        "title": "Hora da Verdade",
+        "body": "O Filtrador decide se a resposta conta como acerto. Erros de digitação e variações próximas normalmente valem — use o bom senso e mantenha o clima leve."
+      }
+    },
+    "scoring": {
+      "title": "Pontuação",
+      "right": "Palpite certo",
+      "wrong": "Palpite errado",
+      "pass": "Passou",
+      "total": "Depois de 13 rodadas, a pontuação aparece na tela grande. Um jogo perfeito soma 13 — se gabem à vontade."
+    },
+    "clueRules": {
+      "title": "Regras das Dicas",
+      "oneWord": "As dicas precisam ter uma palavra só — sem espaços, sem hifens juntando duas ideias.",
+      "duplicates": "Dicas iguais se cancelam automaticamente. Busque algo inusitado, mas ainda útil.",
+      "variants": "Evite variações da palavra secreta, traduções ou dicas que basicamente entregam a palavra.",
+      "fairPlay": "Sem gestos, efeitos sonoros ou conversas paralelas. A dica é tudo o que importa."
+    },
+    "back": "Voltar ao Início"
+  },
   "join": {
+    "title": "Retomar",
+    "subtitle": "Digite o código da sala que seus amigos compartilharam para voltar ao jogo.",
+    "codeLabel": "Código da sala",
+    "codePlaceholder": "Digite o código",
+    "submit": "Retomar",
+    "submitting": "Retomando…",
     "roomNotFound": "Sala não encontrada. Verifique o código e tente novamente.",
     "roomFull": "Sala cheia.",
     "back": "Voltar",
@@ -24,7 +78,10 @@
     "scanHint": "Escaneie com seu celular",
     "rejoinTitle": "Reconecte ao jogo",
     "tapToRejoin": "Toque no seu nome para reconectar",
-    "waitingForPlayers": "Aguardando jogadores..."
+    "waitingForPlayers": "Aguardando jogadores...",
+    "roomNotFound": "Esta sala não existe",
+    "roomNotFoundSubtitle": "Confira o código ou volte e crie um novo jogo.",
+    "backHome": "Voltar ao Início"
   },
   "game": {
     "round": {
@@ -81,7 +138,7 @@
       "guess": "Hora do Palpite",
       "validate": "Está certo?"
     },
-    "guesserLine": "<bold>{{name}}</bold> está adivinhando esta rodada.",
+    "guesserLine": "<bold>{{name}}</bold> está adivinhando esta rodada. Envie dicas de uma palavra — duplicatas serão removidas.",
     "role": {
       "guesser": "Adivinhador"
     },

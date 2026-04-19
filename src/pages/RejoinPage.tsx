@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { PlayerSlotsGrid, buildPlayerUrl } from "react-gameroom";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
@@ -8,9 +8,25 @@ export default function RejoinPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const { roomState, loading } = useFirebaseRoom(roomId);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  if (loading || !roomState) {
+  if (loading) {
     return <div className="page"><p>Loading...</p></div>;
+  }
+
+  if (!roomState) {
+    return (
+      <div className="page">
+        <AppHeader />
+        <div className="player-join">
+          <h2 className="player-join__title text-center">{t("lobby.roomNotFound")}</h2>
+          <p className="text-muted text-center">{t("lobby.roomNotFoundSubtitle")}</p>
+          <button className="btn" onClick={() => navigate("/")}>
+            {t("lobby.backHome")}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

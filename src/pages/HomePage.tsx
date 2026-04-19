@@ -58,12 +58,21 @@ export default function HomePage() {
             <button className="btn" onClick={handleNewGame}>
               {t("home.newGame")}
             </button>
-            <button
-              className="btn btn--outline"
-              onClick={() => navigate("/join")}
-            >
-              {t("home.joinGame")}
-            </button>
+
+            <div className="home__actions-secondary">
+              <button
+                className="btn btn--outline home__action-secondary"
+                onClick={() => navigate("/join")}
+              >
+                {t("home.resumeGame")}
+              </button>
+              <button
+                className="btn btn--outline home__action-secondary"
+                onClick={() => navigate("/rules")}
+              >
+                {t("home.howToPlay")}
+              </button>
+            </div>
           </div>
         </section>
 
