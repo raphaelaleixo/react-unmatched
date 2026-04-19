@@ -75,7 +75,7 @@ export default function LobbyPage() {
         <div className="lobby__room-code">
           <h1 className="lobby__room-code-text">{roomState.roomId}</h1>
           <div className="qr-wrapper">
-            <RoomQRCode roomId={roomState.roomId} url={buildJoinUrl(roomState.roomId)} size={160} />
+            <RoomQRCode roomId={roomState.roomId} url={buildJoinUrl(roomState.roomId)} size={200} />
           </div>
           <p className="lobby__qr-hint">{t("lobby.scanHint")}</p>
         </div>

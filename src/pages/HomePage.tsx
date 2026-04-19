@@ -48,11 +48,6 @@ export default function HomePage() {
 
       <main className="home__main">
         <section className="home__hero">
-          <div className="home__badge">
-            <span className="home__badge-dot" />
-            <span className="home__badge-text">{t("home.badge")}</span>
-          </div>
-
           <h1 className="home__title">
             <UnmatchedLogo className="unmatched-logo--hero" />
           </h1>

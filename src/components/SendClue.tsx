@@ -6,7 +6,7 @@
  * the auto-transition in useGameState can detect when everyone is done.
  */
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { ref, set, update } from "firebase/database";
 import { db } from "../firebase";
 import { makeClueKey } from "../helpers/gameHelpers";
@@ -38,6 +38,7 @@ export default function SendClue({
     Array.from({ length: cluesPerHinter }, () => ""),
   );
   const [submitted, setSubmitted] = useState(submittedClueCount >= cluesPerHinter);
+  const [pulseKey, setPulseKey] = useState(0);
 
   // Auto-scale the word text to fit its container
   const wordRef = useWordAutoScale(word);
@@ -48,10 +49,15 @@ export default function SendClue({
   }, [submittedClueCount, cluesPerHinter]);
 
   const allFilled = clues.every((c) => c.trim());
+  const anyHasSpace = clues.some((c) => /\s/.test(c));
 
   /** Write clues to Firebase — single set() for 1 clue, batched update() for 2. */
   async function handleSubmit() {
     if (!allFilled) return;
+    if (anyHasSpace) {
+      setPulseKey((k) => k + 1);
+      return;
+    }
 
     if (cluesPerHinter === 1) {
       const key = makeClueKey(playerId, 0);
@@ -82,8 +88,14 @@ export default function SendClue({
           <span className="send-clue__word-label">{t("game.currentWord")}</span>
           <span ref={wordRef} className="send-clue__word-value">{word}</span>
         </div>
-        <p className="send-clue__instruction">
-          {cluesPerHinter >= 2 ? t("game.clueInstructionTwo") : t("game.clueInstruction")}
+        <p
+          key={pulseKey}
+          className={`send-clue__instruction${anyHasSpace ? " send-clue__instruction--alert" : ""}`}
+        >
+          <Trans
+            i18nKey={cluesPerHinter >= 2 ? "game.clueInstructionTwo" : "game.clueInstruction"}
+            components={{ bold: <strong className="send-clue__one-word" /> }}
+          />
         </p>
       </div>
 
@@ -97,7 +109,7 @@ export default function SendClue({
                 : t("game.enterClue")}
             </label>
             <input
-              className="input"
+              className={`input${/\s/.test(clue) ? " input--error" : ""}`}
               placeholder={t("game.cluePlaceholder")}
               value={clue}
               onChange={(e) => updateClue(i, e.target.value)}

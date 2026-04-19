@@ -94,7 +94,12 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
       <div className="game-grid">
         {/* Current phase label (e.g. "Hints", "Filter", "Guess") */}
         <div className="game-grid__phase">
-          {gameState.phase ? t(PHASE_KEYS[gameState.phase] ?? "") : ""}
+          <div className="game-grid__phase-title">
+            {gameState.phase ? t(PHASE_KEYS[gameState.phase] ?? "") : ""}
+          </div>
+          <div className="game-grid__phase-subtitle">
+            {t("game.guesserLine", { name: playerNames[gameState.answering] ?? "" })}
+          </div>
         </div>
 
         {/* Round counter: "01/13" through "13/13" */}

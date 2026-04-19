@@ -1,7 +1,6 @@
 {
   "home": {
     "title": "Unmatched",
-    "badge": "Pronto pra Jogar",
     "subtitle": "Zero duplicatas. Cooperação total. O jogo de palavras online onde mentes brilhantes não podem pensar igual.",
     "newGame": "Criar Novo Jogo",
     "joinGame": "Entrar em Jogo",
@@ -33,8 +32,8 @@
     "waitingForClues": "Aguardando dicas...",
     "cluesReceived": "{{count}} / {{total}} dicas recebidas",
     "currentWord": "Palavra atual:",
-    "clueInstruction": "Dê uma dica de uma palavra que ajude o adivinhador a encontrar esta palavra.",
-    "clueInstructionTwo": "Dê duas dicas de uma palavra que ajudem o adivinhador a encontrar esta palavra.",
+    "clueInstruction": "Dê uma dica de <bold>uma palavra</bold> que ajude o adivinhador a encontrar esta palavra.",
+    "clueInstructionTwo": "Dê duas dicas de <bold>uma palavra</bold> que ajudem o adivinhador a encontrar esta palavra.",
     "clueProgress": "Dica {{current}} de {{total}}",
     "enterClue": "Digite a dica",
     "cluePlaceholder": "Digite sua dica de uma palavra",
@@ -74,11 +73,12 @@
       "hint": "Como Filtrador, você decide se a lógica foi próxima o suficiente!"
     },
     "phase": {
-      "hints": "Deem Dicas!",
+      "hints": "Solta a Dica",
       "filter": "Boas dicas?",
       "guess": "Hora do Palpite",
       "validate": "Está certo?"
     },
+    "guesserLine": "{{name}} é o adivinhador desta rodada.",
     "role": {
       "guesser": "Adivinhador"
     },

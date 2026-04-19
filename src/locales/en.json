@@ -1,7 +1,6 @@
 {
   "home": {
     "title": "Unmatched",
-    "badge": "Ready to Play",
     "subtitle": "Zero duplicates. Total cooperation. The web-based word game where great minds mustn't think alike.",
     "newGame": "Create New Game",
     "joinGame": "Join Game",
@@ -33,8 +32,8 @@
     "waitingForClues": "Waiting for clues...",
     "cluesReceived": "{{count}} / {{total}} clues received",
     "currentWord": "Current word:",
-    "clueInstruction": "Give a one-word clue that helps the guesser find this word.",
-    "clueInstructionTwo": "Give two one-word clues that help the guesser find this word.",
+    "clueInstruction": "Give a <bold>one-word</bold> clue that helps the guesser find this word.",
+    "clueInstructionTwo": "Give two <bold>one-word</bold> clues that help the guesser find this word.",
     "clueProgress": "Clue {{current}} of {{total}}",
     "enterClue": "Enter clue",
     "cluePlaceholder": "Type your one-word clue",
@@ -74,11 +73,12 @@
       "hint": "As the Filterer, you decide if their logic is close enough to count!"
     },
     "phase": {
-      "hints": "Give Hints!",
+      "hints": "Drop a Hint",
       "filter": "Good clues?",
       "guess": "Time to Guess",
       "validate": "Is it right?"
     },
+    "guesserLine": "{{name}} is the guesser this round.",
     "role": {
       "guesser": "Guesser"
     },
