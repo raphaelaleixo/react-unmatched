@@ -10,9 +10,10 @@ interface AppHeaderProps {
   roomCode?: string;
   roomState?: RoomState;
   playerNumber?: number;
+  hideLangToggle?: boolean;
 }
 
-export default function AppHeader({ roomCode, roomState, playerNumber }: AppHeaderProps) {
+export default function AppHeader({ roomCode, roomState, playerNumber, hideLangToggle }: AppHeaderProps) {
   const { i18n } = useTranslation();
   const currentLang = i18n.language;
   const [showInfo, setShowInfo] = useState(false);
@@ -31,7 +32,7 @@ export default function AppHeader({ roomCode, roomState, playerNumber }: AppHead
         )}
         {playerNumber != null ? (
           <span className="app-header__player-number">{playerNumber}</span>
-        ) : (
+        ) : hideLangToggle ? null : (
           <div className="lang-toggle">
             <button
               className={currentLang === "en" ? "active" : ""}

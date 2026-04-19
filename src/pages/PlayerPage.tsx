@@ -249,19 +249,17 @@ export default function PlayerPage() {
           <div className="progress-bar" />
         </div>
       )}
+      renderHeader={() => (
+        <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
+      )}
       renderReady={() => (
-        <>
-          <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
-          {/* Player is joined but game hasn't started yet */}
-          <WaitingScreen
-            title={playerName ?? ""}
-            message={t("lobby.waitingForPlayers")}
-          />
-        </>
+        <WaitingScreen
+          title={playerName ?? ""}
+          message={t("lobby.waitingForPlayers")}
+        />
       )}
       renderStarted={() => (
         <>
-          <AppHeader roomCode={roomId} roomState={roomState} playerNumber={playerId} />
           {/* Hide game UI during overlay animation to avoid visual overlap */}
           {!overlayVisible && renderGamePhase()}
           <RoundResultOverlay gameState={gameState} onVisibilityChange={handleOverlayVisibility} />

@@ -10,7 +10,9 @@
   "join": {
     "roomNotFound": "Room not found. Check the code and try again.",
     "roomFull": "Room is full.",
-    "back": "Back"
+    "back": "Back",
+    "alreadyStartedTitle": "The game has already started",
+    "alreadyStartedSubtitle": "This room is in the middle of a match. Ask your friends to start a new game when they're done."
   },
   "lobby": {
     "welcome": "Welcome!",
@@ -20,6 +22,7 @@
     "playersReady": "{{count}} / {{max}} players ready (minimum {{min}})",
     "startGame": "Start Game",
     "scanHint": "Scan with your mobile device",
+    "rejoinTitle": "Rejoin the game",
     "tapToRejoin": "Tap your name to rejoin",
     "waitingForPlayers": "Waiting for players..."
   },
@@ -78,7 +81,7 @@
       "guess": "Time to Guess",
       "validate": "Is it right?"
     },
-    "guesserLine": "{{name}} is the guesser this round.",
+    "guesserLine": "<bold>{{name}}</bold> is guessing this round.",
     "role": {
       "guesser": "Guesser"
     },

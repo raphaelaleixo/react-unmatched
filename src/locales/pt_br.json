@@ -10,7 +10,9 @@
   "join": {
     "roomNotFound": "Sala não encontrada. Verifique o código e tente novamente.",
     "roomFull": "Sala cheia.",
-    "back": "Voltar"
+    "back": "Voltar",
+    "alreadyStartedTitle": "O jogo já começou",
+    "alreadyStartedSubtitle": "Esta sala está no meio de uma partida. Peça aos seus amigos para criar um novo jogo quando terminarem."
   },
   "lobby": {
     "welcome": "Bem-vindo!",
@@ -20,6 +22,7 @@
     "playersReady": "{{count}} / {{max}} jogadores prontos (mínimo {{min}})",
     "startGame": "Iniciar Jogo",
     "scanHint": "Escaneie com seu celular",
+    "rejoinTitle": "Reconecte ao jogo",
     "tapToRejoin": "Toque no seu nome para reconectar",
     "waitingForPlayers": "Aguardando jogadores..."
   },
@@ -78,7 +81,7 @@
       "guess": "Hora do Palpite",
       "validate": "Está certo?"
     },
-    "guesserLine": "{{name}} é o adivinhador desta rodada.",
+    "guesserLine": "<bold>{{name}}</bold> está adivinhando esta rodada.",
     "role": {
       "guesser": "Adivinhador"
     },
@@ -91,14 +94,14 @@
     "legend": {
       "won": "Acerto",
       "lost": "Erro",
-      "passed": "Passou",
+      "passed": "Pulo",
       "upcoming": "Próxima"
     }
   },
   "result": {
     "right": "Muito bem!",
     "wrong": "Que pena!",
-    "pass": "Passou...",
+    "pass": "Pulo...",
     "duplicate": "Todas as dicas foram \"{{hint}}\"",
     "theWord": "A palavra era"
   },

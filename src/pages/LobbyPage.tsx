@@ -4,8 +4,8 @@ import { ref, set } from "firebase/database";
 import {
   PlayerSlotsGrid,
   RoomQRCode,
+  StartGameButton,
   useRoomState,
-  startGame,
   buildJoinUrl,
 } from "react-gameroom";
 import { db } from "../firebase";
@@ -47,26 +47,6 @@ export default function LobbyPage() {
     );
   }
 
-  async function handleStartGame() {
-    if (!roomState) return;
-    const lang = (gameState.lang || "en") as "en" | "pt_br";
-    const words = pickWords(lang, 13);
-    const playerCount = derived.playerCount;
-    const firstAnswering = Math.floor(Math.random() * playerCount) + 1;
-
-    // Write game data first, then flip room status — so players never
-    // see status "started" before the game state exists in Firebase.
-    await set(ref(db, `rooms/${roomId}/game`), {
-      words,
-      round: 0,
-      answering: firstAnswering,
-      phase: "clue",
-      message: null,
-      lang,
-    });
-    await updateRoom(startGame(roomState));
-  }
-
   return (
     <div className="lobby">
       <AppHeader />
@@ -97,13 +77,27 @@ export default function LobbyPage() {
               min: roomState.config.minPlayers,
             })}
           </p>
-          <button
+          <StartGameButton
+            roomState={roomState}
             className="btn"
-            onClick={handleStartGame}
-            disabled={!derived.canStart}
-          >
-            {t("lobby.startGame")}
-          </button>
+            labels={{ start: t("lobby.startGame") }}
+            onStart={async (newState) => {
+              const lang = (gameState.lang || "en") as "en" | "pt_br";
+              const words = pickWords(lang, 13);
+              const firstAnswering = Math.floor(Math.random() * derived.playerCount) + 1;
+              // Write game data first, then flip room status — so players never
+              // see status "started" before the game state exists in Firebase.
+              await set(ref(db, `rooms/${roomId}/game`), {
+                words,
+                round: 0,
+                answering: firstAnswering,
+                phase: "clue",
+                message: null,
+                lang,
+              });
+              await updateRoom(newState);
+            }}
+          />
         </div>
       </div>
 

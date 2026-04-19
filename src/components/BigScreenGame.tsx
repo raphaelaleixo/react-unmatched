@@ -7,7 +7,7 @@
  * Also shows the end-game summary with a "Play Again" button.
  */
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { ref, set, remove } from "firebase/database";
 import { db } from "../firebase";
 import { createInitialRoom } from "react-gameroom";
@@ -98,7 +98,11 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
             {gameState.phase ? t(PHASE_KEYS[gameState.phase] ?? "") : ""}
           </div>
           <div className="game-grid__phase-subtitle">
-            {t("game.guesserLine", { name: playerNames[gameState.answering] ?? "" })}
+            <Trans
+              i18nKey="game.guesserLine"
+              values={{ name: playerNames[gameState.answering] ?? "" }}
+              components={{ bold: <strong className="game-grid__phase-guesser" /> }}
+            />
           </div>
         </div>
 
@@ -131,15 +135,15 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
 
             return dots.slice(0, 13).map((type, i) => {
               const modifier = type !== "neutral" ? ` game-circle--${type}` : "";
-              const showNumber = type === "current" || type === "neutral";
-              const icon = type === "won" ? "✔" : type === "lost" ? "✖" : type === "pass" ? "!" : null;
-              return <div key={i} className={`game-circle${modifier}`}>{showNumber ? <span className="game-circle__number">{i + 1}</span> : icon && <span className="game-circle__icon">{icon}</span>}</div>;
+              return <div key={i} className={`game-circle${modifier}`}><span className="game-circle__number">{i + 1}</span></div>;
             });
           })()}
           {/* Legend labels */}
-          <span className="game-legend__item"><span className="game-legend__dot game-circle--won" />{t("game.legend.won")}</span>
-          <span className="game-legend__item"><span className="game-legend__dot game-circle--lost" />{t("game.legend.lost")}</span>
-          <span className="game-legend__item"><span className="game-legend__dot game-circle--pass" />{t("game.legend.passed")}</span>
+          <div className="game-legend">
+            <span className="game-legend__item"><span className="game-legend__dot game-circle--won" />{t("game.legend.won")}</span>
+            <span className="game-legend__item"><span className="game-legend__dot game-circle--pass" />{t("game.legend.passed")}</span>
+            <span className="game-legend__item"><span className="game-legend__dot game-circle--lost" />{t("game.legend.lost")}</span>
+          </div>
         </div>
 
         {/* Player list with role/status badges */}

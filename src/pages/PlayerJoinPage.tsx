@@ -17,6 +17,18 @@ export default function PlayerJoinPage() {
     return <div className="page"><p>Loading...</p></div>;
   }
 
+  if (roomState.status === "started") {
+    return (
+      <div className="page">
+        <AppHeader roomCode={roomId} roomState={roomState} hideLangToggle />
+        <div className="player-join">
+          <h2 className="player-join__title">{t("join.alreadyStartedTitle")}</h2>
+          <p className="text-muted">{t("join.alreadyStartedSubtitle")}</p>
+        </div>
+      </div>
+    );
+  }
+
   async function handleJoin() {
     if (!nickname.trim() || !roomState) return;
     setError(null);

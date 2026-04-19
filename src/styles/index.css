@@ -110,6 +110,11 @@ h3 {
   padding-left: 0.5rem;
 }
 
+.game-grid__phase-guesser {
+  color: var(--color-text);
+  text-transform: uppercase;
+}
+
 .game-grid__round {
   font-family: var(--font-heading);
   text-transform: uppercase;
@@ -169,21 +174,15 @@ h3 {
   color: rgba(255, 255, 255, 0.3);
 }
 
-.game-circle__icon {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 1.55rem;
-}
-
-.game-circle--won .game-circle__icon {
+.game-circle--won .game-circle__number {
   color: color-mix(in srgb, var(--color-cyan) 60%, black);
 }
 
-.game-circle--lost .game-circle__icon {
+.game-circle--lost .game-circle__number {
   color: color-mix(in srgb, var(--color-red) 60%, black);
 }
 
-.game-circle--pass .game-circle__icon {
+.game-circle--pass .game-circle__number {
   color: color-mix(in srgb, var(--color-yellow) 60%, black);
 }
 
@@ -228,6 +227,14 @@ h3 {
   }
 }
 
+.game-legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 8px;
+}
+
 .game-legend__item {
   display: flex;
   align-items: center;
@@ -236,9 +243,6 @@ h3 {
   font-size: 0.95rem;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  height: 100px;
-  padding: 0 8px;
-  margin-right: 6px;
 }
 
 .game-legend__dot {
@@ -802,6 +806,73 @@ h3 {
   flex: 1;
 }
 
+/* Rejoin (Player Phone) — mirrors the guesser layout */
+.rejoin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.rejoin__group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.rejoin__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.rejoin__title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 2.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+  color: #ff6b9d;
+}
+
+.rejoin__instruction {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.rejoin .slots-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: none;
+}
+
+.rejoin .slot {
+  aspect-ratio: auto;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+}
+
+.rejoin [role="listitem"]:nth-child(4n + 1) .slot { transform: rotate(-0.8deg); }
+.rejoin [role="listitem"]:nth-child(4n + 2) .slot { transform: rotate(1deg); }
+.rejoin [role="listitem"]:nth-child(4n + 3) .slot { transform: rotate(-1.2deg); }
+.rejoin [role="listitem"]:nth-child(4n + 4) .slot { transform: rotate(0.5deg); }
+
 .score-tracker {
   display: flex;
   gap: 6px;
@@ -1011,6 +1082,34 @@ h3 {
   0% { transform: scale(0.5); opacity: 0; }
   70% { transform: scale(1.1); }
   100% { transform: scale(1); opacity: 1; }
+}
+
+@media (min-width: 1024px) {
+  .round-result-overlay__content {
+    gap: 1.875rem;
+  }
+
+  .round-result-overlay__label {
+    font-size: clamp(2.1875rem, 7.5vw, 4.375rem);
+  }
+
+  .round-result-overlay__word {
+    gap: 0.3125rem;
+  }
+
+  .round-result-overlay__word-label {
+    font-size: clamp(0.875rem, 1.875vw, 1.0625rem);
+  }
+
+  .round-result-overlay__word-text {
+    font-size: clamp(1.5625rem, 5vw, 2.5rem);
+  }
+
+  .round-result-overlay__progress {
+    width: clamp(10rem, 50vw, 15rem);
+    height: 5px;
+    margin-top: 0.625rem;
+  }
 }
 
 @keyframes pageEnter {
