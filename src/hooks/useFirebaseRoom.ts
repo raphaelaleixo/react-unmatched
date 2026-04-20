@@ -15,7 +15,7 @@ import { useEffect, useState, useCallback } from "react";
 import { ref, onValue, set, get } from "firebase/database";
 import { db } from "../firebase";
 import { deserializeRoom } from "react-gameroom";
-import type { RoomState } from "react-gameroom";
+import type { RoomState, RoomStatus } from "react-gameroom";
 
 export function useFirebaseRoom(roomId: string | undefined) {
   const [roomState, setRoomState] = useState<RoomState | null>(null);
@@ -65,6 +65,15 @@ export function useFirebaseRoom(roomId: string | undefined) {
 export async function roomExists(roomId: string): Promise<boolean> {
   const snapshot = await get(ref(db, `rooms/${roomId}/state/roomId`));
   return snapshot.exists();
+}
+
+export async function getRoomStatus(
+  roomId: string,
+): Promise<RoomStatus | null> {
+  const snapshot = await get(ref(db, `rooms/${roomId}/state`));
+  const val = snapshot.val();
+  if (!val || !val.roomId) return null;
+  return val.status === "started" ? "started" : "lobby";
 }
 
 export async function findFirstEmptySlot(

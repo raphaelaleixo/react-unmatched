@@ -9,6 +9,12 @@
     "madeBy": "Feito por",
     "licensedUnder": "Licenciado sob"
   },
+  "hostWarning": {
+    "title": "Tela grande recomendada",
+    "body": "É melhor começar um jogo em uma tela maior, como um notebook ou TV. Você pode continuar neste aparelho, mas alguns layouts podem ficar apertados.",
+    "confirm": "Continuar mesmo assim",
+    "cancel": "Cancelar"
+  },
   "rules": {
     "title": "Como Jogar",
     "tagline": "Um jogo cooperativo de palavras para 3 a 8 jogadores.",
@@ -60,7 +66,8 @@
     "subtitle": "Digite o código da sala que seus amigos compartilharam para voltar ao jogo.",
     "codeLabel": "Código da sala",
     "codePlaceholder": "Digite o código",
-    "submit": "Retomar",
+    "resumeAsHost": "Retomar como anfitrião",
+    "resumeAsPlayer": "Retomar como jogador",
     "submitting": "Retomando…",
     "roomNotFound": "Sala não encontrada. Verifique o código e tente novamente.",
     "roomFull": "Sala cheia.",

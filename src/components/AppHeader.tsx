@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { ref, set } from "firebase/database";
 import { RoomInfoModal } from "react-gameroom";
 import type { RoomState } from "react-gameroom";
@@ -20,7 +21,9 @@ export default function AppHeader({ roomCode, roomState, playerNumber, hideLangT
 
   return (
     <header className="app-header">
-      <UnmatchedLogo className="unmatched-logo--header" />
+      <Link to="/" className="app-header__logo-link" aria-label="Home">
+        <UnmatchedLogo className="unmatched-logo--header" />
+      </Link>
       <div className="app-header__right">
         {roomCode && (
           <button

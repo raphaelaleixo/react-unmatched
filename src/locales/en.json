@@ -9,6 +9,12 @@
     "madeBy": "Made by",
     "licensedUnder": "Licensed under"
   },
+  "hostWarning": {
+    "title": "Big screen recommended",
+    "body": "It's better to start a game on a larger display, like a laptop or TV. You can continue on this device, but some layouts may be cramped.",
+    "confirm": "Continue anyway",
+    "cancel": "Cancel"
+  },
   "rules": {
     "title": "How to Play",
     "tagline": "A cooperative word game for 3–8 players.",
@@ -60,7 +66,8 @@
     "subtitle": "Enter the room code your friends shared to jump back in.",
     "codeLabel": "Room code",
     "codePlaceholder": "Enter room code",
-    "submit": "Resume",
+    "resumeAsHost": "Resume as host",
+    "resumeAsPlayer": "Resume as player",
     "submitting": "Resuming…",
     "roomNotFound": "Room not found. Check the code and try again.",
     "roomFull": "Room is full.",

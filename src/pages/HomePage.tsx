@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ref, set } from "firebase/database";
 import { db } from "../firebase";
-import { createInitialRoom } from "react-gameroom";
+import {
+  createInitialRoom,
+  HostDeviceWarningModal,
+  isLikelyMobileHost,
+} from "react-gameroom";
 import AppHeader from "../components/AppHeader";
 import UnmatchedLogo from "../components/UnmatchedLogo";
 
@@ -28,10 +33,19 @@ function LudoratorySvg() {
 export default function HomePage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const [hostWarningOpen, setHostWarningOpen] = useState(false);
 
   const currentLang = i18n.language;
 
-  async function handleNewGame() {
+  function handleNewGame() {
+    if (isLikelyMobileHost()) {
+      setHostWarningOpen(true);
+      return;
+    }
+    void createRoomAndNavigate();
+  }
+
+  async function createRoomAndNavigate() {
     const room = createInitialRoom({
       minPlayers: 3,
       maxPlayers: 8,
@@ -100,6 +114,24 @@ export default function HomePage() {
         </div>
         </footer>
       </main>
+
+      <HostDeviceWarningModal
+        open={hostWarningOpen}
+        onConfirm={() => {
+          setHostWarningOpen(false);
+          void createRoomAndNavigate();
+        }}
+        onCancel={() => setHostWarningOpen(false)}
+        className="host-device-warning-modal"
+        confirmButtonClassName="btn"
+        cancelButtonClassName="btn btn--outline"
+        labels={{
+          title: t("hostWarning.title"),
+          body: t("hostWarning.body"),
+          confirmLabel: t("hostWarning.confirm"),
+          cancelLabel: t("hostWarning.cancel"),
+        }}
+      />
     </div>
   );
 }
