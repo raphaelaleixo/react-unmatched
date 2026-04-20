@@ -9,7 +9,7 @@
  * If every clue is struck, the round auto-passes (no clues for the guesser).
  * Otherwise the valid clues are sent to the guess phase.
  */
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ref, update } from "firebase/database";
 import { db } from "../firebase";
@@ -35,11 +35,13 @@ export default function FilterClues({
 }: FilterCluesProps) {
   const { t } = useTranslation();
 
-  // Track which clue keys are "struck" (marked as invalid/duplicate)
-  // Pre-populate with auto-detected duplicates
-  const [struck, setStruck] = useState<Set<string>>(
+  // Duplicate clues are locked as invalid — the accept button is disabled for them,
+  // and they seed the initial "struck" set.
+  const duplicateIds = useMemo(
     () => new Set(findDuplicateClueIds(clues)),
+    [clues],
   );
+  const [struck, setStruck] = useState<Set<string>>(() => new Set(duplicateIds));
 
   // Auto-scale the word text to fit its container
   const wordRef = useWordAutoScale(word);
@@ -111,6 +113,7 @@ export default function FilterClues({
         <div className="filter-clues__list">
           {clueEntries.map(({ clueKey, text, name }) => {
             const isStruck = struck.has(clueKey);
+            const isDuplicate = duplicateIds.has(clueKey);
             return (
               <div key={clueKey} className="filter-clues__item">
                 <div className="filter-clues__clue-info">
@@ -123,6 +126,7 @@ export default function FilterClues({
                   <button
                     className={`filter-clues__action-btn filter-clues__action-btn--accept${!isStruck ? " filter-clues__action-btn--active" : ""}`}
                     onClick={() => isStruck && toggleStrike(clueKey)}
+                    disabled={isDuplicate}
                     aria-label={t("game.correct")}
                   >
                     ✓

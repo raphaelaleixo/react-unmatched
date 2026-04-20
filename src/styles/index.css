@@ -624,6 +624,11 @@ h3 {
   color: var(--color-red);
 }
 
+.filter-clues__action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .filter-clues__btn {
   width: 100%;
 }
