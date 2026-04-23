@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ref, set } from "firebase/database";
-import { RoomInfoModal } from "react-gameroom";
+import { FullscreenToggle, RoomInfoModal } from "react-gameroom";
 import type { RoomState } from "react-gameroom";
 import { db } from "../firebase";
 import UnmatchedLogo from "./UnmatchedLogo";
@@ -12,10 +12,11 @@ interface AppHeaderProps {
   roomState?: RoomState;
   playerNumber?: number;
   hideLangToggle?: boolean;
+  showFullscreen?: boolean;
 }
 
-export default function AppHeader({ roomCode, roomState, playerNumber, hideLangToggle }: AppHeaderProps) {
-  const { i18n } = useTranslation();
+export default function AppHeader({ roomCode, roomState, playerNumber, hideLangToggle, showFullscreen }: AppHeaderProps) {
+  const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const [showInfo, setShowInfo] = useState(false);
 
@@ -32,6 +33,12 @@ export default function AppHeader({ roomCode, roomState, playerNumber, hideLangT
           >
             {roomCode}
           </button>
+        )}
+        {showFullscreen && (
+          <FullscreenToggle
+            className="app-header__fullscreen"
+            labels={{ enter: t("header.fullscreen"), exit: t("header.exitFullscreen") }}
+          />
         )}
         {playerNumber != null ? (
           <span className="app-header__player-number">{playerNumber}</span>

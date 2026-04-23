@@ -9,6 +9,10 @@
     "madeBy": "Made by",
     "licensedUnder": "Licensed under"
   },
+  "header": {
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen"
+  },
   "hostWarning": {
     "title": "Big screen recommended",
     "body": "It's better to start a game on a larger display, like a laptop or TV. You can continue on this device, but some layouts may be cramped.",

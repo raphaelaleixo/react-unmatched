@@ -5,6 +5,7 @@ import LobbyPage from "./pages/LobbyPage";
 import PlayerJoinPage from "./pages/PlayerJoinPage";
 import PlayerPage from "./pages/PlayerPage";
 import RejoinPage from "./pages/RejoinPage";
+import RoomFallback from "./pages/RoomFallback";
 import RulesPage from "./pages/RulesPage";
 import PageTransition from "./components/PageTransition";
 
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/room/:roomId/player" element={<PageTransition><PlayerJoinPage /></PageTransition>} />
       <Route path="/room/:roomId/player/:playerId" element={<PageTransition><PlayerPage /></PageTransition>} />
       <Route path="/room/:roomId/players" element={<PageTransition><RejoinPage /></PageTransition>} />
+      <Route path="/room/:roomId/*" element={<PageTransition><RoomFallback /></PageTransition>} />
     </Routes>
   );
 }

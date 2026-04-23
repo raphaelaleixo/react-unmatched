@@ -9,6 +9,10 @@
     "madeBy": "Feito por",
     "licensedUnder": "Licenciado sob"
   },
+  "header": {
+    "fullscreen": "Tela cheia",
+    "exitFullscreen": "Sair da tela cheia"
+  },
   "hostWarning": {
     "title": "Tela grande recomendada",
     "body": "É melhor começar um jogo em uma tela maior, como um notebook ou TV. Você pode continuar neste aparelho, mas alguns layouts podem ficar apertados.",

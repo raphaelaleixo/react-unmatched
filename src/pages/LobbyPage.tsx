@@ -72,7 +72,7 @@ export default function LobbyPage() {
 
   return (
     <div className="lobby">
-      <AppHeader />
+      <AppHeader showFullscreen />
 
       <div className="lobby__grid">
         <div className="lobby__room-code">

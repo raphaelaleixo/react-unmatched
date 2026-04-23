@@ -43,6 +43,16 @@ export default function PlayerPage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (loading || !roomState) return;
+    const slot = roomState.players.find((p) => p.id === playerId);
+    const invalid = Number.isNaN(playerId) || !slot || slot.status === "empty";
+    if (invalid) {
+      const target = roomState.status === "started" ? "players" : "player";
+      navigate(`/room/${roomId}/${target}`, { replace: true });
+    }
+  }, [loading, roomState, playerId, roomId, navigate]);
+
   // Derive player list metadata from react-gameroom
   const derived = useRoomState(
     roomState ?? {

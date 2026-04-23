@@ -58,7 +58,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
   if (isFinished) {
     return (
       <div className="page">
-        <AppHeader roomCode={roomId} roomState={roomState} />
+        <AppHeader roomCode={roomId} roomState={roomState} showFullscreen />
         <h1 className="lobby__room-code-text">{t("finish.gameOver")}</h1>
         <p className="text-large text-heading">{t(getFinishSubtitleKey(calculateFinalScore(gameState.results)))}</p>
         <div className="card" style={{ margin: "0 auto", textAlign: "center" }}>
@@ -89,7 +89,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
 
   return (
     <div className="game-page">
-      <AppHeader roomCode={roomId} roomState={roomState} />
+      <AppHeader roomCode={roomId} roomState={roomState} showFullscreen />
 
       <div className="game-grid">
         {/* Current phase label (e.g. "Hints", "Filter", "Guess") */}

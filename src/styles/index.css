@@ -1686,6 +1686,29 @@ a.slot:hover {
   font-size: 0.875rem;
 }
 
+.app-header__fullscreen {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  color: var(--color-cyan);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.app-header__fullscreen:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.app-header__fullscreen[aria-pressed="true"] {
+  border-color: var(--color-cyan);
+}
+
 @media (min-width: 1024px) {
   .app-header {
     padding: 24px 32px;
@@ -1703,6 +1726,11 @@ a.slot:hover {
     width: 40px;
     height: 40px;
     font-size: 1.125rem;
+  }
+
+  .app-header__fullscreen {
+    font-size: 0.875rem;
+    padding: 8px 18px;
   }
 
   .unmatched-logo--header {
