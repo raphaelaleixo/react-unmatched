@@ -92,7 +92,9 @@
     "waitingForPlayers": "Aguardando jogadores...",
     "roomNotFound": "Esta sala não existe",
     "roomNotFoundSubtitle": "Confira o código ou volte e crie um novo jogo.",
-    "backHome": "Voltar ao Início"
+    "backHome": "Voltar ao Início",
+    "addCustomWords": "+ Adicionar palavras",
+    "customWordsLoaded": "✓ {{count}} palavras carregadas"
   },
   "game": {
     "round": {
@@ -185,5 +187,24 @@
     "subtitle13": "Incrível! Pontuação perfeita!",
     "playAgain": "Jogar Novamente",
     "joinAnother": "Entrar em Outro Jogo"
+  },
+  "addWords": {
+    "title": "Palavras personalizadas",
+    "subtitleRoom": "Sala {{code}}",
+    "instructions": "Cole ao menos 13 palavras. Separe por quebras de linha ou vírgulas.",
+    "textareaLabel": "Palavras",
+    "textareaPlaceholder": "maçã\nbanana\ncereja, tâmara\n...",
+    "counter": "{{count}} / 13 palavras",
+    "duplicatesWarning": "Duplicatas encontradas: {{words}}",
+    "tooFewWarning": "São necessárias ao menos 13 palavras (tem {{count}}).",
+    "submit": "Enviar para a sala",
+    "submitting": "Enviando…",
+    "submitError": "Não foi possível salvar. Tente novamente.",
+    "successTitle": "✓ Palavras enviadas",
+    "successBody": "{{count}} palavras carregadas na sala. Pode fechar esta aba.",
+    "editAgain": "Editar lista",
+    "alreadyStartedTitle": "Jogo em andamento",
+    "alreadyStartedBody": "Não dá para mudar as palavras depois que o jogo começou.",
+    "backHome": "Voltar ao início"
   }
 }

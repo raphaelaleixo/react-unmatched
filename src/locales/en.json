@@ -92,7 +92,9 @@
     "waitingForPlayers": "Waiting for players...",
     "roomNotFound": "This room doesn't exist",
     "roomNotFoundSubtitle": "Double-check the code, or head back and start a new game.",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "addCustomWords": "+ Add custom words",
+    "customWordsLoaded": "✓ {{count}} custom words loaded"
   },
   "game": {
     "round": {
@@ -185,5 +187,24 @@
     "subtitle13": "Incredible! A perfect score!",
     "playAgain": "Play Again",
     "joinAnother": "Join Another Game"
+  },
+  "addWords": {
+    "title": "Custom words",
+    "subtitleRoom": "Room {{code}}",
+    "instructions": "Paste at least 13 words. Separate by line breaks or commas.",
+    "textareaLabel": "Words",
+    "textareaPlaceholder": "apple\nbanana\ncherry, date\n...",
+    "counter": "{{count}} / 13 words",
+    "duplicatesWarning": "Duplicates found: {{words}}",
+    "tooFewWarning": "Need at least 13 words (have {{count}}).",
+    "submit": "Send to lobby",
+    "submitting": "Sending…",
+    "submitError": "Couldn't save. Please try again.",
+    "successTitle": "✓ Words sent",
+    "successBody": "{{count}} words are loaded in the lobby. You can close this tab.",
+    "editAgain": "Edit list",
+    "alreadyStartedTitle": "Game already in progress",
+    "alreadyStartedBody": "You can't change the words once the game has started.",
+    "backHome": "Back to home"
   }
 }
