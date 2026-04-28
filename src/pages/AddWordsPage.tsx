@@ -145,6 +145,10 @@ export default function AddWordsPage() {
           placeholder={t("addWords.textareaPlaceholder")}
           rows={12}
           autoFocus
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
+          spellCheck={false}
         />
         <p
           className={

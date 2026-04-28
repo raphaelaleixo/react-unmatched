@@ -2226,7 +2226,7 @@ a.slot:hover {
 }
 
 /* Lobby — custom words */
-.lobby__custom-words-button {
+.lobby__actions .lobby__custom-words-button {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
   padding: 0.75em 1.75em;
   align-self: flex-start;
