@@ -185,3 +185,22 @@ export function parseWordList(raw: string): string[] {
     .map((t) => t.trim())
     .filter((t) => t.length > 0);
 }
+
+/**
+ * Return the values that appear more than once in `words` (case-insensitive).
+ * Each duplicated value is returned only once, using the casing of its first
+ * occurrence. Used to warn the host when a custom word list has duplicates.
+ */
+export function findDuplicates(words: string[]): string[] {
+  const seen = new Map<string, string>();
+  const dupes = new Set<string>();
+  for (const word of words) {
+    const key = word.toLowerCase();
+    if (seen.has(key)) {
+      dupes.add(seen.get(key)!);
+    } else {
+      seen.set(key, word);
+    }
+  }
+  return Array.from(dupes);
+}

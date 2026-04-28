@@ -7,6 +7,7 @@ import {
   calculateFinalScore,
   isGameOver,
   parseWordList,
+  findDuplicates,
 } from "./gameHelpers";
 
 describe("pickWords", () => {
@@ -129,5 +130,38 @@ describe("parseWordList", () => {
 
   it("preserves multi-word entries (only splits on newlines and commas)", () => {
     expect(parseWordList("ice cream\nhot dog")).toEqual(["ice cream", "hot dog"]);
+  });
+});
+
+describe("findDuplicates", () => {
+  it("returns an empty array when all words are unique", () => {
+    expect(findDuplicates(["apple", "banana", "cherry"])).toEqual([]);
+  });
+
+  it("returns the duplicate values (one entry per duplicated value)", () => {
+    expect(findDuplicates(["apple", "banana", "apple", "cherry"])).toEqual([
+      "apple",
+    ]);
+  });
+
+  it("detects duplicates case-insensitively", () => {
+    expect(findDuplicates(["Apple", "BANANA", "apple", "banana"])).toEqual([
+      "Apple",
+      "BANANA",
+    ]);
+  });
+
+  it("returns each duplicated value only once even if it repeats 3+ times", () => {
+    expect(findDuplicates(["apple", "apple", "apple", "banana"])).toEqual([
+      "apple",
+    ]);
+  });
+
+  it("preserves the casing of the first occurrence", () => {
+    expect(findDuplicates(["Banana", "banana"])).toEqual(["Banana"]);
+  });
+
+  it("returns empty for an empty array", () => {
+    expect(findDuplicates([])).toEqual([]);
   });
 });
