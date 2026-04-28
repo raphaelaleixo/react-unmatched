@@ -8,6 +8,7 @@ import {
   isGameOver,
   parseWordList,
   findDuplicates,
+  getGameWords,
 } from "./gameHelpers";
 
 describe("pickWords", () => {
@@ -163,5 +164,48 @@ describe("findDuplicates", () => {
 
   it("returns empty for an empty array", () => {
     expect(findDuplicates([])).toEqual([]);
+  });
+});
+
+describe("getGameWords", () => {
+  it("falls back to the default word bank when customWords is undefined", () => {
+    const words = getGameWords(undefined, "en");
+    expect(words).toHaveLength(13);
+    for (const w of words) expect(typeof w).toBe("string");
+    for (const w of words) expect(w.length).toBeGreaterThan(0);
+  });
+
+  it("falls back to the default word bank when customWords is an empty array", () => {
+    const words = getGameWords([], "en");
+    expect(words).toHaveLength(13);
+  });
+
+  it("falls back when customWords has fewer than 13 entries", () => {
+    const tooFew = Array.from({ length: 12 }, (_, i) => `word${i}`);
+    const words = getGameWords(tooFew, "en");
+    expect(words).toHaveLength(13);
+    expect(words.some((w) => w.startsWith("word"))).toBe(false);
+  });
+
+  it("uses customWords when length === 13 (returns exactly those 13, possibly reordered)", () => {
+    const exactly13 = Array.from({ length: 13 }, (_, i) => `custom${i}`);
+    const result = getGameWords(exactly13, "en");
+    expect(result).toHaveLength(13);
+    expect([...result].sort()).toEqual([...exactly13].sort());
+  });
+
+  it("slices to exactly 13 when customWords has more than 13", () => {
+    const tooMany = Array.from({ length: 30 }, (_, i) => `custom${i}`);
+    const result = getGameWords(tooMany, "en");
+    expect(result).toHaveLength(13);
+    for (const w of result) expect(tooMany).toContain(w);
+  });
+
+  it("respects the lang argument when falling back to defaults (pt_br vs en differ)", () => {
+    const en = getGameWords(undefined, "en");
+    const pt = getGameWords(undefined, "pt_br");
+    expect(en).toHaveLength(13);
+    expect(pt).toHaveLength(13);
+    expect(en).not.toEqual(pt);
   });
 });

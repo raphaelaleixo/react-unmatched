@@ -204,3 +204,22 @@ export function findDuplicates(words: string[]): string[] {
   }
   return Array.from(dupes);
 }
+
+/**
+ * Choose the 13 words for an upcoming game.
+ *
+ * If a non-empty `customWords` array with at least 13 entries is provided,
+ * those are shuffled and the first 13 are returned. Extras are dropped at game
+ * start, which is intentional — submitting more than 13 gives randomization
+ * across games. Otherwise we fall back to `pickWords(lang, 13)` against the
+ * built-in word banks.
+ */
+export function getGameWords(
+  customWords: string[] | undefined,
+  lang: "en" | "pt_br",
+): string[] {
+  if (customWords && customWords.length >= 13) {
+    return [...customWords].sort(() => Math.random() - 0.5).slice(0, 13);
+  }
+  return pickWords(lang, 13);
+}
