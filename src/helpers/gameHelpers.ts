@@ -173,3 +173,15 @@ export function buildNextRoundUpdate(
     ...extras,
   };
 }
+
+/**
+ * Split a raw textarea string into a normalized list of words.
+ * Splits on newlines and commas, trims whitespace from each token, and drops
+ * any empty tokens. Multi-word entries (e.g. "ice cream") are preserved.
+ */
+export function parseWordList(raw: string): string[] {
+  return raw
+    .split(/[\n,]/)
+    .map((t) => t.trim())
+    .filter((t) => t.length > 0);
+}

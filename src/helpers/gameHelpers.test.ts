@@ -6,6 +6,7 @@ import {
   getNextAnswering,
   calculateFinalScore,
   isGameOver,
+  parseWordList,
 } from "./gameHelpers";
 
 describe("pickWords", () => {
@@ -76,5 +77,57 @@ describe("isGameOver", () => {
   it("returns false when game is still in progress", () => {
     expect(isGameOver(5)).toBe(false);
     expect(isGameOver(12)).toBe(false);
+  });
+});
+
+describe("parseWordList", () => {
+  it("splits on newlines", () => {
+    expect(parseWordList("apple\nbanana\ncherry")).toEqual([
+      "apple",
+      "banana",
+      "cherry",
+    ]);
+  });
+
+  it("splits on commas", () => {
+    expect(parseWordList("apple,banana,cherry")).toEqual([
+      "apple",
+      "banana",
+      "cherry",
+    ]);
+  });
+
+  it("splits on a mix of newlines and commas", () => {
+    expect(parseWordList("apple,banana\ncherry,date\nelderberry")).toEqual([
+      "apple",
+      "banana",
+      "cherry",
+      "date",
+      "elderberry",
+    ]);
+  });
+
+  it("trims whitespace from each token", () => {
+    expect(parseWordList("  apple , banana ,\n  cherry  ")).toEqual([
+      "apple",
+      "banana",
+      "cherry",
+    ]);
+  });
+
+  it("drops empty tokens", () => {
+    expect(parseWordList("apple,,banana\n\ncherry,")).toEqual([
+      "apple",
+      "banana",
+      "cherry",
+    ]);
+  });
+
+  it("returns an empty array for an empty string", () => {
+    expect(parseWordList("")).toEqual([]);
+  });
+
+  it("preserves multi-word entries (only splits on newlines and commas)", () => {
+    expect(parseWordList("ice cream\nhot dog")).toEqual(["ice cream", "hot dog"]);
   });
 });
