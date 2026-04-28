@@ -2224,3 +2224,110 @@ a.slot:hover {
     font-size: 1rem;
   }
 }
+
+/* Lobby — custom words */
+.lobby__custom-words-button {
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  padding: 0.75em 1.75em;
+  align-self: flex-start;
+}
+
+.lobby__custom-words-status {
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  color: var(--color-cyan);
+  font-weight: 500;
+}
+
+/* Add Words Modal */
+.add-words-modal {
+  border: none;
+  border-radius: 16px;
+  padding: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  max-width: 90vw;
+}
+
+.add-words-modal::backdrop {
+  background: rgba(16, 13, 21, 0.75);
+}
+
+.add-words-modal__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2rem;
+  max-width: 360px;
+}
+
+.add-words-modal__title {
+  font-size: 1.5rem;
+}
+
+.add-words-modal__hint {
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.add-words-modal__qr {
+  background: #fff;
+  padding: 0.75rem;
+  border-radius: 12px;
+}
+
+.add-words-modal__url {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  word-break: break-all;
+  text-align: center;
+}
+
+/* Add Words Page */
+.add-words-page {
+  align-items: stretch;
+}
+
+.add-words-page__content {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-words-page__textarea {
+  min-height: 240px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.add-words-page__counter {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.add-words-page__counter--ok {
+  color: var(--color-cyan);
+  font-weight: 500;
+}
+
+.add-words-page__warning {
+  color: var(--color-red);
+  font-size: 0.95rem;
+}
+
+.add-words-page__success {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
