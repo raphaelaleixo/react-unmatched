@@ -34,6 +34,7 @@ export interface GameState {
   clueHistory: Record<number, Record<string, string>>;  // past rounds' clues (for overlay)
   results: Record<number, "right" | "wrong" | "pass">;  // per-round outcomes
   lang: "en" | "pt_br";                                 // language for word bank
+  customWords?: string[];                               // optional host-uploaded list (>=13)
 }
 
 const INITIAL_STATE: GameState = {
@@ -49,6 +50,7 @@ const INITIAL_STATE: GameState = {
   clueHistory: {},
   results: {},
   lang: "en",
+  customWords: undefined,
 };
 
 export function useGameState(
@@ -80,6 +82,7 @@ export function useGameState(
         clueHistory: data.clueHistory ?? {},
         results: data.results ?? {},
         lang: data.lang ?? "en",
+        customWords: data.customWords ?? undefined,
       });
     });
 
