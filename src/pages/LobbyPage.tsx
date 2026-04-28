@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ref, set } from "firebase/database";
@@ -11,15 +12,17 @@ import {
 import { db } from "../firebase";
 import { useFirebaseRoom } from "../hooks/useFirebaseRoom";
 import { useGameState } from "../hooks/useGameState";
-import { pickWords } from "../helpers/gameHelpers";
+import { getGameWords } from "../helpers/gameHelpers";
 import BigScreenGame from "../components/BigScreenGame";
 import AppHeader from "../components/AppHeader";
+import AddWordsModal from "../components/AddWordsModal";
 
 export default function LobbyPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const { roomState, loading, updateRoom } = useFirebaseRoom(roomId);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [addWordsOpen, setAddWordsOpen] = useState(false);
 
   const derived = useRoomState(
     roomState ?? {
@@ -106,10 +109,8 @@ export default function LobbyPage() {
             labels={{ start: t("lobby.startGame") }}
             onStart={async (newState) => {
               const lang = (gameState.lang || "en") as "en" | "pt_br";
-              const words = pickWords(lang, 13);
+              const words = getGameWords(gameState.customWords, lang);
               const firstAnswering = Math.floor(Math.random() * derived.playerCount) + 1;
-              // Write game data first, then flip room status — so players never
-              // see status "started" before the game state exists in Firebase.
               await set(ref(db, `rooms/${roomId}/game`), {
                 words,
                 round: 0,
@@ -121,9 +122,28 @@ export default function LobbyPage() {
               await updateRoom(newState);
             }}
           />
+          <button
+            type="button"
+            className="btn btn--outline lobby__custom-words-button"
+            onClick={() => setAddWordsOpen(true)}
+          >
+            {t("lobby.addCustomWords")}
+          </button>
+          {(gameState.customWords?.length ?? 0) >= 13 && (
+            <p className="lobby__custom-words-status">
+              {t("lobby.customWordsLoaded", {
+                count: gameState.customWords!.length,
+              })}
+            </p>
+          )}
         </div>
       </div>
 
+      <AddWordsModal
+        open={addWordsOpen}
+        roomId={roomState.roomId}
+        onClose={() => setAddWordsOpen(false)}
+      />
     </div>
   );
 }
