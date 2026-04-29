@@ -103,32 +103,34 @@ export default function LobbyPage() {
               min: roomState.config.minPlayers,
             })}
           </p>
-          <StartGameButton
-            roomState={roomState}
-            className="btn"
-            labels={{ start: t("lobby.startGame") }}
-            onStart={async (newState) => {
-              const lang = (gameState.lang || "en") as "en" | "pt_br";
-              const words = getGameWords(gameState.customWords, lang);
-              const firstAnswering = Math.floor(Math.random() * derived.playerCount) + 1;
-              await set(ref(db, `rooms/${roomId}/game`), {
-                words,
-                round: 0,
-                answering: firstAnswering,
-                phase: "clue",
-                message: null,
-                lang,
-              });
-              await updateRoom(newState);
-            }}
-          />
-          <button
-            type="button"
-            className="btn btn--outline lobby__custom-words-button"
-            onClick={() => setAddWordsOpen(true)}
-          >
-            {t("lobby.addCustomWords")}
-          </button>
+          <div className="lobby__actions-row">
+            <StartGameButton
+              roomState={roomState}
+              className="btn"
+              labels={{ start: t("lobby.startGame") }}
+              onStart={async (newState) => {
+                const lang = (gameState.lang || "en") as "en" | "pt_br";
+                const words = getGameWords(gameState.customWords, lang);
+                const firstAnswering = Math.floor(Math.random() * derived.playerCount) + 1;
+                await set(ref(db, `rooms/${roomId}/game`), {
+                  words,
+                  round: 0,
+                  answering: firstAnswering,
+                  phase: "clue",
+                  message: null,
+                  lang,
+                });
+                await updateRoom(newState);
+              }}
+            />
+            <button
+              type="button"
+              className="lobby__custom-words-button"
+              onClick={() => setAddWordsOpen(true)}
+            >
+              {t("lobby.addCustomWords")}
+            </button>
+          </div>
           {(gameState.customWords?.length ?? 0) >= 13 && (
             <p className="lobby__custom-words-status">
               {t("lobby.customWordsLoaded", {

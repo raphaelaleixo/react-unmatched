@@ -2226,10 +2226,30 @@ a.slot:hover {
 }
 
 /* Lobby — custom words */
-.lobby__actions .lobby__custom-words-button {
+.lobby__actions-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lobby__custom-words-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
   font-size: clamp(0.875rem, 1.2vw, 1rem);
-  padding: 0.75em 1.75em;
-  align-self: flex-start;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.lobby__custom-words-button:hover,
+.lobby__custom-words-button:focus-visible {
+  color: var(--color-cyan);
 }
 
 .lobby__custom-words-status {
