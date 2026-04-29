@@ -130,14 +130,14 @@ export default function LobbyPage() {
             >
               {t("lobby.addCustomWords")}
             </button>
+            {(gameState.customWords?.length ?? 0) >= 13 && (
+              <p className="lobby__custom-words-status">
+                {t("lobby.customWordsLoaded", {
+                  count: gameState.customWords!.length,
+                })}
+              </p>
+            )}
           </div>
-          {(gameState.customWords?.length ?? 0) >= 13 && (
-            <p className="lobby__custom-words-status">
-              {t("lobby.customWordsLoaded", {
-                count: gameState.customWords!.length,
-              })}
-            </p>
-          )}
         </div>
       </div>
 
