@@ -84,7 +84,7 @@ export default function AddWordsPage() {
   if (load.kind === "not-found") {
     return (
       <div className="page add-words-page">
-        <AppHeader roomCode={roomId} />
+        <AppHeader roomCode={roomId} hideLangToggle />
         <div className="player-join">
           <h2 className="player-join__title text-center">{t("join.roomNotFound")}</h2>
           <button className="btn" onClick={() => navigate("/")}>{t("addWords.backHome")}</button>
@@ -96,7 +96,7 @@ export default function AddWordsPage() {
   if (load.kind === "started") {
     return (
       <div className="page add-words-page">
-        <AppHeader roomCode={roomId} />
+        <AppHeader roomCode={roomId} hideLangToggle />
         <div className="player-join">
           <h2 className="player-join__title text-center">{t("addWords.alreadyStartedTitle")}</h2>
           <p className="text-muted text-center">{t("addWords.alreadyStartedBody")}</p>
@@ -109,7 +109,7 @@ export default function AddWordsPage() {
   if (submittedCount !== null) {
     return (
       <div className="page add-words-page">
-        <AppHeader roomCode={roomId} />
+        <AppHeader roomCode={roomId} hideLangToggle />
         <div className="add-words-page__success">
           <h2>{t("addWords.successTitle")}</h2>
           <p>{t("addWords.successBody", { count: submittedCount })}</p>
@@ -127,7 +127,7 @@ export default function AddWordsPage() {
 
   return (
     <div className="page add-words-page">
-      <AppHeader roomCode={roomId} />
+      <AppHeader roomCode={roomId} hideLangToggle />
       <div className="add-words-page__content">
         <header>
           <h2>{t("addWords.title")}</h2>
