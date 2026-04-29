@@ -2327,6 +2327,7 @@ a.slot:hover {
   font-family: ui-monospace, SFMono-Regular, monospace;
   font-size: 1rem;
   resize: vertical;
+  border-radius: 8px;
 }
 
 .add-words-page__counter {
