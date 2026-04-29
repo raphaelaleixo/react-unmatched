@@ -2266,6 +2266,9 @@ a.slot:hover {
   background: var(--color-surface);
   color: var(--color-text);
   max-width: 90vw;
+  margin: auto;
+  position: fixed;
+  inset: 0;
 }
 
 .add-words-modal::backdrop {

@@ -43,7 +43,7 @@ export default function AddWordsModal({ open, roomId, onClose }: AddWordsModalPr
         </div>
         <p className="add-words-modal__url">{url}</p>
         <button type="button" className="btn btn--outline" onClick={onClose}>
-          {t("rules.back")}
+          {t("addWords.close")}
         </button>
       </div>
     </dialog>

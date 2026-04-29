@@ -205,6 +205,7 @@
     "editAgain": "Editar lista",
     "alreadyStartedTitle": "Jogo em andamento",
     "alreadyStartedBody": "Não dá para mudar as palavras depois que o jogo começou.",
-    "backHome": "Voltar ao início"
+    "backHome": "Voltar ao início",
+    "close": "Fechar"
   }
 }
