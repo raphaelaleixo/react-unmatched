@@ -190,7 +190,6 @@
   },
   "addWords": {
     "title": "Custom words",
-    "subtitleRoom": "Room {{code}}",
     "instructions": "Paste at least 13 words. Separate by line breaks or commas.",
     "textareaLabel": "Words",
     "textareaPlaceholder": "apple\nbanana\ncherry, date\n...",

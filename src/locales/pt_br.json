@@ -190,7 +190,6 @@
   },
   "addWords": {
     "title": "Palavras personalizadas",
-    "subtitleRoom": "Sala {{code}}",
     "instructions": "Cole ao menos 13 palavras. Separe por quebras de linha ou vírgulas.",
     "textareaLabel": "Palavras",
     "textareaPlaceholder": "maçã\nbanana\ncereja, tâmara\n...",

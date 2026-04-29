@@ -131,7 +131,6 @@ export default function AddWordsPage() {
       <div className="add-words-page__content">
         <header>
           <h2>{t("addWords.title")}</h2>
-          <p className="text-muted">{t("addWords.subtitleRoom", { code: roomId })}</p>
         </header>
         <p>{t("addWords.instructions")}</p>
         <label htmlFor="add-words-textarea" className="input-label">
