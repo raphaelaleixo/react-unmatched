@@ -95,7 +95,7 @@ export default function HomePage() {
         <div>
           <p className="home__credits-line">
             {t("home.madeBy")}{" "}
-            <a href="https://aleixo.me" target="_blank" rel="noopener noreferrer">
+            <a href="https://ludoratory.com" target="_blank" rel="noopener noreferrer">
               Raphael Aleixo / Ludoratory
             </a>
             .
