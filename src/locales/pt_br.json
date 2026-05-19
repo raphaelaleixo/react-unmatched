@@ -172,8 +172,10 @@
     "right": "Muito bem!",
     "wrong": "Que pena!",
     "pass": "Pulo...",
-    "duplicate": "Todas as dicas foram \"{{hint}}\"",
-    "theWord": "A palavra era"
+    "duplicate": "Todos disseram a mesma coisa",
+    "theWord": "A palavra era",
+    "guessedBy": "{{name}} chutou:",
+    "cluesHeader": "Dicas"
   },
   "finish": {
     "gameOver": "Fim de Jogo!",

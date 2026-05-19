@@ -172,8 +172,10 @@
     "right": "Well done!",
     "wrong": "Bummer!",
     "pass": "Passed...",
-    "duplicate": "All hints were \"{{hint}}\"",
-    "theWord": "The word was"
+    "duplicate": "Everyone said the same thing",
+    "theWord": "The word was",
+    "guessedBy": "{{name}} guessed:",
+    "cluesHeader": "Clues"
   },
   "finish": {
     "gameOver": "Game Over!",
