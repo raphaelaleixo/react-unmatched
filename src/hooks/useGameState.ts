@@ -118,11 +118,15 @@ export function useGameState(
 
     if (allSame) {
       // Every clue is the same word — auto-pass and show "duplicate" overlay
+      const invalidKeys = Object.keys(state.clues);
       update(ref(db, `rooms/${roomId}/game`), {
         ...buildNextRoundUpdate(state.round, playerCount, "duplicate", {
-          [`clueHistory/${state.round}`]: state.clues,
+          clues: state.clues,
+          invalidClues: invalidKeys,
+          guess: null,
+          guesser: state.answering,
         }),
-        invalidClues: Object.keys(state.clues),
+        invalidClues: invalidKeys,
         validClues: [],
       });
     } else {
@@ -145,7 +149,10 @@ export function useGameState(
 
     update(ref(db, `rooms/${roomId}/game`), {
       ...buildNextRoundUpdate(state.round, playerCount, "right", {
-        [`clueHistory/${state.round}`]: state.clues,
+        clues: state.clues,
+        invalidClues: state.invalidClues,
+        guess: state.guess,
+        guesser: state.answering,
       }),
       invalidClues: null,
       validClues: null,

@@ -184,6 +184,7 @@ export default function PlayerPage() {
               playerCount={playerCount}
               round={gameState.round}
               word={gameState.words[gameState.round]}
+              guesserId={gameState.answering}
             />
           );
         }
@@ -208,9 +209,12 @@ export default function PlayerPage() {
             <MakeGuess
               roomId={roomId!}
               validClues={gameState.validClues}
+              clues={gameState.clues}
+              invalidClues={gameState.invalidClues}
               invalidCount={gameState.invalidClues.length}
               playerCount={playerCount}
               round={gameState.round}
+              guesserId={gameState.answering}
             />
           );
         }
@@ -237,7 +241,9 @@ export default function PlayerPage() {
               guess={gameState.guess!}
               word={gameState.words[gameState.round]}
               guesserName={nameOf(gameState.answering)}
+              guesserId={gameState.answering}
               clues={gameState.clues}
+              invalidClues={gameState.invalidClues}
               playerCount={playerCount}
               round={gameState.round}
             />

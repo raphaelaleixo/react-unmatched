@@ -23,6 +23,7 @@ interface FilterCluesProps {
   playerCount: number;
   round: number;
   word: string;
+  guesserId: number;
 }
 
 export default function FilterClues({
@@ -32,6 +33,7 @@ export default function FilterClues({
   playerCount,
   round,
   word,
+  guesserId,
 }: FilterCluesProps) {
   const { t } = useTranslation();
 
@@ -70,7 +72,10 @@ export default function FilterClues({
     if (validClues.length === 0) {
       await update(ref(db, `rooms/${roomId}/game`), {
         ...buildNextRoundUpdate(round, playerCount, "pass", {
-          [`clueHistory/${round}`]: clues,
+          clues,
+          invalidClues,
+          guess: null,
+          guesser: guesserId,
         }),
         invalidClues,
         validClues,

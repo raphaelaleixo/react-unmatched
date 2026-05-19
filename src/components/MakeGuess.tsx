@@ -14,17 +14,23 @@ import { buildNextRoundUpdate } from "../helpers/gameHelpers";
 interface MakeGuessProps {
   roomId: string;
   validClues: string[];
+  clues: Record<string, string>;
+  invalidClues: string[];
   invalidCount: number;
   playerCount: number;
   round: number;
+  guesserId: number;
 }
 
 export default function MakeGuess({
   roomId,
   validClues,
+  clues,
+  invalidClues,
   invalidCount,
   playerCount,
   round,
+  guesserId,
 }: MakeGuessProps) {
   const { t } = useTranslation();
   const [guess, setGuess] = useState("");
@@ -42,7 +48,12 @@ export default function MakeGuess({
   /** Skip this round — no penalty, advance to next round. */
   async function handlePass() {
     await update(ref(db, `rooms/${roomId}/game`), {
-      ...buildNextRoundUpdate(round, playerCount, "pass"),
+      ...buildNextRoundUpdate(round, playerCount, "pass", {
+        clues,
+        invalidClues,
+        guess: null,
+        guesser: guesserId,
+      }),
       invalidClues: null,
       validClues: null,
     });

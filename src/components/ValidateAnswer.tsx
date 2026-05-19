@@ -18,7 +18,9 @@ interface ValidateAnswerProps {
   guess: string;
   word: string;
   guesserName: string;
+  guesserId: number;
   clues: Record<string, string>;
+  invalidClues: string[];
   playerCount: number;
   round: number;
 }
@@ -28,7 +30,9 @@ export default function ValidateAnswer({
   guess,
   word,
   guesserName,
+  guesserId,
   clues,
+  invalidClues,
   playerCount,
   round,
 }: ValidateAnswerProps) {
@@ -38,7 +42,10 @@ export default function ValidateAnswer({
   async function handleResult(result: "right" | "wrong") {
     await update(ref(db, `rooms/${roomId}/game`), {
       ...buildNextRoundUpdate(round, playerCount, result, {
-        [`clueHistory/${round}`]: clues,
+        clues,
+        invalidClues,
+        guess,
+        guesser: guesserId,
       }),
       invalidClues: null,
       validClues: null,
