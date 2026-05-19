@@ -16,7 +16,6 @@ interface MakeGuessProps {
   validClues: string[];
   clues: Record<string, string>;
   invalidClues: string[];
-  invalidCount: number;
   playerCount: number;
   round: number;
   guesserId: number;
@@ -27,7 +26,6 @@ export default function MakeGuess({
   validClues,
   clues,
   invalidClues,
-  invalidCount,
   playerCount,
   round,
   guesserId,
@@ -79,9 +77,9 @@ export default function MakeGuess({
           ))}
         </div>
         {/* Show how many clues were discarded by the filter player */}
-        {invalidCount > 0 && (
+        {invalidClues.length > 0 && (
           <p className="make-guess__discarded">
-            {t("game.discarded", { count: invalidCount })}
+            {t("game.discarded", { count: invalidClues.length })}
           </p>
         )}
       </div>

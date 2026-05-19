@@ -211,7 +211,6 @@ export default function PlayerPage() {
               validClues={gameState.validClues}
               clues={gameState.clues}
               invalidClues={gameState.invalidClues}
-              invalidCount={gameState.invalidClues.length}
               playerCount={playerCount}
               round={gameState.round}
               guesserId={gameState.answering}
