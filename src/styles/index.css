@@ -1106,6 +1106,83 @@ h3 {
   color: var(--color-text);
 }
 
+.round-result-overlay__guess {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+  animation: resultFadeIn 0.5s ease-out 0.35s both;
+}
+
+.round-result-overlay__guess-label {
+  color: var(--color-text-muted);
+}
+
+.round-result-overlay__guess-text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-red);
+  letter-spacing: 0.03em;
+}
+
+.round-result-overlay__clues {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: min(90vw, 56rem);
+  animation: resultFadeIn 0.5s ease-out 0.45s both;
+}
+
+.round-result-overlay__clues-header {
+  margin: 0;
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.round-result-overlay__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.round-result-overlay__chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  color: var(--color-text);
+}
+
+.round-result-overlay__chip-text {
+  font-weight: 600;
+}
+
+.round-result-overlay__chip-author {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.round-result-overlay__chip--struck {
+  opacity: 0.5;
+}
+
+.round-result-overlay__chip--struck .round-result-overlay__chip-text,
+.round-result-overlay__chip--struck .round-result-overlay__chip-author {
+  text-decoration: line-through;
+}
+
 .round-result-overlay__progress {
   width: clamp(8rem, 40vw, 12rem);
   height: 4px;
@@ -1119,7 +1196,7 @@ h3 {
   height: 100%;
   border-radius: 2px;
   background: var(--color-text-muted);
-  animation: progressShrink 4s linear forwards;
+  animation: progressShrink 8s linear forwards;
 }
 
 .round-result-overlay--right .round-result-overlay__progress-bar {
@@ -1176,6 +1253,24 @@ h3 {
     width: clamp(10rem, 50vw, 15rem);
     height: 5px;
     margin-top: 0.625rem;
+  }
+
+  .round-result-overlay__guess {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    gap: 0.625rem;
+  }
+
+  .round-result-overlay__clues-header {
+    font-size: clamp(0.875rem, 1.875vw, 1.0625rem);
+  }
+
+  .round-result-overlay__chips {
+    gap: 0.625rem 1rem;
+  }
+
+  .round-result-overlay__chip {
+    padding: 0.5rem 1rem;
+    font-size: clamp(1rem, 2vw, 1.25rem);
   }
 }
 

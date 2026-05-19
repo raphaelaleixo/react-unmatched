@@ -177,7 +177,7 @@ export default function BigScreenGame({ roomId, roomState, gameState, playerName
         </div>
       </div>
 
-      <RoundResultOverlay gameState={gameState} />
+      <RoundResultOverlay gameState={gameState} playerNames={playerNames} />
     </div>
   );
 }

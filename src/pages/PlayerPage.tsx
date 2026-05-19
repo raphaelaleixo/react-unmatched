@@ -294,7 +294,11 @@ export default function PlayerPage() {
         <>
           {/* Hide game UI during overlay animation to avoid visual overlap */}
           {!overlayVisible && renderGamePhase()}
-          <RoundResultOverlay gameState={gameState} onVisibilityChange={handleOverlayVisibility} />
+          <RoundResultOverlay
+            gameState={gameState}
+            playerNames={playerNames}
+            onVisibilityChange={handleOverlayVisibility}
+          />
         </>
       )}
     />
