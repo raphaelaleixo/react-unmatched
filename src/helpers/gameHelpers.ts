@@ -147,22 +147,28 @@ export function getFinishSubtitleKey(score: number): string {
  * Build the Firebase update object that advances the game to the next round.
  *
  * Every round transition shares the same core fields (increment round, rotate
- * guesser, reset phase to "clue", clear transient data). Callers pass in the
- * round-specific result and message, plus any extra fields they need.
+ * guesser, reset phase to "clue", clear transient data). Passing the optional
+ * `history` argument also writes per-round history records used by the
+ * round-result overlay (clues seen, which were struck, what was guessed).
  *
  * @param round       - the round that just ended (0-based)
  * @param playerCount - total active players (for guesser rotation)
  * @param message     - result type shown in the overlay ("right" | "wrong" | "pass" | "duplicate")
- * @param extras      - additional fields to merge (e.g. clueHistory, invalidClues)
+ * @param history     - optional snapshot of the round for the result overlay
  */
 export function buildNextRoundUpdate(
   round: number,
   playerCount: number,
   message: string,
-  extras?: Record<string, unknown>,
+  history?: {
+    clues: Record<string, string>;
+    invalidClues: string[];
+    guess: string | null;
+    guesser: number;
+  },
 ): Record<string, unknown> {
   const nextRound = round + 1;
-  return {
+  const base: Record<string, unknown> = {
     message,
     [`results/${round}`]: message === "duplicate" ? "pass" : message,
     round: nextRound,
@@ -170,8 +176,14 @@ export function buildNextRoundUpdate(
     phase: "clue",
     clues: null,
     guess: null,
-    ...extras,
   };
+  if (history) {
+    base[`clueHistory/${round}`] = history.clues;
+    base[`invalidCluesHistory/${round}`] = history.invalidClues;
+    base[`guessHistory/${round}`] = history.guess;
+    base[`guesserHistory/${round}`] = history.guesser;
+  }
+  return base;
 }
 
 /**

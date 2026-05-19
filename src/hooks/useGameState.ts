@@ -32,6 +32,9 @@ export interface GameState {
   guess: string | null;                                 // the guesser's submitted answer
   message: "right" | "wrong" | "pass" | "duplicate" | null;  // result shown in overlay
   clueHistory: Record<number, Record<string, string>>;  // past rounds' clues (for overlay)
+  invalidCluesHistory: Record<number, string[]>;        // past rounds' struck clue keys
+  guessHistory: Record<number, string | null>;          // past rounds' submitted guesses
+  guesserHistory: Record<number, number>;               // past rounds' guesser player IDs
   results: Record<number, "right" | "wrong" | "pass">;  // per-round outcomes
   lang: "en" | "pt_br";                                 // language for word bank
   customWords?: string[];                               // optional host-uploaded list (>=13)
@@ -48,6 +51,9 @@ const INITIAL_STATE: GameState = {
   guess: null,
   message: null,
   clueHistory: {},
+  invalidCluesHistory: {},
+  guessHistory: {},
+  guesserHistory: {},
   results: {},
   lang: "en",
   customWords: undefined,
@@ -80,6 +86,9 @@ export function useGameState(
         guess: data.guess ?? null,
         message: data.message ?? null,
         clueHistory: data.clueHistory ?? {},
+        invalidCluesHistory: data.invalidCluesHistory ?? {},
+        guessHistory: data.guessHistory ?? {},
+        guesserHistory: data.guesserHistory ?? {},
         results: data.results ?? {},
         lang: data.lang ?? "en",
         customWords: data.customWords ?? undefined,

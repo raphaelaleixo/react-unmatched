@@ -9,6 +9,7 @@ import {
   parseWordList,
   findDuplicates,
   getGameWords,
+  buildNextRoundUpdate,
 } from "./gameHelpers";
 
 describe("pickWords", () => {
@@ -207,5 +208,54 @@ describe("getGameWords", () => {
     expect(en).toHaveLength(13);
     expect(pt).toHaveLength(13);
     expect(en).not.toEqual(pt);
+  });
+});
+
+describe("buildNextRoundUpdate", () => {
+  it("returns the base round-end fields with no history when no history arg is given", () => {
+    const update = buildNextRoundUpdate(2, 4, "pass");
+    expect(update).toMatchObject({
+      message: "pass",
+      "results/2": "pass",
+      round: 3,
+      answering: 4,
+      phase: "clue",
+      clues: null,
+      guess: null,
+    });
+    expect(update).not.toHaveProperty("clueHistory/2");
+    expect(update).not.toHaveProperty("invalidCluesHistory/2");
+    expect(update).not.toHaveProperty("guessHistory/2");
+    expect(update).not.toHaveProperty("guesserHistory/2");
+  });
+
+  it("maps a 'duplicate' message to a 'pass' result", () => {
+    const update = buildNextRoundUpdate(0, 3, "duplicate");
+    expect(update["results/0"]).toBe("pass");
+  });
+
+  it("writes all four history records when history is provided", () => {
+    const clues = { "1_0": "ocean", "2_0": "tentacles" };
+    const update = buildNextRoundUpdate(5, 3, "wrong", {
+      clues,
+      invalidClues: ["1_0"],
+      guess: "squid",
+      guesser: 3,
+    });
+    expect(update["clueHistory/5"]).toEqual(clues);
+    expect(update["invalidCluesHistory/5"]).toEqual(["1_0"]);
+    expect(update["guessHistory/5"]).toBe("squid");
+    expect(update["guesserHistory/5"]).toBe(3);
+  });
+
+  it("accepts a null guess in the history (pass / duplicate path)", () => {
+    const update = buildNextRoundUpdate(0, 3, "pass", {
+      clues: { "1_0": "x" },
+      invalidClues: ["1_0"],
+      guess: null,
+      guesser: 1,
+    });
+    expect(update["guessHistory/0"]).toBeNull();
+    expect(update["guesserHistory/0"]).toBe(1);
   });
 });
