@@ -70,8 +70,10 @@ Both are written at the round-end transition points:
    the new chip list would render empty for pass-via-guesser rounds.
 
 `MakeGuess` and `ValidateAnswer` currently don't receive `clues` /
-`invalidClues` as props — only `MakeGuess` gets `invalidCount`. We thread
-both down from `BigScreenGame` so the transition calls have what they need.
+`invalidClues` as props — only `MakeGuess` gets `invalidCount`, and
+`ValidateAnswer` already gets `clues`. We thread the missing ones down
+from `PlayerPage` (which renders both components and already has
+`gameState` in scope) so the transition calls have what they need.
 
 The new fields are added to the `GameState` interface in
 `src/hooks/useGameState.ts`:
@@ -146,8 +148,10 @@ the CSS — new BEM modifiers, no new component file.
 - `src/components/RoundResultOverlay.tsx` — render the guess line for
   `wrong`; render the chip list from `clueHistory[round-1]`,
   `invalidCluesHistory[round-1]`, and `playerNames`; bump timer to 8000ms.
-- `src/components/BigScreenGame.tsx` — pass `clues` and `invalidClues` props
-  down to `MakeGuess` and `ValidateAnswer`; pass `playerNames` to
+- `src/components/BigScreenGame.tsx` — pass `playerNames` to
+  `RoundResultOverlay`.
+- `src/pages/PlayerPage.tsx` — pass `clues` + `invalidClues` to `MakeGuess`,
+  add `invalidClues` to `ValidateAnswer`, pass `playerNames` to
   `RoundResultOverlay`.
 - `src/components/MakeGuess.tsx` — accept `clues` and `invalidClues` props;
   write `invalidCluesHistory` in `handlePass`.
