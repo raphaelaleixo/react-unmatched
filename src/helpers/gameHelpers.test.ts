@@ -255,6 +255,8 @@ describe("buildNextRoundUpdate", () => {
       guess: null,
       guesser: 1,
     });
+    expect(update["clueHistory/0"]).toEqual({ "1_0": "x" });
+    expect(update["invalidCluesHistory/0"]).toEqual(["1_0"]);
     expect(update["guessHistory/0"]).toBeNull();
     expect(update["guesserHistory/0"]).toBe(1);
   });
