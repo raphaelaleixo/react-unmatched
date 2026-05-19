@@ -41,13 +41,18 @@ secret word and `clueHistory/{round}` at round end and **clears** `guess`,
 `clues`, `invalidClues`, and `validClues`. The overlay therefore has no
 access to the guess or the struck/valid split once it renders.
 
-We add two parallel per-round history records under `rooms/{id}/game`:
+We add three parallel per-round history records under `rooms/{id}/game`:
 
 - `invalidCluesHistory/{round}: string[]` — the struck clue keys (same shape
   as the live `invalidClues` array). For **right**, this may be empty if no
   clues were filtered; for **duplicate**, it contains every clue key.
 - `guessHistory/{round}: string | null` — the guess text for **wrong**/**right**
   (when a guess was actually submitted), `null` for **pass**/**duplicate**.
+- `guesserHistory/{round}: number` — the player ID of the guesser for that
+  round. We can't derive this from `state.round` because the first guesser
+  (round 0) is picked at random by `LobbyPage`, breaking the otherwise
+  deterministic `getNextAnswering(round, count)` formula. Recording it
+  per-round keeps the overlay simple.
 
 Both are written at the round-end transition points:
 
@@ -71,9 +76,12 @@ Both are written at the round-end transition points:
 
 `MakeGuess` and `ValidateAnswer` currently don't receive `clues` /
 `invalidClues` as props — only `MakeGuess` gets `invalidCount`, and
-`ValidateAnswer` already gets `clues`. We thread the missing ones down
-from `PlayerPage` (which renders both components and already has
-`gameState` in scope) so the transition calls have what they need.
+`ValidateAnswer` already gets `clues`. Neither receives the guesser ID
+(only `guesserName`), and `FilterClues` doesn't receive it either. We
+thread the missing pieces (`clues`, `invalidClues`, `guesserId`) down from
+`PlayerPage` (which renders all three components and already has
+`gameState.answering` in scope) so the transition calls have what they
+need. The `useGameState` transitions use `state.answering` directly.
 
 The new fields are added to the `GameState` interface in
 `src/hooks/useGameState.ts`:
@@ -81,9 +89,10 @@ The new fields are added to the `GameState` interface in
 ```ts
 invalidCluesHistory: Record<number, string[]>;
 guessHistory: Record<number, string | null>;
+guesserHistory: Record<number, number>;
 ```
 
-Both default to `{}` when reading from Firebase, mirroring how
+All default to `{}` when reading from Firebase, mirroring how
 `clueHistory` is handled.
 
 ## Overlay behavior
@@ -147,11 +156,13 @@ the CSS — new BEM modifiers, no new component file.
   all clue keys into `invalidCluesHistory`.
 - `src/components/RoundResultOverlay.tsx` — render the guess line for
   `wrong`; render the chip list from `clueHistory[round-1]`,
-  `invalidCluesHistory[round-1]`, and `playerNames`; bump timer to 8000ms.
+  `invalidCluesHistory[round-1]`, `guesserHistory[round-1]`, and
+  `playerNames`; bump timer to 8000ms.
 - `src/components/BigScreenGame.tsx` — pass `playerNames` to
   `RoundResultOverlay`.
-- `src/pages/PlayerPage.tsx` — pass `clues` + `invalidClues` to `MakeGuess`,
-  add `invalidClues` to `ValidateAnswer`, pass `playerNames` to
+- `src/pages/PlayerPage.tsx` — pass `clues` + `invalidClues` + `guesserId`
+  to `MakeGuess`; add `invalidClues` + `guesserId` to `ValidateAnswer`;
+  pass `guesserId` to `FilterClues`; pass `playerNames` to
   `RoundResultOverlay`.
 - `src/components/MakeGuess.tsx` — accept `clues` and `invalidClues` props;
   write `invalidCluesHistory` in `handlePass`.
